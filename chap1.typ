@@ -151,7 +151,7 @@ Des weiteren schreiben wir $X ~ D$, wobei $D$ eine Verteilung ist (mehr dazu gle
 Zufallsvariablen können in verschiedenen Verhältnissen zueinander stehen. 
 
 #definition("Unabhängigkeit (Independence)")[
-  Zwei Zufallsvariablen $X$, $Y$ sind *unabhängig*, wenn die Wsk., dass sie die Werte $x$, $y$ annehmen nur von der Wsk., dass $X=x$ und $Y=y$ wird. \
+  Zwei Zufallsvariablen $X$, $Y$ sind *unabhängig*, wenn die Wsk., dass sie die Werte $x$, $y$ annehmen nur von der Wsk., dass $X=x$ und $Y=y$, abhängig sind. \
   D.h.
   $ p(x,y)=p(x)p(y) $
   Sofern dies nicht gilt sind $X$ und $Y$ abhängig.
