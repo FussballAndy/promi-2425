@@ -32,10 +32,19 @@
 
   body
 
+  v(1fr)
+
   box[
     #set text(weight: "bold")
-    Bei Fragen, Verbesserungen oder weiterem gerne entweder in Discord
-    fragen oder in #link("https://github.com/FussballAndy/promi-2425")[GitHub].
+    Bei Fragen, Fehlern, Verbesserungen oder weiterem \ 
+    gerne entweder in Discord melden oder auf 
+    #link("https://github.com/FussballAndy/promi-2425")[#text("GitHub", fill: blue.lighten(20%))] ein Issue erstellen.
+
+    Zudem kann ich auch sehr das Buch/Skript von Chris Piech von einer vergleichbaren Veranstaltung an Stanford empfehlen:
+    #set text(weight: "regular")
+    - https://chrispiech.github.io/probabilityForComputerScientists/en/ProbabilityForComputerScientists.pdf \
+      Bzw. der dazugehörige Online Reader: \
+      https://chrispiech.github.io/probabilityForComputerScientists/en/
   ]
 }
 
@@ -63,3 +72,11 @@
   })
   body
 }
+
+#let variance = math.bb("V")
+#let expect = math.bb("E")
+
+#let Cov = math.op("Cov")
+#let Corr = math.op("Corr")
+#let Skew = math.op("Skew")
+#let Kurt = math.op("Kurt")
