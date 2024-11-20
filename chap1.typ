@@ -1,56 +1,18 @@
 #import "@preview/showybox:2.0.3": showybox
+#import "template.typ": *
 
-#set document(
-  title: "1. Probabilistischer Untergang meines Lebens",
-  author: "Andreas"
+#show: book-template.with(
+  chapter: 1,
+  version: "1.0",
 )
-
-#set page(
-  margin: (
-    top: 15mm,
-    left: 15mm,
-    right: 15mm,
-    bottom: 20mm
-  ),
-  numbering: "1",
-  number-align: right
-)
-
-#set par(justify: true)
-#set text(font: "Arial", size: 10pt, lang: "de")
-#show math.equation: set text(font: "New Computer Modern Math", size: 1.1em)
-#set list(marker: [--])
-
-#let definition(title, body) = {
-  showybox(
-    title: title,
-    body
-  )
-}
-
-#let note(body) = [
-  #set text(size: .8em)
-  *Hinweis:* #body
-]
-
-#let notation-table-stroke(_,y) = {
-  (
-    top: if y == 1 {
-      1pt + gray
-    } else if y > 1 {
-      0.5pt + gray
-    }
-  )
-}
 
 = Grundlagen
 
 == Begriffe
 
 
-#table(
+#notation-table(table(
   columns: (auto, 1fr),
-  stroke: notation-table-stroke,
   table.header([*Name*], [*Bedeutung*]),
   [Ergebnisraum \ (engl. Sample Spaces)], 
   [Eine Menge $cal(X)$ aller möglichen Ergebnisse.\
@@ -61,7 +23,7 @@
   [Zufallsvariable \ (engl. Random Variable)],
   [Eine Variable, deren Wert durch Zufall bestimmt wird, da z.B. ihr Wert noch unbekannt ist. \
   Wir nennen eine Zufallsvariable _diskret_ (engl. _discrete_), wenn der Ergebnisraum endlich ist, und _stetig_ (engl. _continuous_), wenn der Ergebnisraum unendlich ist.]
-)
+))
 
 *Wahrscheinlichkeit*
 
@@ -149,15 +111,14 @@ Des weiteren schreiben wir $X ~ D$, wobei $D$ eine Verteilung ist (mehr dazu gle
 
 == Verknüpfungen von Wahrscheinlichkeiten <comb-prob>
 
-#table(
+#notation-table(table(
   columns: (auto, auto, 1fr),
-  stroke: notation-table-stroke,
   table.header([Name], [Notation], [Bedeutung]),
   [Konjunktion, \ "Verundung", \ Schnitt], [$X Y$, \ $X "and" Y$, \ $X sect Y$], [Die Konjunktion von zwei Ereignissen ist ein Ereignis, dass auftritt, wenn beide Ereignisse auftreten. Zur Notation ist zu beachten, dass im Rahmen von Wsk.-Funktionen oft auch $P(X,Y)$ für die Konjunktion von $X$ und $Y$ geschrieben wird. ],
   [Disjunktion, \ "Veroderung", \ Vereinigung], [$X+Y$, \ $X "or" Y$, \ $X union Y$], [Die Disjunktion von zwei Ereignissen ist ein Ereignis, dass auftritt, wenn mind. eins von beiden Ereignissen auftritt.],
   [Konditionelle Wsk.\ Conditional Prob.], [$X | Y$], [Die Konditionelle Wsk. von zwei Ereignissen ist die Wsk., dass $X$ auftritt, sofern $Y$ bereits aufgetreten ist. \
   #note[An sich ist $P(X|Y)$ die konditionelle Wsk. Da es allerdings zu den Verknüpfungen passt habe ich die konditionelle Verknüpfung zweier Ereignisse hier bereits aufgenommen.]]
-)
+))
 
 Hierbei bindet die Konjunktion (zumindest in der Schreibweise $X,Y$) mehr als die konditionelle Wsk. D.h., dass $X,Y | Z$ für $(X,Y) | Z$ steht und nicht $X, (Y | Z)$. Zu den weiteren Präszedenzen kann ich aktuell keine Aussage treffen.
 
@@ -193,7 +154,7 @@ auf unterschiedliche Zufallsvariablen $X$, $Y$, etc. abgezielt. Heißt $p(x)=P(X
   Für stetige Variablen ist die PDF erstmal analog, kann aber mit der CDF $F$ verknüpft werden:
   $ p(x,y) = p(x) p(y | x) = p(y) p(x | y) = (diff^2)/(diff x diff y) F(x,y) $
 
-  Man beachte, dass für unabhängige Variablen diese Wsk. genau wieder die Formel $p(x,y)=p(x)p(y)$ wiedergibt, da z.B. $p(y | x)$ bei unabhängigkeit gleich $p(y)$ ist. #emoji.basecap 
+  Man beachte, dass für unabhängige Variablen diese Wsk. genau wieder die Formel $p(x,y)=p(x)p(y)$ wiedergibt, da z.B. $p(y | x)$ bei unabhängigkeit gleich $p(y)$ ist.
 
   #note[Die deutsche Übersetzung hierfür wäre "Multivariat". Da dieses Wort 
   sehr ungewöhnlich ist, wurde die deutsche Übersetzung hier weggelassen.]
