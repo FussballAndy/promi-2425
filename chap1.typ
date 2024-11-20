@@ -187,8 +187,125 @@ Und daraus erhält man schlussendlich den Satz.
 
 == Statistik von Wsk. bzw. Verteilungen
 
+#definition("Erwartung (Expectation)")[
+  Die *Erwartung* / *Erwatungswert* von einer Zufallsvariable $X$ (geschrieben $expect[X]$) beschreibt den durchschnittlichen Wert, den
+  die Zufallsvariable annimmt. \
+  #grid(
+    columns: (1fr, 1fr),
+    [
+      Für diskrete Variablen gilt:
+      $ expect[X] = sum_(x in cal(X)) x p(x) $
+    ], [
+      Für stetige Variablen gilt:
+      $ expect[X] = integral_(x in cal(X)) x f(x) dif x $
+    ]
+  )
+  Oft schreiben wir auch $mu$ oder $mu_X$ für $bb(E)[X]$
+]
 
-Etwas zum lesen:
-- https://chrispiech.github.io/probabilityForComputerScientists/en/ProbabilityForComputerScientists.pdf \
-  Bzw. der dazugehörige Online Reader: \
-  https://chrispiech.github.io/probabilityForComputerScientists/en/
+#grid(
+  columns: (48%, 48%),
+  column-gutter: 1fr,
+  definition("Varianz (Variance)")[
+    Die *Varianz* misst, wie sehr die möglichen Werte einer 
+    Zufallsvariable $X$ ausgebreitet sind bzw. wie weit sich diese strecken. \
+    Man berechnet die Varianz wie folgt:
+    $ variance[X] = expect[(X-expect[X])^2] = expect[X^2] - expect[X]^2 $
+    Man beachte, dass die Varianz stets $>= 0$ ist.
+  ],
+  definition("Standardabweichung (Standard Deviation)")[
+    Die *Standardabweichung* $sigma$ misst hingegen die Varianz um den
+    Erwartungswert $mu$ herum.
+    $ sigma=sqrt(variance[X]) $
+    Entsprechend ist diese auch wieder $>= 0$. Dazu ist die
+    Standardabweichung deutlich verbreiteter / wichtiger.
+  ]
+)
+
+Eigenschaften von Erwartungswert und Varianz:
++ Erwartung ist linear $expect[X+Y] = expect[X] + expect[Y]$
++ $variance[X+c] = variance[X]$ für alle Konstanten $c$
++ $variance[c X] = c^2 variance[X]$ für alle Konstanten $c$
++ $variance[X+Y] = variance[X] + variance[Y]$ für unabhängige $X$, $Y$
+
+#definition("Moment")[
+  *Momente* sind quantitive Messungen von der Form der Verteilung einer
+  Zufallsvariable $X$. Was sie aber wirklich aussagen weiß keiner so
+  genau.
+  #grid(
+    columns: 3,
+    column-gutter: 1em,
+    [
+      n-ter Moment um einen Wert $c$ $ expect[(X-c)^n] $
+    ],
+    [
+      n-ter Zentraler Moment um die Erwartung $ expect[(X-mu)^n] $
+    ],
+    [
+      n-ter _Standardized_ Moment $ expect[((X-mu)/sigma)^n] $
+    ]
+  )
+]
+
+#definition("Schiefe (Skewness)")[
+  Die *Schiefe* einer Zufallsvariable $X$ bzw. von deren Verteilung gibt 
+  an, wie asymmetrisch die Verteilung um den Erwartungswert $mu$ herum 
+  ist.
+  $
+    "Skew"(X) = expect[((X-mu)/sigma)^3]
+  $
+  Für eine symmetrische Verteilung ist Schiefe 0.
+]
+
+#definition("Wölbung (Kurtosis)")[
+  Die *Wölbung* einer Zufallsvariable $X$ gibt an, wie sehr die Verteilung bzw. deren Mitte/Gipfel einer Normalverteilung ähnelt. Speziell im Hinblick auf wie spitz/flach der Gipfel ist.
+  $ "Kurt"(X) = expect[((X-mu)/sigma)^4]-3 $
+  Entsprechend wegen des Vergleiches mit der Normalverteilung rechnen wir hier auch minus $3$, was die Höhe des Gipfels der Normalverteilung ist. 
+]
+
+#definition("Covariance")[
+  Die *Covariance* misst die Abhängigkeit von zwei Zufallsvariablen. 
+  Genauer wird geguckt, inwiefern die Abweichung von einer Variable zu 
+  ihrem Erwartungswert der Abweichung von einer anderen Variable zu 
+  ihrem Erwartungswert ähnelt.
+  $ Cov(X,Y) = expect[(X-mu_X)(Y-mu_Y)] = expect[X Y] - mu_X mu_Y $
+  Wenn größere Werte von einer Variable mit größeren Werten einer 
+  anderen Variable entsprechen, dann ist die Covariance positiv, 
+  andernfalls negativ. Und wenn beide unabhängig sind ist die Covariance 
+  0 (Umkehrung gilt nicht unbedingt). \
+  Eigenschaften:
+  + $Cov(X,X)=variance[X]$
+  + $Cov(X,Y)=Cov(Y,X)$
+  + $Cov(X,c)=0$ für alle Konstanten $c$
+  + $variance[X+Y]=variance[X]+variance[Y]+2Cov(X,Y)$
+  + $Cov(X+Y,Z+W)=Cov(X,Z)+Cov(X,W)+Cov(Y,Z)+Cov(Y,W)$
+]
+
+#definition("Correlation")[
+  Die *Correlation* ist die Covariance zweier Variablen genormt nach
+  deren Varianz der beiden Variablen.
+  $ Corr(X,Y) = Cov(X,Y)/(sigma_X sigma_Y) $
+
+  Eigenschaften:
+  + $Corr(X,Y) in [-1,1]$
+  + Gemäß $Cov$: $X$, $Y$ unabhängig $=> Corr(X,Y)=0$ 
+    (erneut Umkehrung nicht unbedingt)
+]
+
+#definition("Median")[
+  Wir sagen ein Wert $c$ ist der *Median* einer Zufallsvariable $X$,
+  wenn die "Masse" links von $c$ gleich der "Masse" rechts von $c$ ist.
+  Der Median teilt also die Verteilung in zwei gleichmäßige Massen. \
+  Mathematisch drückt man das ganze wie folgt aus:
+  $ c "median" <=> P(X <= c) >= 0.5 "und" P(X >= c) >= 0.5 $
+  Bei symmetrischen Verteilungen ist der Erwartungswert auch der Median.
+]
+
+*Quantile, Perzentile und Quartile*: Die Aufteilung der Verteilung in 
+entsprechend viele gleichmassige Teile.
+Also für Quartile in 4 Teile und Perzentile in 100 Teile etc.
+
+#definition("Modi (Modes)")[
+  *Modi* sind Werte in der Verteilung, die mit hohe Dichte bzw. Wsk.
+  haben. Anschaulich sind es einfach die Maxima der Verteilung.
+]
