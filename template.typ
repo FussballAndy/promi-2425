@@ -73,6 +73,11 @@
   body
 }
 
+#let dangerous(body) = [
+  #set text(size: .8em)
+  #emoji.warning *Ggf. falsch:* #body
+]
+
 #let variance = math.bb("V")
 #let expect = math.bb("E")
 
