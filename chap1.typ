@@ -13,7 +13,7 @@
 
 #notation-table(table(
   columns: (auto, 1fr),
-  table.header([*Name*], [*Bedeutung*]),
+  table.header([Name], [Bedeutung]),
   [Ergebnisraum \ (engl. Sample Spaces)], 
   [Eine Menge $cal(X)$ aller möglichen Ergebnisse.\
   Bsp. Münzwurf: $cal(X) = {"Heads", "Tails"}$],

@@ -70,6 +70,7 @@
       }
     )
   })
+  show table.cell.where(y: 0): set text(weight: "bold")
   body
 }
 
