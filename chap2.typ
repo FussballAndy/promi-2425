@@ -7,6 +7,7 @@
 )
 
 #let source = math.accent("X", math.macron)
+#let channel = math.accent("K", math.macron)
 
 = Information
 
@@ -86,9 +87,11 @@ Kommen wir also nun konkret zur Bestimmung von Information:
 
   #note[Das $p$ hier ist semi zusammenhängend mit der PMF, die in Kapitel 1 
   vorgestellt wurde. Man kann es wieder als die PMF sehen und damit eine 
-  Zufallsvariable $X$ als einezu erhaltende Nachricht ansehen, wobei man die Wsk. 
+  Zufallsvariable $X$ als einezu erhaltende Nachricht ansehen, wobei man die 
+  Wsk. 
   herausfinden will, dass diese die Nachricht $x$ ist. Außerdem wird für den 
-  Logarithmus -- speziell im Kontext von Shannon -- meist die Basis 2 verwendet. 
+  Logarithmus -- speziell im Kontext von Shannon -- meist die Basis 2 
+  verwendet. 
   Eine genaue festlegung muss dort aber laut meiner Kenntnis nicht getroffen 
   werden.]
 ]
@@ -98,9 +101,12 @@ Kommen wir also nun konkret zur Bestimmung von Information:
   Man fragt sich nun vielleicht, warum hier der Logarithmus genutzt wurde und 
   nicht einfach nur $1 \/ p(x)$. \
   Das erste Problem wäre, dass die Information einer Nachricht die immer 
-  auftritt ($p(x)=1$) dann $1 slash 1 = 1$ wäre, diese Nachricht aber eigentlich 
-  gar keine Information enthält. Des weiteren hat Shannon Information genutzt um 
-  die Anzahl an Bits zu berechnen, die benötigt werden, um eine Nachricht $x$ zu 
+  auftritt ($p(x)=1$) dann $1 slash 1 = 1$ wäre, diese Nachricht aber 
+  eigentlich 
+  gar keine Information enthält. Des weiteren hat Shannon Information genutzt 
+  um 
+  die Anzahl an Bits zu berechnen, die benötigt werden, um eine Nachricht $x$ 
+  zu 
   kodieren. Das Ziel dabei ist häufigere Nachrichten mit weniger Bits zu 
   kodieren und seltenere Nachrichten mit mehr Bits. 
 
@@ -114,14 +120,17 @@ Kommen wir also nun konkret zur Bestimmung von Information:
   Gegenbeispiel kennen wo das nicht so ist: Die Kodierung von Texten, speziell 
   z.B. UTF-8. \
   Zur Aufklärung: In UTF-8 besteht ein Text erstmal aus einer Liste an Byte 
-  (8 Bits). Da man aber in einem Byte nur 256 Zeichen kodieren könnte werden für 
+  (8 Bits). Da man aber in einem Byte nur 256 Zeichen kodieren könnte werden 
+  für 
   _seltenere_ entsprechend mehr Byte zur Kodierung genutzt. So kann ein 
   einzelnes Zeichen in UTF-8 1-4 Byte groß sein. Und welche Zeichen sind nun nur
   mit einem Byte kodiert? Eben die, die bei uns im Alltag am häufigsten 
-  vorkommen: a-z,A-Z,0-9,Punktationen etc. Hingegen ein Zeichen wie 'ä', welches 
+  vorkommen: a-z,A-Z,0-9,Punktationen etc. Hingegen ein Zeichen wie 'ä', 
+  welches 
   (zumindest im Englischen) nicht so häufig vorkommt wird mit 2 Byte kodiert. 
   Das bringt eben den Vorteil, dass viele Nachrichten dadurch deutlich weniger 
-  Speicher benötigen. Würde man alle Zeichen mit 4 Byte kodieren, würde ein Text 
+  Speicher benötigen. Würde man alle Zeichen mit 4 Byte kodieren, würde ein 
+  Text 
   wie `"Hello world!"` 48 Byte benötigen, während er so nur 12 Byte benötigt.
 ]
 
@@ -138,15 +147,161 @@ https://randompearls.com/science-and-technology/mathematics/information-theory-r
   Zufallsvariable $X$ annehmen kann. Dabei ist sie auch ein Maß für den 
   mittleren (erwarteten?) Informationsgehalt der Nachrichten eines Absenders.
 
-  Entsprechend kann man die Entropie einer Zufallsvariable $X$ über der Menge
-  der Nachrichten $cal(X)={x_1, x_2, ..., x_n}$ eines Absenders #source wie 
-  folgt beschreiben:
-  $ Eta(X)=sum_(i=1)^n p(x_i) I(x_i) = sum_(i=1)^n p(x_i) log 1/p(x_i) = 
-  - sum_(i=1)^n p(x_i) log p(x_i) $
+  Für eine diskrete Zufallsvariable $X$ über einer Menge an Nachrichten 
+  $cal(X)={x_1, x_2, ..., x_n}$ eines Absenders #source wie folgt beschreiben:
+  $ 
+    Eta(X)=sum_(i=1)^n p(x_i) I(x_i) = 
+      sum_(i=1)^n p(x_i) log 1/p(x_i) = 
+      - sum_(i=1)^n p(x_i) log p(x_i) =
+      expect[I(X)]
+  $
 
   #sub[Fragt bitte nicht warum auf Jans Folie das $n$ auf einmal zu $N$ wird]
 
-  Die Einheit von Entropie ist entsprechend wieder Bits.
+  Da sich Entropie maßgeblich aus Information zusammensetzt ist die Einheit
+  davon wieder Bits.
 
   #note[$Eta$ IST KEIN GROSSES h SONDERN EIN GROSSES `Eta`]
 ]
+
+#definition("Differential Entropy (kurz: DE)")[
+  Die differentielle Entropie erweitert das Konzept von Entropie auf stetige
+  Zufallsvariablen. Da stetige Zufallsvariablen allerdings andere Eigenschaften
+  haben wie diskrete Zufallsvariablen gilt hier ein wenig Vorsicht.
+  (Z.B. kann die PDF $>1$ sein oder aber die DE $<0$)
+
+  Die Entropie einer stetigen Zufallsvariable über einer Menge an Nachrichten
+  $cal(X)$ lautet also wie folgt:
+  $
+    Eta(X) = integral_(x in cal(X)) f(x) I(x) dif x =
+      integral_(x in cal(X)) f(x) log 1/f(x) dif x =
+      - integral_(x in cal(X)) f(x) log f(x) dif x =
+      expect[I(X)]
+  $
+
+  #note[Man beachte, dass im Rahmen von stetigen Zufallsvariablen die 
+  Information an sich auch die PDF nutzen sollte und nicht die PMF. Zudem
+  scheint man teilweise $h$ als Symbol für die DE zu nutzen]
+]
+
+Jetzt haben wir uns also der Definition des Absenders, mittels Information der
+Kodierung und nun durch Entropie dem Empfänger befasst. Nun fehlt noch das 
+Herzstück von Informationskanälen und das ist der Kanal selbst:
+
+#definition("Kanal (Channel)")[
+  Ein *Kanal* #channel ist ein Tupel $(A,B,q_K)$ wobei
+  - $A != emptyset$, $B != emptyset$ und
+  - $q_K: A times B -> [0,1]$ mit $forall a in A: sum_(b in B) q_K(a,b)=1$ \
+  
+  $q_K$ ist dabei die sogenannte _channel transition function_, welche uns die
+  Wsk. gibt, dass ein Symbol $a$ bei Durchgang durch den Kanal zu einem Symbol 
+  $b$ mutiert.
+
+  Die Aufgabe eines Kanals ist es Nachrichten zu übermitteln, dabei können aber
+  Fehler auftreten. Wenn in einem Kanal eben solche Fehler auftreten können
+  nennen wir diesen auch störend (?, engl: noisy).
+
+  #note[Der Begriff _channel transition function_ scheint zumindest laut einer
+  kurzen Google Suche nicht gerade geläufig zu sein.]
+]
+
+*Eigenschaften von Kanälen:*
+
+#notation-table(table(
+  columns: (auto, 1fr),
+  table.header([Begriff], [Bedeutung]),
+  [Binary symmetric channel (BSC)], [Ein BSC ist ein Kanal, in dem jedes
+  übertragene Bit eine Wsk. von $r$ hat geflippt zu werden ($0->1, 1->0$)],
+  [Binary erasure channels (BEC)], [Ein BEC ist ein Kanal, in dem jedes
+  übertragene Bit eine Wsk. von $r$ hat gelöscht zu werden. Der Empfänger
+  weiß dann, dass ein Bit fehlt, aber nicht welchen Wert dieses hatte.],
+  [Transinformation], [Die Transinformation misst die Gemeinsamkeit zwischen
+  dem Eingang $X$ und dem Ausgang $Y$ eines Kanals.],
+  [Channel Capacity], [Die Kanalkapazität gibt den maximalen Durchsatz an Daten
+  an, die durch den Kanal mit relativ kleiner Fehler Wsk. übertragen werden
+  können.]
+))
+
+= Rechnen mit Information
+
+#definition("Joint Entropy")[
+  Die *Joint Entropy* gibt an, wie viele Bits bzw. Einheiten an Information wir
+  benötigen, um das Ergebnis von zwei Zufallsvariablen zu kodieren. Dabei gibt
+  sie dann gleichzeitig auch die Ungewissheit über die Werte der beiden
+  Variablen an.
+
+  Für zwei Zufallsvariablen $X$, $Y$ über den Mengen $cal(X)$, $cal(Y)$ ist die 
+  Joint Entropy wie folgt defineirt:
+  $ Eta(X,Y) = sum_(x in cal(X)) sum_(y in cal(Y)) p(x,y) log 1/p(x,y) $
+
+  #note[Jan scheint in seinen Folien $X$ als die Eingangs und $Y$ als die 
+  Ausgangs Nachricht zu bezeichnen. Im allgemeinen scheint man dies aber nicht
+  direkt so zu klassifizieren. Dies scheint eher im Kontext davon zu sein, dass
+  Jan dies nutzt um auf die Kanalkapazität hinzuarbeiten.]
+]
+
+Jan führt hier nun die *Marginal Distribution* ein. Diese ist aber quasi analog
+zu Marginal Probability aus Kapitel 1. Daher werde ich hier nicht weiter drauf
+eingehen.
+
+#definition("Mutual Information")[
+  *Mutual Information* $I(X;Y)$ misst, wie viel Information sich zwei 
+  Zufallsvariablen $X$ und $Y$ teilen. Entsprechend sagt sie auch aus, wie viel
+  wir über $X$ wissen, wenn wir den Wert von $Y$ kennen.
+
+  $
+    I(X;Y) = Eta(X) + Eta(Y) - Eta(X,Y) = sum_(x in cal(X)) sum_(y in cal(Y))
+    p(x,y) log (p(x,y)/(p(x)p(y)))
+  $
+]
+
+
+#box[ // Box für layout Gründe
+Nachdem wir also diese drei Definitionen hinter uns haben können wir nun zur
+Formel für die Kanalkapazität kommen. Hierbei ist nun zu beachten, dass $X$
+der Eingang in den Kanal und $Y$ der Ausgang aus dem Kanal ist:
+$
+  C = max_p(x) I(X;Y) = H(Y) - H(Y|X)
+$
+Der Grund warum wir hier $display(max_p(x))$ schreiben, ist dass wir das Maximum
+von $I(X;Y)$ über allen möglichen Werten $p(x)$ bekommen wollen.
+]
+
+= Kodierungsstrategien
+
+#definition("Block Coding")[
+  Bei der *Block Kodierung* wird die Nachricht in Blöcke mit fester Größe
+  kodiert. Dadurch kann die Fehlererkennung und Korrektur vereinfacht werden, da
+  man redundante Informationen hinzufügen kann.
+
+  *Kodierung:* Jeder Block mit $k$ Informations Bits wird in einen Block mit $n$
+  Bits umgewandelt, wobei $n > k$.
+
+  *Informationsrate (Code Rate):* $R=k/n$. Höhere Redundanz -- entsprechend
+  kleineres $R$ -- verbessert die Fehlerkorrektur.
+
+  #note[Die Informationsrate gibt an, welcher Anteil der kodierten Nachricht
+  tatsächlich der Inhalt der ursprünglichen Nachricht sind.]
+
+  *Fähigkeit zur Fehlerkorrektur:* Fehler können durch den Abgleich mit dem
+  originalen Block erkannt werden. #sub[Dafür muss man allerdings Einsicht
+  in sowohl Eingang als auch Ausgang haben.]
+]
+
+#definition("Convolutional Coding")[
+  Bei der *Convolutional Kodierung* werden die einzelnen Bits einer Nachricht
+  basierend auf vorherigen und nachfolgenden Bits kodiert. Dadurch kann
+  stetig auf Fehler geprüft werden, was vor allem bei Echtzeitübertragungen 
+  sehr hilfreich ist.
+
+  *Kodierung:* Lässt eingabe Bits durch Shift Register gehen und erstellt dann
+  mittels diesen Bits und den aktuellen Eingabe Bits entsprechende Ausgabe Bits.
+
+  *Einflusslänge (Constraint Length):* Gibt an, wie viele Register die Eingabe
+  durchgehen muss.
+
+  *Informationsrate:* Ähnlich wie bei Block Kodierung $R=k/n$.
+  #sub[Wobei wir hier erstmal nicht wirklich $k$ und $n$ eingeführt haben]
+]
+
+= Anwendung
