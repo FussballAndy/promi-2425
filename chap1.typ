@@ -33,14 +33,16 @@
 
 Mit der "Funktion" $P$ können wir die Wahrscheinlichkeit eines Events bestimmen.
 So schreiben wir z.B. $P(E)$ für die Wahrscheinlichkeit, dass $E$ eintritt.
-Ähnlich schreiben wir $P(X=x)$ für die Wahrscheinlichkeit, dass die Zufallsvariable $X$ den Wert $x$ annimmt.
+Ähnlich schreiben wir $P(X=x)$ für die Wahrscheinlichkeit, dass die 
+Zufallsvariable $X$ den Wert $x$ annimmt.
 
 *Wahrscheinlichkeits Axiome*
 + Wahrscheinlichkeit ist nicht negativ: $P(E) >= 0$
 + Wahrscheinlichkeit des Ergebnisraum ist 1: $P(cal(X)) = 1$
-+ Falls zwei Events keine Gemeinsamkeiten haben ($E_1 sect E_2 = emptyset$), 
-  dann ist die gemeinsame Wsk. die Summe der einzelnen Wsk.: $P(E_1 union E_2) 
-  = P(E_1) + P(E_2)$
++ Für die Wsk. von zwei Ereignissen $E$, $F$ gilt: 
+  $P(E union F) = P(E) + P(F) - P(E sect F)$. Da für Ereignisse ohne
+  Gemeinsamkeiten $P(E sect F)=0$ gilt, gilt dafür einfach, dass die geminsame 
+  Wsk. die Summe der einzelnen Wsk. ist.
 
 == Funktionen
 
