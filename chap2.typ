@@ -141,8 +141,6 @@ sehr empfehlen:
 https://randompearls.com/science-and-technology/mathematics/information-theory-rationale-behind-using-logarithm-entropy-and-other-explanations/
 
 #definition("Entropie (Entropy)")[
-  #emoji.construction
-
   *Entropie* ist die Messung der Ungewissheit, welche möglichen Werte eine 
   Zufallsvariable $X$ annehmen kann. Dabei ist sie auch ein Maß für den 
   mittleren (erwarteten?) Informationsgehalt der Nachrichten eines Absenders.
@@ -261,7 +259,7 @@ Nachdem wir also diese drei Definitionen hinter uns haben können wir nun zur
 Formel für die Kanalkapazität kommen. Hierbei ist nun zu beachten, dass $X$
 der Eingang in den Kanal und $Y$ der Ausgang aus dem Kanal ist:
 $
-  C = max_p(x) I(X;Y) = H(Y) - H(Y|X)
+  C = max_p(x) I(X;Y) = Eta(Y) - Eta(Y|X)
 $
 Der Grund warum wir hier $display(max_p(x))$ schreiben, ist dass wir das Maximum
 von $I(X;Y)$ über allen möglichen Werten $p(x)$ bekommen wollen.
@@ -304,4 +302,99 @@ von $I(X;Y)$ über allen möglichen Werten $p(x)$ bekommen wollen.
   #sub[Wobei wir hier erstmal nicht wirklich $k$ und $n$ eingeführt haben]
 ]
 
-= Anwendung
+= Mehr Entropie
+
+Analog zu Ereignissen kann man auch bei Entropie konditionale Abhängigkeit 
+haben. So kann das wissen eines Wertes die Unsicherheit über den anderen
+reduzieren.
+
+#definition("Konditionale Entropie (Conditional Entropy)")[
+  Die *Konditionale Entropie* berechnet die Ungewissheit vom Wert einer 
+  Zufallsvariable $X$, sofern wir bereits den Wert einer Zufallsvariable $Y$
+  wissen.
+
+  $ Eta(Y|X) = Eta(Y) - I(X;Y) "bzw. " Eta(X|Y) = Eta(X) - I(X;Y) $
+
+  #dangerous[
+    Sofern ich jetzt keine Konditionen übersehe sollte diese Formel in 
+    Kombination mit der Mutual Information folgende Gleichung ergeben:
+    $Eta(X|Y) = Eta(X,Y) - Eta(Y)$ 
+  ]
+
+  Laut #link("https://en.wikipedia.org/wiki/Conditional_entropy", 
+  underline("Wikipedia")) gibt es wohl noch eine weitere Formel für die
+  konditionale Entropie:
+  $ Eta(Y|X) = - sum_(x in cal(X)) sum_(y in cal(Y)) p(x,y) log (p(x,y)/p(x)) $
+  Wie relevant diese sein wird kann ich derzeit nicht sagen.
+]
+
+Und natürlich braucht es auch noch einen Weg, wie wir Verteilungen in Bezug
+auf ihre Entropie vergleichen können.
+
+#definition("Cross Entropy")[
+  _Jegliche Erklärungen die ich hierfür gefunden habe waren viel zu 
+  kompliziert. Daher muss Jans Erklärung es tun._ \
+  Die *Cross Entropy* gibt uns für zwei Verteilungen $p$, $q$ über der Menge
+  $cal(X)$ die Durchschnittliche Information/Überraschung für eine Verteilung 
+  $p$, wenn wir eigentlich von der Verteilung $q$ ausgehen.
+
+  $ Eta(p,q) = sum_(x in cal(X)) p(x) log 1/q(x) 
+    = sum_(x in cal(X)) p(x) I_q(x) $
+]
+
+= Divergenz
+
+Erstmal wieder die wichtigste Frage: Was ist überhaupt eine Divergenz?
+Divergenzen werden genutzt um zwei Wahrscheinlichkeitsverteilungen zu 
+vergleichen. Dabei scheinen diese erstmal eher aus der Vektorarithmetik zu 
+kommen und sind dann auf Wahrscheinlichkeiten übertragen worden. \
+Jan sagt noch: Divergenzen messen, wie effizient eine Verteilung die andere 
+kodiert.
+
+Dazu haben sie folgende Eigenschaften:
+- Asymmetrisch: Nicht alle Divergenzen sind symmetrisch
+- Nicht-Negativ: Sie sind allerdings immer $>= 0$
+- Null, falls die Verteilungen identisch
+
+Kommen wir also zur mit am verbreitetsten Divergenz: Kullback-Leibler Divergenz.
+
+#definition("Kullback-Leibler (KL) Divergenz (KL Divergence)")[
+  Die *KL Divergenz* $D_("KL")(p || q)$ misst für zwei Verteilungen $p$, $q$
+  über einer Menge $cal(X)$ die Information, die wir verlieren, wenn wir $q$ 
+  zur Kodierung nutzen, obwohl wir diese aber eigtl. eine Kodierung bzgl. $p$ 
+  erwarten. \
+  #dangerous[An sich wird in den Definitionen erstmal nur von Information
+  gesprochen, ich glaube aber als Kodierung ist das verständlicher, sofern es
+  richtig ist.] \
+  Deshalb der Vollständigkeit: Die KL Divergenz misst den Verlust an 
+  Information, wenn $q$ genutzt wird um $p$ zu approximieren. Dazu wird diese
+  Divergenz auch häufig als relative Entropie (engl: Relative Entropy)
+  bezeichnet. Und sie ist nicht symmetrisch.
+
+  $
+    D_"KL" (p || q) = sum_(x in cal(X)) p(x) log (p(x)/q(x))
+  $
+
+  Für stetige Verteilungen sieht diese Formel recht ähnlich aus, nur mit
+  $integral_(-infinity)^(infinity)$ anstatt der Summe.
+]
+
+Und zu guter letzt hat der _man himself_ Claude Shannon zusammen mit Johan
+Jensen ebenfalls eine Divergenz aufgestellt.
+
+#definition("Jensen-Shannon Divergenz (JS Divergence)")[
+  Die *JS Divergenz* $D_"JS" (p || q)$ ist eine abgewandelte Form der KL
+  Divergenz um diese symmetrisch und immer endlich zu machen. So liegt die
+  JS Divergenz immer zwischen 0 und 1.
+
+  Erneut haben wir also Verteilungen $p$ und $q$ über einer Menge $cal(X)$.
+  Dazu definieren wir uns eine dritte Verteilung $m$ mit $m = (p + q) slash 2$.
+  Also einem arithmetischen Mittel von $p$ und $q$. Basierend darauf können wir
+  nun die JS Divergenz definieren:
+  $
+    D_"JS" (p || q) = 1/2 D_"KL" (p || m) + 1/2 D_"KL" (q || m)
+  $
+  Die Wurzel von dieser Divergenz ist sogar eine Distanz (für was genau diese
+  Distanz steht habe ich auf die schnelle jetzt allerdings nicht 
+  herausgefunden).
+]
