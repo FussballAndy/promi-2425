@@ -44,6 +44,8 @@ Zufallsvariable $X$ den Wert $x$ annimmt.
   Gemeinsamkeiten $P(E sect F)=0$ gilt, gilt dafür einfach, dass die geminsame 
   Wsk. die Summe der einzelnen Wsk. ist.
 
+Des weiteren gilt: $P(overline(E)) = 1 - P(E)$.
+
 == Funktionen
 
 #grid(
@@ -232,6 +234,9 @@ Formt man nun beide Seiten nach $P(A,B)$ um und setzt diese gleich erhält man:
 $ P(A | B) P(B) = P(B | A) P(A) $
 Und daraus erhält man schlussendlich den Satz. 
 
+
+Hier kann man auch noch das _Law of total probability_ erwähnen:
+$P(E) = P(E | F) P(F) + P(E | overline(F)) P(overline(F))$.
 == Statistik von Wsk. bzw. Verteilungen
 
 #definition("Erwartung (Expectation)")[
