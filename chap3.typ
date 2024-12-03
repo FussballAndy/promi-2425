@@ -164,7 +164,8 @@ $
   lim_(n -> infinity) F_Z_n (z) = P(Z_n <= z) 
   = 1/(2pi) integral_(-infinity)^z e^(-x^2 slash 2) dif x = cal(N) (0;1)
 $
-
+// TODO: letzer teil mit cal(N) falsch bzw. nicht richtig genutzt. ggf
+// schon auf x|mu eingehen.
 Der letzte Teil der Formel ist dabei die konkrete Formel der Normalverteilung
 mit Erwartungswert $mu = 0$ und Standardabweichung $sigma^2 = 1$.
 
@@ -195,3 +196,180 @@ trotzdem noch die PDF vom Produkt/Quotient zweier Zufallsvariablen $X$, $Y$:
     f_U (u) = integral_(x in cal(X)) f_X (x) f_Y (u x) abs(x) dif x
   $
 ]
+
+= Maximum Entropy Distributions
+
+// TODO: Sehr random reingeworfen und zu wenig ausgeführt. Hab gerade aber auch
+// nicht mehr Zeit dafür.
+Ab diesem Punkt ist es ggf. auch einmal ganz hilfreich zu erwähnen, dass die
+Begriffe Zufallsvariable und Verteilung oft sehr stark Hand in Hand gehen.
+Entsprechend reden wir auch im folgenden über die Entropie einer Verteilung,
+obwohl wir diese eigentlich erstmal nur für Zufallsvariablen definiert haben.
+(Wobei eben dort auch wieder eine Verteilung $p$ der eigentliche Parameter
+ist)
+
+Nun betrachten wir den Fall, dass wir die genaue Verteilung nicht wissen. Das
+einzige was wir darüber wissen, ist dass diese gewisse Einschränkungen
+erfüllt. Nun kann in solch einem Fall eine Vielzahl von verschiedenen 
+Verteilungen zur Auswahl stehen, die alle jeweils die Einschränkungen erfüllen.
+Welche von diesen Verteilungen sollen wir also am besten wählen?
+
+Laut dem Prinzip der maximalen Entropie (engl. Principle of Maximum Entropy) 
+wählen wir dann am besten eine Verteilung mit einer möglichst hohen bzw. der
+höchsten Entropie. Dadurch soll verhindet werden, dass bereits andere 
+Informationen in die Verteilung einfließen. Intuitiv ist das auch ein sehr guter
+Ansatz. Schließlich wissen wir nichts über die Verteilung und Entropie misst 
+eben die Ungewissheit einer Verteilung, also kann es durchaus hilfreich sein
+eine Verteilung mit maximaler Entropie zu wählen.
+
+Zur Wiederholung: Die Formel von Entropie für eine stetuge Zufallsvariable $X$ 
+bzw. deren Verteilung $p$ lautet wie folgt:
+$
+  Eta (p) = - integral p(x) log_2 p(x) dif x 
+$
+
+Nun wollen wir die Verteilung $p$ wissen, für die wir $Eta(p)$ maixmal bekommen.
+Also
+$
+  arg max_p Eta (p) = arg max_p - integral p(x) log_2 p(x) dif x quad 
+  "wobei" quad integral_a^b p(x) dif x = 1
+$
+Man beachte, dass selbst ohne weitere Einschränkungen trotzdem bereits die
+Einschränkung, dass das Integral der resultierenden Funktion 1 ergibt, vorhanden
+ist.
+
+#note[$arg$ bezeichnet hierbei das entsprechende Argument des $max$. Genauer
+also für welches $p$ eben diese maximale Verteilung angenommen wird. $max$
+allein würde uns nur die höchstmögliche Entropie angeben.]
+
+Wollen wir nun über einem Intervall $[a,b]$ und ohne weitere Einschränkungen
+dieses Prinzip anwenden. Jan nutzt hier auf seinen Folien nun eine interessante
+Herleitung, die aber wenig erklärt wurde. Diese zu verstehen würde überhaupt
+erstmal ein Verständniss von Lagrangian benötigen. Also fassen wirs kurz, wir
+erhalten, dass in solch einem Fall eine Uniforme Distribution mit Wsk. 
+$p(x) = 1 slash (b-a)$ am besten geeignet ist bzw. am meisten Entropie hat.
+
+#box(stroke: 1pt + black, inset: 5pt, width: 100%)[
+  #let Lagrangian = math.cal("L")
+  *Exkurs*: Wie leitet man so etwas her? \
+  Wie bereits erwähnt nutzen wir hier maßgeblich den Lagrangian Multiplier bzw
+  die Lagrange Funktion.
+  Diese hilft uns den Maximalwert einer Methode unter gewissen Einschränkungen
+  zu bestimmen.
+
+  Als Vorbedingung für deie Lagrange Funktion brauchen wir dann:
+  - Eine Funktion $f$, über der wir das Maximum/Minimum bestimmen wollen und
+  - eine Einschränkung $g$, wobei diese für alle Eingaben, eine konstante $c$
+    annehmen soll. Also $g(x)=c$
+  Dann sieht die Lagrange Funktion wie folgt aus:
+  $
+    Lagrangian (x,lambda) equiv f(x) + lambda (g(x) - c)
+  $
+  #sub[Man beachte, dass hier erneut sehr viel mehr Input in die "Funktion"
+  fließt, als nur die eigentlichen Parameter -- wann funktionale Mathematik?] \
+  Das $lambda$ ist hierbei der _Lagrange multiplier_. Was das genau ist kann
+  ich gerade auch nicht sagen. Und ist weiter auch nicht relevant.
+
+  Jan nutzt hierbei nun eine etwas abgewandelte Notation und schreibt $p(x)$
+  mit in die "Funktion". Dies ist vermutlich zur Verdeutlichung, dass wir 
+  hierbei eben über der Funktion $p$ maximieren wollen.
+
+  Dazu kommt nun unsere in dem Fall einzige Einschränkung, der _normalization 
+  constraint_ ins Spiel:
+  $
+    g(p) = integral_a^b p(x) dif x
+  $
+  und diese Einschränkung soll eben immer den Wert 1 ergeben. Also $g(p)=1$.
+
+  Wir erhalten also:
+  $
+    Lagrangian (p(x),lambda_0) = - integral_a^b p(x) log_2 p(x) dif x +
+    lambda (integral_a^b p(x) dif x - 1)
+  $
+
+  Leiten wir dies nun nach $p(x)$ ab und berechnen die Nullstellen erhalten wir:
+  $
+    diff / (diff p(x)) (p(x), lambda_0) = - log_2 p(x) - 1 + lambda_0 = 0 \
+     =>p(x) = e^(lambda_0 - 1)
+  $
+  #note[Wir nutzen hier $diff$, da $lambda_0$ eben auch ein Parameter ist und
+  wir somit bei Analysis in mehreren Dimensionen sind.]
+
+  Setzen wir diese Funktion nun in unsere Einschränkung ein erhalten wir:
+  $
+    g(p) = integral_a^b e^(lambda_0 - 1) dif x &= 1 <=> \
+    e^(lambda_0 - 1) integral_a^b 1 dif x &= 1 <=> \
+    e^(lambda_0 - 1) (b-a) &= 1 <=> \
+    e^(lambda_0 - 1) &= 1/(b-a)
+  $
+
+  Wir erhalten also $p(x)=1 slash (b-a)$.
+
+  #sub[Ich hoffe mal dieser Crash Kurs hat einigermaßen geholfen.]
+]
+
+Dies kann man nun mal mit einigen Constaints durchspielen und dann erhält
+man die Tabelle auf Seite 51. (Hab ich jetzt hier nicht abgetippt weil zu viel.)
+_Support_ bezeichnet dabei wahrscheinlich noch den Bereich, auf dem diese 
+Verteilung gültig ist.
+
+Jan erwähnt hier noch Minimum Relative Entropy. Die Idee hier ist die
+nächstbeste Verteilung $p$ zu einer Verteilung $q$ zu finden, die gewisse
+Einschränkungen erfüllt. Dafür wird dann die KL-Divergenz aus Kapitel 2
+genutzt. Genauer werde ich darauf jetzt allerdings nicht eingehen.
+
+= Mixture Distributions
+
+Nun kommen wir zu einem Thema, dass Jan auf seinen Folien nur sehr schwach
+erklärt hat. Außerdem will ich in 50 Minuten schlafen, also Speedrun 
+#emoji.running.
+
+Die Inspiration hierfür: Wir haben nun 5 verschiedene Normalverteilugen
+$p_k (x) = cal(N) (mu_k, sigma_k^2)$ für $k=1,2,...,5$. Nun wollen wir eine
+Verteilung $p(x)$ haben, die all diese Verteilungen zu einer einzigen Verteilung
+vereint.
+
+//#sub[JAN SEIT WANN SCHREIBEN WIR DIE NORMALVERTEILUNG ALS $cal(N) (x | mu, 
+//sigma^2)$, WAS MACHT DIESES "$x |$" HIER?????]
+
+Im allgemeinen geht das, indem man einen "gewichteten Mittelwert" aus den
+Verteilungen nimmt. Oder auf gut deutsch: aufsummieren und mit Gewicht 
+#sym.lt.eq 1 multiplizieren. \
+Also: Für Verteilungen $p_0 (x|theta_0),p_1 (x|theta_1),...,p_K (x|theta_K)$
+(ignoriert bis Kapitel 4 einfach das "$| theta_i$") ergibt sich
+dann folgende _Mixture Distribution_:
+$
+  p(x) = sum_(k=1)^K pi_k p_k (x | theta_k) quad "wobei" quad 
+  sum_(k=1)^K pi_k = 1 quad "und" quad 0 <= pi_k <= 1
+$
+#note[An sich muss es nichtmal unbedingt eine Summe sein, sondern kann jegliche
+_konvexe_ Verknüpfung dieser Verteilungen sein.]
+
+// TODO: latent variables. Hier einfach nur abstraktion von Zähler k in Wsk.
+
+= Kernel Density Estimation
+
+Zuletzt kommt noch ein Weg um eine PDF aus einer Menge an Datenpunkten
+$D = {x_1,x_2,...,x_N}$ herleiten zu können.
+
+Ein Ansatz wäre es nun erst einmal entsprechende PDF $p_k (x)$ mit einer
+Normalverteilung $cal(N) (x_k, sigma^2)$. Dann kann man aus diesen PDF eine
+Mixture Distribution bilden, wobei alle Gewichte $1/N$ sind:
+$
+  f(x) = 1/N sum_(k=1)^N p_k (x) 
+$
+
+Dies kann man nun mit einem _density kernel_ $cal(K)$ verallgemeinern.
+Für diesen gilt:
+$
+  cal(K): bb(R) -> bb(R)_+ quad integral cal(K) (x) dif x = 1 quad cal(K) (x)
+  = cal(K) (-x)
+$
+
+Dazu nehmen wir noch eine Bandbreite (engl. bandwidth) $h$, welche die breite
+des Kernels kontrolliert, bzw. bildlich die Funktion glatter macht:
+$
+  f(x) = 1 / (N h) sum_(k=1)^N cal(K) ((x - x_k) / h)  
+$
+
+Und damit gute Nacht.
