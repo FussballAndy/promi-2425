@@ -162,18 +162,22 @@ Zufallsvariable:
 $
   Z_n = (S_n - expect[S_n]) / sqrt(variance[S_n]) quad "mit" 
   lim_(n -> infinity) F_Z_n (z) = P(Z_n <= z) 
-  = 1/(2pi) integral_(-infinity)^z e^(-x^2 slash 2) dif x = cal(N) (0;1)
+  = 1/(2pi) integral_(-infinity)^z e^(-x^2 slash 2) dif x
 $
-// TODO: letzer teil mit cal(N) falsch bzw. nicht richtig genutzt. ggf
-// schon auf x|mu eingehen.
-Der letzte Teil der Formel ist dabei die konkrete Formel der Normalverteilung
+Der letzte Teil der Formel ist dabei die konkrete CDF einer Normalverteilung
 mit Erwartungswert $mu = 0$ und Standardabweichung $sigma^2 = 1$.
+
 
 Im allgeminen gilt auch für die PDF $f$ einer Normalverteilung 
 $cal(N)(mu,sigma^2)$:
 $
-  f(x) = 1/(sigma sqrt(2pi)) integral_(-infinity)^z e^(-1/2 ((x-mu)/sigma)^2)  
+f(x) = 1/(sigma sqrt(2pi)) e^(-1/2 ((x-mu)/sigma)^2)
 $
+
+Nun kann es etwas nervig sein immer wieder erwähnen zu müssen, dass eine
+Funktion $f$ eine Normalverteilung ist. Entsprechend gibt es die Notation
+$cal(N) (x | mu, sigma^2)$ um die Funktion der Normalverteilung mit
+entsprechenden Parametern anzugeben.
 
 Zudem ist der Grenzwert von $Z_n$ für beliebige Zufallsvariablen $X_i$ gleich,
 solange eben der Erwartungswert und die Standardabweichung gleich sind und
@@ -325,7 +329,7 @@ erklärt hat. Außerdem will ich in 50 Minuten schlafen, also Speedrun
 #emoji.running.
 
 Die Inspiration hierfür: Wir haben nun 5 verschiedene Normalverteilugen
-$p_k (x) = cal(N) (mu_k, sigma_k^2)$ für $k=1,2,...,5$. Nun wollen wir eine
+$p_k (x) = cal(N) (x | mu_k, sigma_k^2)$ für $k=1,2,...,5$. Nun wollen wir eine
 Verteilung $p(x)$ haben, die all diese Verteilungen zu einer einzigen Verteilung
 vereint.
 
@@ -333,7 +337,7 @@ vereint.
 //sigma^2)$, WAS MACHT DIESES "$x |$" HIER?????]
 
 Im allgemeinen geht das, indem man einen "gewichteten Mittelwert" aus den
-Verteilungen nimmt. Oder auf gut deutsch: aufsummieren und mit Gewicht 
+Verteilungen nimmt. Oder auf gut deutsch: aufsummieren und mit Gewichten 
 #sym.lt.eq 1 multiplizieren. \
 Also: Für Verteilungen $p_0 (x|theta_0),p_1 (x|theta_1),...,p_K (x|theta_K)$
 (ignoriert bis Kapitel 4 einfach das "$| theta_i$") ergibt sich
@@ -346,6 +350,11 @@ $
 _konvexe_ Verknüpfung dieser Verteilungen sein.]
 
 // TODO: latent variables. Hier einfach nur abstraktion von Zähler k in Wsk.
+
+Ggf. falsch: \
+Hierzu betrachten wir noch _latent variables_. Dies sind Variablen, die nur
+hergeleitet werden können, aber nicht direkt gemessen werden können -- was auch
+immer das bedeutet.
 
 = Kernel Density Estimation
 
