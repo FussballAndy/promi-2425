@@ -5,6 +5,11 @@
   version: "1.0"
 )
 
+#let ppi = {
+  set text(size: 1.3em)
+  math.limits(math.Pi)
+}
+
 = Estimators
 
 Erneut befinden wir uns an dem Punkt, wo wir die genaue Verteilung zu etwas nicht
@@ -68,7 +73,7 @@ heißt:
 Aus dieser Bedingung erhalten wir dann:
 $
   L(theta) = p(cal(D) | theta) = p(x_1,x_2,...,x_n | theta) =
-  p(x_1 | theta) p(x_2 | theta) ... p(x_n | theta) = Pi_(k=1)^n p(x_k | theta)
+  p(x_1 | theta) p(x_2 | theta) ... p(x_n | theta) = ppi_(k=1)^n p(x_k | theta)
 $
 Für das Ergebnis der MLE schreiben wir auch $hat(theta)_"ML"$. Das wichtige
 hierbei ist das dies erst einmal wieder als Zufallsvariable ansehbar ist. Uns
@@ -80,8 +85,8 @@ Likelihood maximieren. Dies ist möglich, da der Logarithmus soweit ordentlich
 runterskaliert.
 
 $
-  log L(theta) = log p(cal(D) | theta) = log Pi_(k=1)^n p(x_k | theta) = 
-  sum_(k=1)^n p(x_k | theta)
+  log L(theta) = log p(cal(D) | theta) = log ppi_(k=1)^n p(x_k | theta) = 
+  sum_(k=1)^n log p(x_k | theta)
 $
 
 Das Maximum einer Summe zu bestimmen ist nun deutlich einfacher, da z.B. auch
@@ -91,6 +96,18 @@ floating point precision unserer Rechner nicht ankratzen.
 
 == Bayesian Estimation
 
+Bevor wir weiter in die Bayesion Estimation eintauchen gilt es noch zwei
+Begriffsklärungen zu machen:
+/ Prior: Bezeichnet die Vermutung über die Parameter, bevor wir jegliche Daten
+  beobachtet haben $p(theta)$
+/ Posterior: Der Posterior bezeichnet nun Widerum wie gut ein Prior gewählt
+  wurde bzw. wie unsicher wir uns in unserem Prior sind, nachdem wir neue
+  Daten beobachtet haben $p(theta | D)$
+
+Laut Bayes Theorem können wir diesen Posterior eben wie folgt ausrechnen:
+$
+  p(theta | D) = (p(D | theta) p(theta))/(p(D))
+$
 TODO
 
 #emoji.construction BIG TODO
@@ -99,12 +116,12 @@ MLE vs MAP:
 MLE mit limitierten Daten ist gefährlich, da Varianz dann sehr niedrig. Somit 
 ggf. Division durch 0. MAP hingegen durch Subjektibvität robuster. 
 
-Prior $p(Theta)$ \
-Likelihood $p(D | Theta)$ \
-Posterior $p(Theta | D)$ \
+Prior $p(theta)$ \
+Likelihood $p(D | theta)$ \
+Posterior $p(theta | D)$ \
 Evidence $p(D)$
 
-$p(Theta,D)$ nonsense
+$p(theta,D)$ nonsense
 
 p. 49
 $D = cal(X) times cal(Y)$
