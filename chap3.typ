@@ -171,7 +171,7 @@ mit Erwartungswert $mu = 0$ und Standardabweichung $sigma^2 = 1$.
 Im allgeminen gilt auch für die PDF $f$ einer Normalverteilung 
 $cal(N)(mu,sigma^2)$:
 $
-f(x) = 1/(sigma sqrt(2pi)) e^(-1/2 ((x-mu)/sigma)^2)
+f(x) = 1/(sigma sqrt(2pi)) exp (-1/2 ((x-mu)/sigma)^2)
 $
 
 Nun kann es etwas nervig sein immer wieder erwähnen zu müssen, dass eine
