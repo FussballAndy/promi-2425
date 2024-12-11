@@ -108,13 +108,19 @@ Laut Bayes Theorem können wir diesen Posterior eben wie folgt ausrechnen:
 $
   p(theta | D) = (p(D | theta) p(theta))/(p(D))
 $
+
+// MLE betrachtet Parameter fix, Bayesian als Zufallsvariable
+
+//$"Posterior" prop "Prior" times "Likelihood" div "Evidence"$
+// $prop$ heißt einfach nur proportianal, also $A prop B <=> A = k B$
+
 TODO
 
 #emoji.construction BIG TODO
 
 MLE vs MAP:
 MLE mit limitierten Daten ist gefährlich, da Varianz dann sehr niedrig. Somit 
-ggf. Division durch 0. MAP hingegen durch Subjektibvität robuster. 
+ggf. Division durch 0. MAP hingegen durch Subjektivität robuster. 
 
 Prior $p(theta)$ \
 Likelihood $p(D | theta)$ \
@@ -139,6 +145,24 @@ Auffrischen: Multivariate Gaußverteilung
 p. 73:  $sigma_0$ Parameter über Gauss Prior $w$
 
 p. 78: $lambda$ Kontroliiert wie sehr wir Daten vs Prior vertrauen. $lambda$
-reduzieren erhöht komplexität
-
+reduzieren erhöht komplexität \
 Bessere Werte meist in $10^(-6)$ bis $10^(-8)$. $0.1N$ schon sehr hoch.
+
+
+#table(
+  columns: 3,
+  [], $y={0,1}$, $y in bb(R)$,
+  "beobachtbar", "Classification", "Regression",
+  "nicht beobachtbar", "Clustering", "Dimensionale Reduction"  
+)
+Alles auf probability density estimation reduzierbar
+"beobachtbar": wir wissen den Zielraum und für Beispiele den Zielwert
+
+p.94: x: Zeit bis Ausbruch, y: Dauer
+
+p.95: eigentliche unbekanntheiten: Anzahl an Datenpunkten, Verteilung selbst,
+Parameter
+
+\\hat{xyz} steht für eine schätzung
+
+Bishop: Deep learning networks
