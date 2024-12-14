@@ -40,11 +40,15 @@
     gerne entweder in Discord melden oder auf 
     #link("https://github.com/FussballAndy/promi-2425")[#text("GitHub", fill: blue.lighten(20%))] ein Issue erstellen.
 
-    Zudem kann ich auch sehr das Buch/Skript von Chris Piech von einer vergleichbaren Veranstaltung an Stanford empfehlen:
+    Literaturempfehlungen
     #set text(weight: "regular")
-    - https://chrispiech.github.io/probabilityForComputerScientists/en/ProbabilityForComputerScientists.pdf \
+    - Chris Piech sein Skript zu einer vergleichbaren Veranstaltung an 
+      Stanford: \
+      https://chrispiech.github.io/probabilityForComputerScientists/en/ProbabilityForComputerScientists.pdf \
       Bzw. der dazugehörige Online Reader: \
       https://chrispiech.github.io/probabilityForComputerScientists/en/
+    - C. M. Bishop: Pattern Recoginition and Machine Learning \
+      https://www.microsoft.com/en-us/research/uploads/prod/2006/01/Bishop-Pattern-Recognition-and-Machine-Learning-2006.pdf
   ]
 }
 
