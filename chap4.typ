@@ -63,8 +63,8 @@ $
 $
 zu bestimmen.
 
-Dafür müssen die Daten allerdings *unabhängig* und *gleichmäßig verteilt* sein,
-heißt:
+Dafür müssen die Daten allerdings *unabhängig* und *gleichmäßig verteilt* 
+(i.i.d.) sein,heißt:
 - unabhängig: $P(X_1 <= alpha, X_2 <= beta)=P(X_1 <= alpha) P(X_2 <= beta) quad
   forall alpha, beta in bb(R)$
 - gleichmäßig verteilt: $P(X_1 <= alpha) = P(X_2 <= beta) quad forall alpha, 
@@ -74,7 +74,8 @@ Aus dieser Bedingung erhalten wir dann:
 $
   L(theta) = p(cal(D) | theta) 
   = p(x_1,x_2,...,x_n | theta) 
-  = p(x_1 | theta) p(x_2 | theta) ... p(x_n | theta) 
+  // todo iid
+  =^"i.i.d." p(x_1 | theta) p(x_2 | theta) ... p(x_n | theta) 
   = product_(k=1)^n p(x_k | theta)
 $
 Für das Ergebnis der MLE schreiben wir auch $hat(theta)_"ML"$. Das wichtige
@@ -214,7 +215,7 @@ Jeweils ein Beispiel:
   Ein passenderes Beispiel ist hier jedoch sowas wie die Einordnung bzw.
   Klassifizierung einer Mail als Spam oder nicht Spam. 
 
-== Probabilistic Regression
+== Regression aka. Curve Fitting
 
 Nun einmal verschiedene Methoden um bei Regression Problemen anhand von Daten 
 eben solche Funktionen $f$ zu bestimmen. 
@@ -268,7 +269,7 @@ Nun wollen wir all diese Gleichungen nach $w$ auflösen.
   Zuletzt fassen wir alle unsere Gleichungen in eine große Gleichung zusammen.
   Dafür definieren wir zuerst die Matrix $hat(X)$ und den Vektor $y$:
   $
-    hat(X) = mat(hat(x)_1, ..., hat(x)_n) quad y = (y_1, ..., y_n)^T
+    hat(X) = (hat(x)_1, ..., hat(x)_n) quad y = (y_1, ..., y_n)^T
   $
   $hat(X)$ hat also $hat(x)_1$ bis $hat(x)_n$ als Spalten.
   
@@ -285,12 +286,13 @@ Nun wollen wir all diese Gleichungen nach $w$ auflösen.
   den Ergebnissen $y$ zum Quadrat hin recht niedrig ausfällt.
   Also:
   $
-    hat(w) = arg min_w abs(hat(X)^T w - y)^2
+    hat(w) = arg min_w norm(hat(X)^T w - y)^2
   $
   Dies gelingt eben durch Bestimmung der Extrempunkte des Gradienten über $w$:
   $
-    gradient_w abs(hat(X)^T w - y)^2 = 0
+    gradient_w norm(hat(X)^T w - y)^2 = 0
   $
+  // TODO: Genauer auf Formel eingehen
   Aber allgemein erhält man:
   $
     hat(X)^T hat(w) = y <=> hat(X) hat(X)^T hat(w) = hat(X) y <=>
@@ -305,10 +307,8 @@ Aber hieraus erhält man eben nur lineare Abschätzungen.
 Ohne jetzt auf genaue Lösungsstrategien einzugehen wollen wir uns trotzdem mal
 den Ansatz angucken. Wir stellen nun folgende Gleichung auf:
 $
-  y(x) = angle.l w | Phi(x) angle.r = sum_(i=0)^n w_i Phi_i (x) quad "wobei" 
-  quad Phi(x) = (1,x,^2,...,x^n)^T
+  y(x,w) = sum_(i=0)^n w_i x^i
 $
-$Phi_i (x)$ bezeichnet dabei das $i$-te Element des Vektors.
 
 $n$ bezeichnet hierbei den gewünschten Grad des Polynoms. Dazu bleibt wie gesagt
 die Herleitung von $w$ offen.
@@ -317,9 +317,57 @@ Man beachte, dass für zu große $n$ dieser Ansatz zu overfitting, also einer
 zu sehr an den Datenpunkten orientierten Funktion, die nichtmehr direkt ein
 Mittel aus den Punkten zieht sondern nur noch die Punkte selbst einbezieht.
 
-#pagebreak()
+=== MLE Regression bzw. Probabilistic Regression
 
-TODO
+#note[Im folgenden verwenden wir nun die Schreibweise $p(x;theta)$, wobei
+das $;$ als Trennung zwischen "Eingabe" in die Wsk. Funktion und den Parametern
+der Funktion gilt. An sich könnte man es, wie wir es auch davor gemacht haben,
+wieder mit einem $|$ schreiben. Dies kann aber eben auch sehr unübersichtlich
+werden. Bsp.: $p(x|y; a,b)$ steht für $p((x|y) | a,b)$.]
+
+// Auf Folie 60 scheint Jan ein wenig zu haluzinieren.
+
+#note[Der folgende Abschnitt orientiert sich etwas stärker an der Erklärung
+von Bishop (Seite 28f.)]
+
+Nun befinden wir uns wieder am Punkt wo wir folgendes haben:
+- Eingabedaten $X = (x_1,...,x_n) in bb(R)^(d times n)$
+- Ergebnisse $Y = (y_1,...,y_n)^T in bb(R)^n$
+// Warum soll das ganze Matrix/Vektor sein?
+
+Nun ist es ja unser Ziel eine Grundlegende Struktur für die Funktion $f$ zu 
+finden. Dazu wollen wir hier für beliebige $x$ einen entsprechenden Zielwert 
+$f(x)=t$ bestimmen. Die Idee hier ist nun, mittels einer Gaußverteilung die Wsk.
+zu  bestimmen, dass der Wert $t$ angenomen wird.
+
+Wir nehmen nun einmal an, dass dieser Wert einer Gaußverteilung unterliegt,
+welche den Mittelwert $y(x,w)$ ($y$ aus Polynomial Regression) und ein
+die Standardabweichung eines gegebenen $sigma$ hat.
+
+Setzen wir das ganze zusammen erhalten wir: 
+$
+  p(t|x; w, sigma) = cal(N) (t; y(x,w), sigma^2)
+$
+
+Nun haben wir also noch die unbekannten Parameter $w$, $sigma$. Diese können
+wir nun mit den uns bekannten Daten und MLE ausrechnen:
+
+$
+  p(Y | X; w, sigma) = product_(i=1)^n p(y_i | x_i; w, sigma)
+  = product_(i=1)^n cal(N) (y_i; y(x_i, w), sigma^2)
+$
+
+Das können wir nun mittels Log Likelihood simplifizieren:
+$
+  log p(Y | X; w, sigma) &= sum_(i=1)^n log cal(N) (y_i; y(x_n, w), sigma^2) \
+  &= sum_(i=1)^n (log (1/sqrt(2 pi sigma^2)) - 1/(2 sigma^2) (y_i-y(x_i,w))^2) \
+  &= -n log sigma - n/2 log (2 pi) 
+  - 1/(2 sigma^2) sum_(i=1)^n (y_i - y(x_i,w))^2
+$
+
+// TODO Folie 64+
+
+#pagebreak()
 
 #emoji.construction BIG TODO
 
@@ -327,25 +375,24 @@ MLE vs MAP:
 MLE mit limitierten Daten ist gefährlich, da Varianz dann sehr niedrig. Somit 
 ggf. Division durch 0. MAP hingegen durch Subjektivität robuster. 
 
-Prior $p(theta)$ \
-Likelihood $p(D | theta)$ \
-Posterior $p(theta | D)$ \
-Evidence $p(D)$
+Prior $p(theta)$ #sym.checkmark \
+Likelihood $p(D | theta)$ #sym.checkmark \
+Posterior $p(theta | D)$ #sym.checkmark \
+Evidence $p(D)$ #sym.checkmark
 
 $p(theta,D)$ nonsense
 
-p. 49
-$D = cal(X) times cal(Y)$
+p. 49 $D = cal(X) times cal(Y)$ #sym.crossmark
 
-w = parameters ???
+w = parameters ??? #sym.checkmark
 
 p. 72: I = Einheitsmatrix
 
-; steht für | aber mit Parametern
+; steht für | aber mit Parametern #sym.checkmark
 
 Auffrischen: Multivariate Gaußverteilung
 
-; bindet stärker
+; bindet stärker #sym.checkmark
 
 p. 73:  $sigma_0$ Parameter über Gauss Prior $w$
 
