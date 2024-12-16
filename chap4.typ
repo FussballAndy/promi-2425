@@ -131,6 +131,7 @@ $
 
 // Folie 27-29 sind sehr random. Laut Sprechstunde kann x hier beliebig sein.
 // Ggf. später noch einbauen, gerade noch nicht so relevant.
+// Siehe auch Bishops Buch S. 31 Formel 1.68
 
 // MLE betrachtet Parameter fix, Bayesian als Zufallsvariable
 
@@ -286,11 +287,12 @@ Nun wollen wir all diese Gleichungen nach $w$ auflösen.
   den Ergebnissen $y$ zum Quadrat hin recht niedrig ausfällt.
   Also:
   $
-    hat(w) = arg min_w norm(hat(X)^T w - y)^2
+    hat(w) = arg min_w norm(hat(X)^T w - y)_2^2 
+    = arg min_w sum_(i=1)^n (angle.l hat(x)_i | w angle.r - y_i)^2 
   $
   Dies gelingt eben durch Bestimmung der Extrempunkte des Gradienten über $w$:
   $
-    gradient_w norm(hat(X)^T w - y)^2 = 0
+    gradient_w norm(hat(X)^T w - y)_2^2 = 0
   $
   // TODO: Genauer auf Formel eingehen
   Aber allgemein erhält man:
@@ -307,13 +309,12 @@ Aber hieraus erhält man eben nur lineare Abschätzungen.
 Ohne jetzt auf genaue Lösungsstrategien einzugehen wollen wir uns trotzdem mal
 den Ansatz angucken. Wir stellen nun folgende Gleichung auf:
 $
-  y(x,w) = sum_(i=0)^n w_i x^i
+  y(x,w) = sum_(i=1)^M w_i x^i
 $
+Dies ist eben einfach die Gleichung eines Polynom $M$-ten Grades. Dazu bleibt 
+wie gesagt die Herleitung von $w$ offen.
 
-$n$ bezeichnet hierbei den gewünschten Grad des Polynoms. Dazu bleibt wie gesagt
-die Herleitung von $w$ offen.
-
-Man beachte, dass für zu große $n$ dieser Ansatz zu overfitting, also einer
+Man beachte, dass für zu große $M$ dieser Ansatz zu overfitting, also einer
 zu sehr an den Datenpunkten orientierten Funktion, die nichtmehr direkt ein
 Mittel aus den Punkten zieht sondern nur noch die Punkte selbst einbezieht.
 
@@ -340,8 +341,8 @@ finden. Dazu wollen wir hier für beliebige $x$ einen entsprechenden Zielwert
 $f(x)=t$ bestimmen. Die Idee hier ist nun, mittels einer Gaußverteilung die Wsk.
 zu  bestimmen, dass der Wert $t$ angenomen wird.
 
-Wir nehmen nun einmal an, dass dieser Wert einer Gaußverteilung unterliegt,
-welche den Mittelwert $y(x,w)$ ($y$ aus Polynomial Regression) und ein
+Diese Gaußverteilung hat den Mittelwert den Mittelwert $y(x,w)$ ($y$ aus 
+Polynomial Regression, Grad $M$ scheint erstmal nicht so relevant zu sein) und 
 die Standardabweichung eines gegebenen $sigma$ hat.
 
 Setzen wir das ganze zusammen erhalten wir: 
@@ -361,11 +362,241 @@ Das können wir nun mittels Log Likelihood simplifizieren:
 $
   log p(Y | X; w, sigma) &= sum_(i=1)^n log cal(N) (y_i; y(x_n, w), sigma^2) \
   &= sum_(i=1)^n (log (1/sqrt(2 pi sigma^2)) - 1/(2 sigma^2) (y_i-y(x_i,w))^2) \
-  &= -n log sigma - n/2 log (2 pi) 
+  &= -n log (sqrt(2 pi sigma^2))
   - 1/(2 sigma^2) sum_(i=1)^n (y_i - y(x_i,w))^2
 $
 
-// TODO Folie 64+
+Nun kann man eben erneut den Gradient davon bilden und damit die Extremwerte
+berechnen.
+
+Zur Hilfe nehmen wir noch die Funktion $phi_M (x)=(1,x,x^2,...,x^M)^T$. Damit
+ergibt sich auch $y(x,w)=angle.l phi_M (x) | w angle.r$
+
+$
+  gradient_w log p(Y | X; w, sigma) &= 0 &<=> \
+  - 1/(sigma^2) sum_(i=1)^n (y_i - y(x_i, w)) phi_M (x_i) &= 0 &<=> \
+  sum_(i=1)^n (y_i - y(x_i, w)) phi_M (x_i) &= 0 &<=> \
+  sum_(i=1)^n y_i phi_M (x_i) &= sum_(i=1)^n y(x_i, w) phi_M (x_i) & \
+$
+
+Nun definieren wir uns
+$
+  Phi = mat(|, , |; phi_M (x_1), dots.c, phi_M (x_n); |, , |)
+$
+und damit können wir dann obige Gleichung weiter runterbrechen:
+$
+  sum_(i=1)^n y_i phi_M (x_i) &= sum_(i=1)^n y(x_i, w) phi_M (x_i) &<=> \
+  Phi Y &= sum_(i=1)^n y(x_i, w) phi_M (x_i) &<=> \
+  Phi Y &= sum_(i=1)^n angle.l phi_M (x_i) | w angle.r phi_M (x_i) &<=>^(*) \
+  Phi Y &= Phi Phi^T w &<=> \
+  w_"ML" &= (Phi Phi^T)^(-1) Phi Y &
+$
+
+Man beachte, dass dies sehr ähnlich zu unserem Ansatz bei der Least Squares
+regression aussieht.
+
+$
+  *: sum_(i=1)^n angle.l phi_M (x_i) | w angle.r phi_M (x_i)
+  = sum_(i=1)^n angle.l phi_M (x_i) | phi_M (x_i) angle.r w
+  = Phi Phi^T w
+$
+
+Allerdings ermöglicht MLE es uns nun damit auch $sigma^2$ auszurechnen. Der
+genaue Weg dafür wird hier nicht gezeigt. Das Ergebnis sollte allerdings
+ungefähr so aussehen:
+$
+  sigma_"ML"^2 = 1/n sum_(i=1)^n (y_i - y(x_i, w_"ML"))^2
+$
+#sub[Jan hats hier irgendwie hinbekommen $sigma (x_i)$ zu schreiben.]
+
+Damit ergibt sich dann also die Wsk.-Verteilung $p(t|x; w_"ML", sigma_"ML")$, 
+dass unsere gesuchte Funktion an $x$ den Wert $t$ annimmt.
+
+#dangerous[Ab hier kommt etwas mehr Freitext bzw. freihändigere Interpretation
+von Jans Folien. Zudem wird die obige Rechnung nicht mehr wirklcih fortgeführt.]
+
+Nun haben wir auf der einen Seite die Funktion $t=f(x)=y(x,w_"ML")$ zur
+Bestimmung des Werts von Datenpunkten und damit verbunden die Wsk. 
+$p(t|x; w, sigma)$, dass $t$ der richtige Wert für $x$ ist.
+
+Nun ist es unser Ziel eine tatsächliche Schätzung über den Funktionswert
+$t$ für einen Datenpuntk $x$ abzugeben. Dafür können wir sogenannte
+*Loss Functions* nutzen:
+
+Im allgemeinen ist eine loss function erstmal eine Funktion 
+$L: bb(R) times bb(R) -> bb(R)^+$, die zum einen unsere Schätzung $t$ und
+den tatsächlichen Funktionswert $f(x)$ bekommt. Also $L(t,f(x))$. Diese gibt
+an, wie falsch unsere Schätzung liegt bzw. was für einen Verlust wir im 
+Vergleich zum eigentlichen Wert haben.
+
+Nun wollen wir den erwarteten Verlust über alle Werte minimieren. Dafür
+stellen wir zuerst einmal wieder die Gleichung dafür auf:
+$
+  bb(E) [L] = integral integral L(t,f(x))p(x,t) dif x dif t
+$ 
+
+Dazu betrachten wir jetzt einmal einen sehr simplen Fall der loss function und
+zwar squared loss bzw. quadratic loss:
+$
+  L(t,f(x)) = (t - f(x))^2 => 
+  bb(E) [L] = integral integral (t - f(x))^2 p(x,t) dif x dif t
+$
+
+Nun können wir wieder analystisch ein Minimum finden:
+
+$
+  diff / (diff f(x)) bb(E) [L] &= -2 integral (t - f(x)) p(x,t) dif t = 0 &<=> \
+  integral t p(x,t) dif t &= f(x) integral p(x,t) dif t &<=> \
+  integral t p(x,t) dif t &= f(x) p(x) &=> \
+  f(x) &= integral t p(x,t)/p(x) dif t = integral t p(t | x) dif t \
+  f(x) &= bb(E)_(t ~ p(t | x)) [t] =  bb(E) [t | x]
+$
+
+Damit erhalten wir für squared loss, dass die optimale regression Funktion
+$bb(E) [t | x]$ von der Verteilung $p(t | x)$ ist.
+
+Basierend auf unserem vorherigen Beispiel erhalten wir damit:
+$
+  f(x) = integral t p(t | x; y(x, w_"ML"), sigma) dif t
+  = integral t cal(N) (t; y(x, w_"ML"), sigma^2) dif t = y(x,w_"ML")
+$
+#sub[Hätte man sich ggf. auch schon denken können. Haben jetzt durch die loss
+function nichts dazugewonnen.]
+
+=== Bayesian Linear Regression
+
+Nun haben wir wohl wieder die üblichen Probleme, dass wir nur eine 
+Punktschätzung machen. Darum wollen wir jetzt mal einen etwas mehr Bayesian
+Ansatz probieren.
+
+Dafür haben wir wieder Eingaben $X$, Ergebnisse $Y$ und Parameter $w$. Basierend
+darauf können wir nun allgemein erstmal folgendes aufstellen:
+- Prior: $p(w)$
+- Likelihood: $p(Y | X,w)$ 
+- Posterior: $p(w | X,Y)$
+
+In unserem Beispiel packen wir erst einmal wieder Gaußverteilung auf die 
+Parameter. Also $w ~ cal(N)(0,sigma_0^2 I)$. $sigma_0$ gibt dabei die
+Genauigkeit der Verteilung vor. Genaueres dazu kommt später noch.
+
+#note[$I$ steht für die Einheitsmatrix. Somit ist die Varianz auch eine Matrix,
+weswegen es sich hier um eine Multivariate Gaußverteilung handelt. Wird hier
+jetzt nicht genauer erklärt.]
+
+#note[Wir verwenden den Erwartungswert $0$, um die Abweichung zu beschränken.
+An sich ist hier aber eine beliebige Zahl möglich.]
+
+Wir erhalten somit die genauen Verteilungen:
+- Prior $p(w; sigma_0) = cal(N) (w; 0, sigma_0^2 I)$
+- Posterior $p(w | X,Y; sigma_0, sigma)$
+- Likelihood $p(Y | X,w; sigma)$
+
+Sigma ist eben analog zu oben auch wieder die Standardabweichung der
+Gaußverteilung.
+
+Nun können wir gemäß MAP lösen, indem wir über $w$ maximieren. Dafür stellen
+wir erstmal wieder den Logarithmus vom Posterior auf:
+$
+  log p(w | X,Y; sigma_0, sigma) &= log p(Y | X, w; sigma) 
+  + log cal(N) (w; 0, sigma_0^2 I) \
+  &= sum_(i=1)^n log cal(N) (y_i | x_i, w; y(x_i,w),sigma^2)
+  + log cal(N) (w; 0, sigma_0^2 I) \
+  &= - 1/(2 sigma^2) sum_(i=1)^n (y_i - y(x_i,w))^2 - 1/(2sigma_0^2)
+  angle.l w | w angle.r
+$
+
+#note[Laut Jan ist hier noch ein $+ "const"$. Ist aber nicht wirklich relevant,
+da wir eh gleich ableiten, wobei das wegfällt.]
+
+Und wieder Gradient bilden und gleich 0 setzen:
+
+$
+  gradient_w log p(w | X, Y; sigma_0, sigma) 
+  &= 1/sigma^2 sum_(i=1)^n (y_i - y(x_i,w)) - 1/sigma_0^2 w = 0 &<=> \
+  &dots.v "(Folien)" &<=> \
+  sigma^(-2) Phi Y &= (sigma^(-2) Phi Phi^T + sigma_0^(-2) I) w &<=> \
+  w_"MAP" &= (Phi Phi^T + sigma^2/sigma_0^2 I)^(-1) Phi Y
+$
+
+#sub[JUHU endlich mal was neues.]
+
+Zuerst fassen wir den Term $sigma^2 slash sigma_0^2$ zu $lambda$ zusammen.
+
+Nun fragt sich bestimmt jeder vom Dorf bis zur Stadt: was macht dieses 
+$lambda I$. Wie man in @lambda_complexity sehen kann, hat least squares (die
+bisher genutzte Loss/Error Function, die wir minimiert haben, siehe auch unsere
+Parameter Schätzungen von MLE) das "Problem", dass es für Punkte einen recht 
+ähnlichen Wert annimmt. Dies ist eben dieses Tal im Graphen. Das ist eben ein 
+Problem, weil dann bereits leichte Abweichung z.B. durch Rundungsfehler etc. 
+bereits einen größeren Effekt auf die Wahl unserer Parameter, was eben schnell 
+zu inkonsistenz (overfitting) führen kann. Deshalb fügen wir eben die 
+"Bestrafung" $lambda I$ hinzu, damit wir dieses lange Tal in ein großes Minimum 
+umwandeln, welches eben darauf abzielt unsere Parameter auf $0$ zu bewegen. 
+Dadurch haben eben kleinere Änderungen nicht mehr so einen großen Effekt.
+
+#figure(
+  caption: [Effekt von $lambda$ auf Least Squares],
+  image("images/lambda_complexity.png", height: 4cm)
+) <lambda_complexity>
+
+$"beta1"$, $"beta2"$ sind eben einfach Parameter von der visualisierten
+Funktion und die z Achse beschreibt die Loss Function, also wie schlecht unsere
+Parameter sind.
+
+Damit können wir nun den allgemeinen Term für least squares error aufstellen:
+$
+  E_D (w) = 1/2 norm(Phi^T w - y)_2^2 = 1/2 sum_(i=1)^n (phi(x_i)^T w - y_i)^2
+$
+#sub[(wann auch immer wir den kennengelernt haben.)]
+Dieser stellt eben den linken Graphen dar.
+
+Dazu können wir nun unseren regression error aufstellen:
+$
+  E_W (w) = lambda/2 norm(w)_2^2 = lambda/2 sum_(i=1)^n w_i^2
+$
+#sub[Genauer wird jetzt hier nicht drauf eingegangen.]
+
+Zusammen erhalten wir den rechten Graphen:
+$
+  E(w) = E_D (w) + E_W (w)
+$
+
+Jetzt würde man vermuten, dass man $lambda$ relativ hoch wählen sollte, damit
+wir jegliche Fehler vermeiden. Das sorgt nur für ein gewisses Problem.
+
+Denn was bisher noch nicht gesagt wurde, ist das $lambda$ bei uns auch 
+kontrolliert, ob wir eher unseren beobachteten Daten, oder unserem Prior
+vertrauen. Wählen wir ein relativ hohes $lambda$ vertrauen wir zu sehr unserem
+Prior, wodurch wir eher eine Gerade Schätzen. Wählen wir hingegen ein zu kleines
+$lambda$ bekommen wir eben wieder overfitting, beziehen also zu viele 
+Datenpunkte ein. Wir sagen auch, dass $lambda$ die komplexität unseres Modells
+kontrolliert. Dabei bedeutet ein kleineres $lambda$ eine größere Komplexität
+und ein größeres $lambda$ eine niedrigere Komplexität.
+
+Dazu betrachten wir nochmal $sigma^2 slash sigma_0^2$. $sigma^2$ ist hier der 
+Parameter für die Gaußverteilung unserer Daten. Dieser ist fix und wir können 
+diesen nicht anpassen. $sigma_0^2$ können wir hingegen anpassen. Wir erinnern
+uns: Dieser kontrolliert die Varianz unseres Priors. Die obige Behauptung
+können wir also hier auch wiederfinden: wählen wir ein kleines $sigma_0^2$ hat
+unser prior eine geringe Varianz, wodurch dieser sehr stark zu einem konkreten
+Wert tendiert -- wir legen also quasi einen festen Wert für den Prior fest.
+Unser $lambda$ wird auch entsprechend groß, da der Nenner klein wird. Senken
+wir anders herum unser $sigma_0^2$ erhöhen wir die Varianz auf unserem Prior --
+dieser kann also eine größere Spanne an Werten annehmen und ist nicht mehr
+konkret festgelegt. Dadurch haben wir also mehr Fähigkeit unsere Parameter an
+unsere Daten anpassen, was sich analog in unserem $lambda$ wiederspiegelt.
+
+Laut Jan ist ein $lambda$ zwischen $10^(-6) N$ bis $10^(-8) N$, wobei $N$ die
+Größe des Datensatzes ist, am besten geeigent. $0.1 N$ ist hingegen schon ein
+sehr niedrige Komplexität bzw. sehr viel vertrauen in den Prior.
+
+#note[Jan teasert hiernach den Full Bayesian Regression Ansatz. Sofern dieser
+später nochmal ausführlicher kommt wird er dort aufgehührt. Hier ist das gerade
+nur unnötig Komplexität.]
+
+== Probabilistic Classification
+
+// TODO Folie 85+
 
 #pagebreak()
 
@@ -394,12 +625,12 @@ Auffrischen: Multivariate Gaußverteilung
 
 ; bindet stärker #sym.checkmark
 
-p. 73:  $sigma_0$ Parameter über Gauss Prior $w$
+p. 73:  $sigma_0$ Parameter über Gauss Prior $w$ #sym.checkmark
 
 p. 78: $lambda$ Kontroliiert wie sehr wir Daten vs Prior vertrauen. $lambda$
 reduzieren erhöht komplexität \
 Bessere Werte meist in $10^(-6)$ bis $10^(-8)$. $0.1N$ schon sehr hoch.
-
+#sym.checkmark
 
 #table(
   columns: 3,
