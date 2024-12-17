@@ -596,7 +596,110 @@ nur unnötig Komplexität.]
 
 == Probabilistic Classification
 
-// TODO Folie 85+
+#note[Bitte nicht stark hier reinsteigern,  man wird nur umso stärker 
+enttäuscht.]
+
+Nun betrachten wir eine Methode, mit der man diese Funktion $f$ in einem
+Classification Problem bestimmen kann. Dabei betrachten wir jedoch nur eine
+sehr simple Methode. Diese heißt *Logistic Regression*. Diese hat die sehr
+simple Voraussetzung, dass wir auf nur zwei Werte abbilden. Also $O={C_1,C_2}$.
+Wir bezeichnen die einzelnen Komponenten unseres Bildbereich als Klassen,
+weswegen wir diese auch als $C_i$ kennzeichnen.
+
+Dafür wollen wir wieder ähnlich zu Bayesian Regression folgende Wsk. aufstellen:
+- Posterior $p(C_1 | x)$
+- Likelihood $p(x | C_1)$
+- Prior $p(C_1)$
+- Evidence $p(x)$
+
+Damit können wir dann folgendes berechnen:
+$
+  p(C_1 | x) &= (p(x | C_1) p(C_1)) /p(x) = (p(x | C_1) p(C_1)) / 
+  (sum_i p(x,C_i)) \
+  &= (p(x | C_1) p(C_1))/(sum_(i=1)^2 p(x | C_i) p(C_i)) \
+  &= (p(x |C_1) p(C_1)) / (p(x |C_1) p(C_1) + p(x | C_2) p(C_2)) \
+  &= 1/(1+exp (-a)) = sigma(a) "mit" 
+  a = log (p(x | C_1) p(C_1)) / (p(x | C_2) p(C_2))
+$
+$sigma(a)$ bezeichnet dabei die Sigmoid Funktion. Diese quetscht eine beliebige
+relle Zahl in das Intervall $[0,1]$.
+
+Nun ist es unser Ziel bestimmen zu können ob eine Eingabe $x$ zu einer der
+beiden Klassen gehört. Wenn man sich nun mehrere Datenpunkte in einem Graphen
+vorstellt (siehe Folie 86) wollen wir anschaulich nun diese Trennlinie in der
+Mitte bestimmen. Damit sagen wir dann, dass alles auf der einen Seite zur einen
+und alles auf der anderen Seite zur anderen Klasse gehört.
+
+Wir stellen also $a=w x + epsilon_0$ und damit dann:
+$
+  p(C_1 | x) = sigma (w x + epsilon_0)
+$
+
+#note[Wieso genau wir das ganze über $a$ einsetzen können habe ich noch nicht
+verstanden. Man beachte zudem, dass auf den Folien wieder $w$ als Vektor
+angesehen wird. Da wir hier allerdings im Eindimensionalen sind macht das meines
+erachtens wenig Sinn.]
+
+Für bekannte Daten $X={x_1,...,x_n}$ und $Y={y_1,...,y_n}$, wobei für alle $y_i$
+gilt:
+$
+  y_i = cases(0 quad &x_i "belongs to" C_1, 1 &x_i "belongs to" C_2)
+$
+
+Mit Maximum Likelihood Regression erhalten wir dann:
+$
+  p(Y | X; w, epsilon_0) &= product_(i=1)^n p(y_i | x_i; w, epsilon_0) \
+  &=^* product_(i=1)^n p(C_1 | x_i; w, epsilon_0)^(1-y_i) 
+    p(C_2 | x_i; w, epsilon_0)^(y_i) \
+  &= product_(i=1)^n sigma (w x_i + epsilon_0)^(1-y_i)
+    (1-sigma (w x_i + epsilon_0))^(y_i)
+$
+
+$*$: Wir können dies anwenden, da einer der beiden Wsk. einen Exponenten von 0
+und der andere einen von 1 hat, wodurch wir am Ende wieder nur eine der beiden
+Wsk. haben, aber halt nun entsprechend der Klasse geordnet.
+
+Und ab hier bricht Jan dann ab. Seine Referenz zu Bishop scheint auch nur 
+bedingt zu passen, da dort noch viel abgefahreners gemacht wird.
+
+== Probabilistic Clustering
+
+Im Vergleich zu davor haben wir nun nicht mehr so genaue Infos zu unseren
+Datenpunkten. Wir wissen also z.B. nicht, zu welchen Klassen diese gehören
+oder welche Klassen wir überhaupt haben. Dazu haben wir eben auch nicht mehr
+unbedingt nur 2 mögliche Ausgänge sondern eben ggf. mehr Klassen.
+
+Was wir also nun machen wollen ist Cluster -- also Gruppierungen -- in diesen 
+uns bekannten Daten zu finden und basierend darauf Klassen zu erstellen.
+
+Wir gehen also wieder in der Vermutung, dass unsere Daten von einer Verteilung
+generiet wurden (bzw. mehreren Verteilungen). Und nun wollen wir wieder von
+diesen Verteilungen die Parameter bestimmen. \
+Wie zuvor auch verwenden wir hier wieder Gaußverteilungen.
+
+Nun kann man mal naiv versuchen mit Log Likelihood die Erwartungswerte $mu_j$ zu
+bestimmen. Die Standardabweichungen $sigma_j$ sind erstmal weniger relevant, da 
+es uns primär um den Ort der Cluster geht.
+
+Wir haben also $n$ Datenpunkte ${(x_1,z_1),...,(x_n,z_n)}$. Dazu haben wir $n$ 
+(?) Klassen $C_1,...,C_n$.
+
+Wir erhalten dann:
+$
+  cal(L) = log L(theta) &= sum_(i=1)^n log p(x_i | theta) \
+  (diff cal(L)) / (diff mu_j) &= 0 \
+  => hat(mu)_j &= (sum_(i=1)^n p(z_j | C_i) x_i)/(sum_(i=1)^n p(z_j | C_i))
+$
+
+Hier stoßen wir aber nun auf ein Problem, da wir ja eben diese $mu$ nutzen
+wollen um unsere Cluster zu bestimmen. Jetzt brauchen wir aber eben dafür 
+bereits eine Zuteilung in diese Cluster, wodurch wir eine zyklische Abhängigkeit 
+haben.
+
+#note[Ich kann keine Garantie geben, dass die Variablen korrekt benannt wurden,
+Jans Folien sind hier sehr falsch.]
+
+// TODO Folie 96+
 
 #pagebreak()
 
@@ -641,7 +744,7 @@ Bessere Werte meist in $10^(-6)$ bis $10^(-8)$. $0.1N$ schon sehr hoch.
 Alles auf probability density estimation reduzierbar
 "beobachtbar": wir wissen den Zielraum und für Beispiele den Zielwert
 
-p.94: x: Zeit bis Ausbruch, y: Dauer
+p.94: x: Zeit bis Ausbruch, y: Dauer #sym.crossmark
 
 p.95: eigentliche unbekanntheiten: Anzahl an Datenpunkten, Verteilung selbst,
 Parameter
