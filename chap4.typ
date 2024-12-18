@@ -699,6 +699,53 @@ haben.
 #note[Ich kann keine Garantie geben, dass die Variablen korrekt benannt wurden,
 Jans Folien sind hier sehr falsch.]
 
+Ein anderer Ansatz ist, dass wir ähnlich zu davor wieder die Ableitung bestimmen
+und uns dann wie eine Art Hill-Climbing Algorithmus zu einem Punkt bewegen,
+wo der Gradient 0 wird. Dazu haben wir durch die Ableitung bereits die Steigung,
+wodurch wir nicht stichprobenartig links und rechts von unserer aktuellen
+Position testen müssen, sondern direkt darüber die optimale Richtung bestimmen
+können.
+
+Nun wollen wir aber noch einmal einen ganz neuen Ansatz betrachten. Nach
+beobachten der Daten können wir nämlich die latent variable $j | x$ aufstellen,
+die angibt, dass $x$ zur $j$-ten Klasse gehört. $j$ zählt dabei eben einfach
+die Klassen durch, also $j=1$, $j=2$ etc. und gibt nicht direkt die konkrete
+Klasse an.
+
+Ähnlich zu davor können wir dann für unsere 2 Klassen wieder folgendes 
+aufstellen:
+#grid(columns: (1fr, 1fr), column-gutter: 1em)[
+  $
+    hat(mu)_1 = (sum_(i=1)^n p(1 | x_i) x_i) / (sum_(i_1)^n p(1 | x_i))
+  $
+][
+  $
+    hat(mu)_2 = (sum_(i=1)^n p(2 | x_i) x_i) / (sum_(i_1)^n p(2 | x_i))
+  $
+]
+
+Wenn wir konkret unsere Verteilungen wissen können wir auch sagen, dass $x$
+zu Klasse 1 gehört, wenn $p(j=1 | x) > p(j=2 | x)$ gilt.
+
+Nun wissen wir ja aber nicht die Verteilung oder wie unsere Daten aussehen. Bzw.
+welche Daten von welcher Verteilung erstellt bzw. maßgeblich beeinflusst wurden:
+$
+  p(x | theta) = sum_(i=1)^2 pi_i p(x | theta_i)
+$
+
+Ähnlich zu Bayesian können wir aber nach betrachten einzelner Daten einen
+Posterior aufstellen:
+$
+  p(j=1 | x,theta) = p(j=1,x | theta)/p(x | theta)
+  = (p(x | theta_1) p(j=1))/(sum_(i=1)^2 p(x | theta_i) p(i))
+  = gamma_(j=1) (x)
+$
+
+Wir nennen $gamma_(j=1) (x)$ die responsibility der Klasse $j$ für den Wert $x$.
+
+Und damit betrachten wir nun den Expectation-Maximation Algorithmus:
+
+
 // TODO Folie 96+
 
 #pagebreak()
