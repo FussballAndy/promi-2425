@@ -74,7 +74,6 @@ Aus dieser Bedingung erhalten wir dann:
 $
   L(theta) = p(cal(D) | theta) 
   = p(x_1,x_2,...,x_n | theta) 
-  // todo iid
   =^"i.i.d." p(x_1 | theta) p(x_2 | theta) ... p(x_n | theta) 
   = product_(k=1)^n p(x_k | theta)
 $
@@ -667,135 +666,103 @@ bedingt zu passen, da dort noch viel abgefahreners gemacht wird.
 Im Vergleich zu davor haben wir nun nicht mehr so genaue Infos zu unseren
 Datenpunkten. Wir wissen also z.B. nicht, zu welchen Klassen diese gehören
 oder welche Klassen wir überhaupt haben. Dazu haben wir eben auch nicht mehr
-unbedingt nur 2 mögliche Ausgänge sondern eben ggf. mehr Klassen.
+unbedingt nur 2 mögliche Klassen sondern eben ggf. mehr.
 
 Was wir also nun machen wollen ist Cluster -- also Gruppierungen -- in diesen 
-uns bekannten Daten zu finden und basierend darauf Klassen zu erstellen.
+gemessenen Daten zu finden und basierend darauf Klassen zu erstellen. 
+Entsprechend betrachten wir die Cluster als latente Variablen, die es zu
+bestimmen gilt.
 
 Wir gehen also wieder in der Vermutung, dass unsere Daten von einer Verteilung
-generiet wurden (bzw. mehreren Verteilungen). Und nun wollen wir wieder von
-diesen Verteilungen die Parameter bestimmen. \
+generiet wurden -- bzw. einer Mischverteilung aus mehreren Verteilungen. Und nun
+wollen wir wieder von diesen Verteilungen die Parameter und Gewichtungen 
+bestimmen. \
 Wie zuvor auch verwenden wir hier wieder Gaußverteilungen.
 
-Nun kann man mal naiv versuchen mit Log Likelihood die Erwartungswerte $mu_j$ zu
-bestimmen. Die Standardabweichungen $sigma_j$ sind erstmal weniger relevant, da 
-es uns primär um den Ort der Cluster geht.
+Nun kann man mal naiv versuchen mit MLE die Erwartungswerte $mu_j$ zu bestimmen. 
+Die Standardabweichungen $sigma_j$ sind erstmal weniger relevant, da es uns 
+primär um den Ort der Cluster geht.
 
-Wir haben also $n$ Datenpunkte ${(x_1,z_1),...,(x_n,z_n)}$. Dazu haben wir $n$ 
-(?) Klassen $C_1,...,C_n$.
+// TODO Basierend auf Forum aktualisieren.
+
+Wir haben also $n$ Datenpunkte ${x_1,...,x_n}$. Dazu haben wir $K$ Klassen 
+$C_1,...,C_K$.
 
 Wir erhalten dann:
 $
   cal(L) = log L(theta) &= sum_(i=1)^n log p(x_i | theta) \
   (diff cal(L)) / (diff mu_j) &= 0 \
-  => hat(mu)_j &= (sum_(i=1)^n p(z_j | C_i) x_i)/(sum_(i=1)^n p(z_j | C_i))
+  => hat(mu)_j &= (sum_(i=1)^n p(C_j | x_i) x_i)/(sum_(i=1)^n p(C_j | x_i))
 $
 
-Hier stoßen wir aber nun auf ein Problem, da wir ja eben diese $mu$ nutzen
-wollen um unsere Cluster zu bestimmen. Jetzt brauchen wir aber eben dafür 
-bereits eine Zuteilung in diese Cluster, wodurch wir eine zyklische Abhängigkeit 
-haben.
+Hier stoßen wir aber nun auf ein Problem. Unser Ziel ist es mittels diesen $mu$ 
+die Zuteilung in die einzelnen Klassen zu bestimmen. Jetzt brauchen wir aber 
+eben dafür bereits eine Zuteilung in diese Cluster, wodurch wir eine zyklische 
+Abhängigkeit haben. Wenn wir unsere Daten jedoch bereits gut kennen -- also 
+wieder Classification, wäre dies ein guter Ansatz zur Bestimmung der Klassen.
 
 #note[Ich kann keine Garantie geben, dass die Variablen korrekt benannt wurden,
-Jans Folien sind hier sehr falsch.]
+Jans Folien sind hier sehr komisch. Siehe ggf. Forenpost]
 
 Ein anderer Ansatz ist, dass wir ähnlich zu davor wieder die Ableitung bestimmen
-und uns dann wie eine Art Hill-Climbing Algorithmus zu einem Punkt bewegen,
-wo der Gradient 0 wird. Dazu haben wir durch die Ableitung bereits die Steigung,
-wodurch wir nicht stichprobenartig links und rechts von unserer aktuellen
-Position testen müssen, sondern direkt darüber die optimale Richtung bestimmen
-können.
+und uns dann wie eine Art Hill-Climbing Algorithmus zu einem Punkt bewegen, an
+dem der Gradient 0 wird. Dazu haben wir durch die Ableitung bereits die 
+Steigung, wodurch wir nicht stichprobenartig um unsere aktuellen Position herum 
+testen müssen, sondern direkt darüber die optimale Richtung bestimmen können.
 
-Nun wollen wir aber noch einmal einen ganz neuen Ansatz betrachten. Nach
-beobachten der Daten können wir nämlich die latent variable $j | x$ aufstellen,
-die angibt, dass $x$ zur $j$-ten Klasse gehört. $j$ zählt dabei eben einfach
-die Klassen durch, also $j=1$, $j=2$ etc. und gibt nicht direkt die konkrete
-Klasse an.
+Ähnlich zu diesem Ansatz betrachten wir nun einmal den Expectation-Maximation
+(kurz EM) Algorithmus.
 
-Ähnlich zu davor können wir dann für unsere 2 Klassen wieder folgendes 
-aufstellen:
-#grid(columns: (1fr, 1fr), column-gutter: 1em)[
-  $
-    hat(mu)_1 = (sum_(i=1)^n p(1 | x_i) x_i) / (sum_(i_1)^n p(1 | x_i))
-  $
-][
-  $
-    hat(mu)_2 = (sum_(i=1)^n p(2 | x_i) x_i) / (sum_(i_1)^n p(2 | x_i))
-  $
-]
-
-Wenn wir konkret unsere Verteilungen wissen können wir auch sagen, dass $x$
-zu Klasse 1 gehört, wenn $p(j=1 | x) > p(j=2 | x)$ gilt.
-
-Nun wissen wir ja aber nicht die Verteilung oder wie unsere Daten aussehen. Bzw.
-welche Daten von welcher Verteilung erstellt bzw. maßgeblich beeinflusst wurden:
+Zuerst einmal stellen wir dafür die sogenannte "Responsibility" auf. Denn unser
+aktuelles Problem ist, dass wir nicht wissen, von welcher konkreten Verteilung
+bzw. welchen konkreten Parametern unser Datenpunkt erstellt bzw. maßgeblich
+beeinflusst wurde. Wenn wir uns jedoch einzelne Datenpunkte $x$ angucken bzw. 
+diese analysieren können wir den Posterior über unsere Parameter bilden:
 $
-  p(x | theta) = sum_(i=1)^2 pi_i p(x | theta_i)
+  p(j | x,theta) = p(j,x | theta)/p(x | theta) 
+  = (p(x | theta_j)p(j))/(sum_(i=1)^K p(x | theta_i) p(i)) = gamma_j (x)
 $
+Die "Responsibility" gibt also an, wie wahrscheinlich es ist, dass die $j$-te
+Verteilung für unseren Datenpunkt verantwortlich ist.
 
-Ähnlich zu Bayesian können wir aber nach betrachten einzelner Daten einen
-Posterior aufstellen:
-$
-  p(j=1 | x,theta) = p(j=1,x | theta)/p(x | theta)
-  = (p(x | theta_1) p(j=1))/(sum_(i=1)^2 p(x | theta_i) p(i))
-  = gamma_(j=1) (x)
-$
+Um dies jedoch wirklich ausrechnen zu können, brauchen wir erneut entweder
+unsere Parameter oder eben die oben genutzten Wsk. Hier setzen wir nun an, indem
+wir diese zuerst schätzen. Und damit kommen wir auch schon zum genauen Ablauf
+des Algorithmus.
 
-Wir nennen $gamma_(j=1) (x)$ die responsibility der Klasse $j$ für den Wert $x$.
+#note[Es scheint so, als ob wir auch die Anzahl der Cluster $K$ schätzen, wie
+genau wird jedoch nur minimal in Kapitel 5 Folie 69f. behandelt.]
 
-Und damit betrachten wir nun den Expectation-Maximation Algorithmus:
++ Parameter (in unserem Fall $mu_k$, $Sigma_k$ und $pi_k$) initialisieren
++ E-Step: Basierend auf diesen Parametern die responsibilities ausrechnen:
+  $
+    gamma_j (x_i) = (pi_j cal(N) (x_i; mu_j, Sigma_j))/
+    (sum_(k=1)^K pi_k cal(N) (x_i; mu_k, Sigma_k)) "für alle" j in {1,...,K},
+    i in {1,...,n}
+  $
++ M-Step: Parameter basierend auf responsibilities neu schätzen:
+  $
+    hat(n)_j &= sum_(i=1)^n gamma_j (x_i) \
+    hat(pi)_j &= hat(n)_j / n \
+    hat(mu)_j &= 1/hat(n)_j sum_(i=1)^n gamma_j (x_i) x_i \
+    hat(Sigma)_j &= 1/hat(n)_j sum_(i=1)^n gamma_j (x_i) 
+      angle.l (x_i - hat(mu)_j) | (x_i - hat(mu)_j) angle.r
+  $
+  #note[$hat(n)_j$ bezeichnet dabei die Schätzung, wie viele Datenpunkte von
+  der $j$-ten Verteilung erstellt wurden.]
++ Mittels Likelihood die neuen Parameter evaluieren und dann mit neuen 
+  Parametern wieder bei Schritt 2 starten. Dies solange machen bis keine starke
+  Änderung mehr auftritt.
 
 
-// TODO Folie 96+
+// Ggf. noch einbauen:
 
-#pagebreak()
+// MLE vs MAP:
+// MLE mit limitierten Daten ist gefährlich, da Varianz dann sehr niedrig. Somit 
+// ggf. Division durch 0. MAP hingegen durch Subjektivität robuster. 
 
-#emoji.construction BIG TODO
+// Evidence $p(D)$ #sym.checkmark
 
-MLE vs MAP:
-MLE mit limitierten Daten ist gefährlich, da Varianz dann sehr niedrig. Somit 
-ggf. Division durch 0. MAP hingegen durch Subjektivität robuster. 
+// $p(theta,D)$ nonsense
 
-Prior $p(theta)$ #sym.checkmark \
-Likelihood $p(D | theta)$ #sym.checkmark \
-Posterior $p(theta | D)$ #sym.checkmark \
-Evidence $p(D)$ #sym.checkmark
-
-$p(theta,D)$ nonsense
-
-p. 49 $D = cal(X) times cal(Y)$ #sym.crossmark
-
-w = parameters ??? #sym.checkmark
-
-p. 72: I = Einheitsmatrix
-
-; steht für | aber mit Parametern #sym.checkmark
-
-Auffrischen: Multivariate Gaußverteilung
-
-; bindet stärker #sym.checkmark
-
-p. 73:  $sigma_0$ Parameter über Gauss Prior $w$ #sym.checkmark
-
-p. 78: $lambda$ Kontroliiert wie sehr wir Daten vs Prior vertrauen. $lambda$
-reduzieren erhöht komplexität \
-Bessere Werte meist in $10^(-6)$ bis $10^(-8)$. $0.1N$ schon sehr hoch.
-#sym.checkmark
-
-#table(
-  columns: 3,
-  [], $y in {0,1}$, $y in bb(R)$,
-  "beobachtbar", "Classification", "Regression",
-  "nicht beobachtbar", "Clustering", "Dimensionale Reduction"  
-)
-Alles auf probability density estimation reduzierbar
-"beobachtbar": wir wissen den Zielraum und für Beispiele den Zielwert
-
-p.94: x: Zeit bis Ausbruch, y: Dauer #sym.crossmark
-
-p.95: eigentliche unbekanntheiten: Anzahl an Datenpunkten, Verteilung selbst,
-Parameter
-
-\\hat{xyz} steht für eine schätzung
-
-Bishop: Deep learning networks
+// Alles auf probability density estimation reduzierbar
