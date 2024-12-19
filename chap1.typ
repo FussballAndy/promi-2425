@@ -40,9 +40,9 @@ Zufallsvariable $X$ den Wert $x$ annimmt.
 + Wahrscheinlichkeit ist nicht negativ: $P(E) >= 0$
 + Wahrscheinlichkeit des Ergebnisraum ist 1: $P(cal(X)) = 1$
 + Für die Wsk. von zwei Ereignissen $E$, $F$ gilt: 
-  $P(E union F) = P(E) + P(F) - P(E sect F)$. Da für Ereignisse ohne
-  Gemeinsamkeiten $P(E sect F)=0$ gilt, gilt dafür einfach, dass die geminsame 
-  Wsk. die Summe der einzelnen Wsk. ist.
+  $P(E union F) = P(E) + P(F) - P(E sect F)$. Für Ereignisse ohne
+  Gemeinsamkeiten ist $P(E sect F)=0$. Daher ist für diese die Wsk. einfach die 
+  Summe der einzelnen Wsk.
 
 Des weiteren gilt: $P(overline(E)) = 1 - P(E)$.
 
@@ -59,15 +59,15 @@ Des weiteren gilt: $P(overline(E)) = 1 - P(E)$.
   ],
   definition("Probability Density Function (PDF)")[
     Die *PDF* ist eine Funktion $f: cal(X) -> bb(R)_(>=0)$, die die Wsk. 
-    angibt, 
-    dass eine stetige Zufallsvariable $X$ nahe einen Wert $x$ ist.
+    angibt, dass eine stetige Zufallsvariable $X$ nahe einem Wert $x$ ist.
     
     Dabei ist $integral_(x in cal(X)) f(x) dif x=1$
 
     #note[
       In der Vorlesung wurde die PDF mit Symbol $p$ eingeführt. Es scheint 
       allerdings (auch auf Jans Folien) üblicher zu sein diese mit $f$ zu 
-      bezeichnen.
+      bezeichnen. In den weiteren Kapiteln wird allerdings eher wieder $p$
+      genutzt.
     ]
   ]
 )
@@ -81,16 +81,16 @@ Des weiteren gilt: $P(overline(E)) = 1 - P(E)$.
   Gemäß Folien schreibt man auch gelegentlich $F_X$ um die Zufallsvariable $X$ 
   zu verdeutlichen.
 
-  Des weiteren gilt: $ p(x) = (dif F_X) / (dif x) (x)$
+  Des weiteren gilt: $ f(x) = (dif F_X) / (dif x) (x)$
 ]
 
 == Verteilungen (engl. Distributions)
 
-Bevor wir uns einzelne Verteilungen anschauen gilt es erstmal den Begriff der 
+Bevor wir uns einzelne Verteilungen anschauen, gilt es erstmal den Begriff der 
 Verteilung zu klären: \
 Eine Verteilung beschreibt die Wahrscheinlichkeit, mit welcher eine 
 Zufallsvariable gewisse Werte annimmt. Sowohl die Wahrscheinlichkeit, als auch 
-die Werte hängt dabei stark vom Kontext ab. \
+die Werte, hängen dabei stark vom Kontext ab. \
 Des weiteren schreiben wir $X ~ D$, wobei $D$ eine Verteilung ist (mehr dazu 
 gleich), um zu sagen, dass die Variable $X$ eine entsprechende Verteilung hat.
 
@@ -116,7 +116,7 @@ gleich), um zu sagen, dass die Variable $X$ eine entsprechende Verteilung hat.
   jede dieser Kategorien eine eigene Wsk. $p_i$ hat.
   
   Die PMF ist entsprechend wie folgt definiert: \
-  $ p(X=i)=p_i "für alle" i in {1,2,...,K} "mit" sum_(i=1)^(K) p_i = 1 $
+  $ p(i)=P(X=i)=p_i "für alle" i in {1,2,...,K} "mit" sum_(i=1)^(K) p_i = 1 $
 
 
   #align(center,{
@@ -168,9 +168,9 @@ $p(x)=P(X=x)$, aber $p(y)=P(Y=y)$ und nicht $P(X=y)$.
 == Verhältnisse von Variablen
 
 #definition("Unabhängigkeit (Independence)")[
-  Zwei Zufallsvariablen $X$, $Y$ sind *unabhängig*, wenn die Wsk., dass sie die 
-  Werte $x$, $y$ annehmen nur von den jeweiligen Wsk., dass $X=x$ und $Y=y$, 
-  abhängig sind. \
+  Zwei Zufallsvariablen $X$, $Y$ sind *unabhängig*, wenn die Wahrscheinlichkeit,
+  dass die Werte $x$, $y$ angenommen werden, nur von den jeweiligen 
+  Wahrscheinlichkeiten, dass $X=x$ und $Y=y$ eintritt, abhängig ist. \
   D.h.
   $ p(x,y)=p(x)p(y) $
   Sofern dies nicht gilt sind $X$ und $Y$ abhängig.
@@ -194,10 +194,10 @@ $p(x)=P(X=x)$, aber $p(y)=P(Y=y)$ und nicht $P(X=y)$.
   $ p(x,y) = p(x) p(y | x) = p(y) p(x | y) $
   Für stetige Variablen ist die PDF erstmal analog, kann aber mit der CDF $F$ 
   verknüpft werden:
-  $ p(x,y) = p(x) p(y | x) = p(y) p(x | y) = (diff^2)/(diff x diff y) F(x,y) $
+  $ f(x,y) = f(x) f(y | x) = f(y) f(x | y) = (diff^2)/(diff x diff y) F(x,y) $
 
   Man beachte, dass für unabhängige Variablen diese Wsk. genau wieder die 
-  Formel $p(x,y)=p(x)p(y)$ wiedergibt, da z.B. $p(y | x)$ bei unabhängigkeit 
+  Formel $p(x,y)=p(x)p(y)$ wiedergibt, da $p(y | x)$ bei unabhängigkeit 
   gleich $p(y)$ ist.
 
   #note[Die deutsche Übersetzung hierfür wäre "Multivariat". Da dieses Wort 
@@ -212,7 +212,7 @@ $p(x)=P(X=x)$, aber $p(y)=P(Y=y)$ und nicht $P(X=y)$.
   Für diskrete Variablen:
   $ p(x) = sum_(y in cal(Y)) p(x,y) = sum_(y in cal(Y)) p(x)p(y | x) $
   Für stetige Variablen:
-  $ p(x) = integral_(-infinity)^(infinity) p(x,y) dif y $
+  $ f(x) = integral_(-infinity)^(infinity) f(x,y) dif y $
 
   Bei einer konditionalen Unabhängigkeit gilt des weiteren:
   $ p(x,y) = sum_(z in cal(Z)) p(x | z) p(y | z) p(z) $
@@ -220,7 +220,7 @@ $p(x)=P(X=x)$, aber $p(y)=P(Y=y)$ und nicht $P(X=y)$.
 
 == Satz von Bayes (Bayes' Rule / Theorem)
 
-Mithile des Satz von Bayes kann man die kondition von Wsk. umdrehen. D.h. man 
+Mithile des Satz von Bayes kann man die abhängigkeit von Wsk. umdrehen. D.h. man 
 kann $P(B | A)$ in $P(A | B)$ umwandeln -- zumindest solange man auch $P(A)$ 
 und $P(B)$ hat.
 
@@ -306,7 +306,7 @@ Eigenschaften von Erwartungswert und Varianz:
   $
     "Skew"(X) = expect[((X-mu)/sigma)^3]
   $
-  Für eine symmetrische Verteilung ist Schiefe 0.
+  Für eine symmetrische Verteilung ist die Schiefe 0.
 ]
 
 #definition("Wölbung (Kurtosis)")[
@@ -337,8 +337,8 @@ Eigenschaften von Erwartungswert und Varianz:
 ]
 
 #definition("Correlation")[
-  Die *Correlation* ist die Covariance zweier Variablen genormt nach deren 
-  Varianz der beiden Variablen.
+  Die *Correlation* ist die Covariance zweier Variablen genormt nach der Varianz
+  der beiden Variablen.
   $ Corr(X,Y) = Cov(X,Y)/(sigma_X sigma_Y) $
 
   Eigenschaften:
