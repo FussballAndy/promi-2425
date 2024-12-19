@@ -260,8 +260,8 @@ $P(E) = P(E | F) P(F) + P(E | overline(F)) P(overline(F))$.
   columns: (48%, 48%),
   column-gutter: 1fr,
   definition("Varianz (Variance)")[
-    Die *Varianz* misst, wie sehr die möglichen Werte einer 
-    Zufallsvariable $X$ ausgebreitet sind bzw. wie weit sich diese strecken. \
+    Die *Varianz* misst, wie sehr die möglichen Werte einer Zufallsvariable $X$ 
+    ausgebreitet sind bzw. wie weit sich diese strecken. \
     Man berechnet die Varianz wie folgt:
     $ variance[X] = expect[(X-expect[X])^2] = expect[X^2] - expect[X]^2 $
     Man beachte, dass die Varianz stets $>= 0$ ist.
@@ -270,8 +270,8 @@ $P(E) = P(E | F) P(F) + P(E | overline(F)) P(overline(F))$.
     Die *Standardabweichung* $sigma$ misst hingegen die Varianz um den
     Erwartungswert $mu$ herum.
     $ sigma=sqrt(variance[X]) $
-    Entsprechend ist diese auch wieder $>= 0$. Dazu ist die
-    Standardabweichung deutlich verbreiteter / wichtiger.
+    Entsprechend ist diese auch wieder $>= 0$. Dazu ist die Standardabweichung 
+    deutlich verbreiteter / wichtiger.
   ]
 )
 
@@ -301,9 +301,8 @@ Eigenschaften von Erwartungswert und Varianz:
 ]
 
 #definition("Schiefe (Skewness)")[
-  Die *Schiefe* einer Zufallsvariable $X$ bzw. von deren Verteilung gibt 
-  an, wie asymmetrisch die Verteilung um den Erwartungswert $mu$ herum 
-  ist.
+  Die *Schiefe* einer Zufallsvariable $X$ bzw. von deren Verteilung gibt an, wie 
+  asymmetrisch die Verteilung um den Erwartungswert $mu$ herum ist.
   $
     "Skew"(X) = expect[((X-mu)/sigma)^3]
   $
@@ -320,15 +319,15 @@ Eigenschaften von Erwartungswert und Varianz:
 ]
 
 #definition("Covariance")[
-  Die *Covariance* misst die Abhängigkeit von zwei Zufallsvariablen. 
-  Genauer wird geguckt, inwiefern die Abweichung von einer Variable zu 
-  ihrem Erwartungswert der Abweichung von einer anderen Variable zu 
-  ihrem Erwartungswert ähnelt.
+  Die *Covariance* misst die Abhängigkeit von zwei Zufallsvariablen. Genauer 
+  wird geguckt, inwiefern die Abweichung von einer Variable zu ihrem 
+  Erwartungswert der Abweichung von einer anderen Variable zu ihrem 
+  Erwartungswert ähnelt.
   $ Cov(X,Y) = expect[(X-mu_X)(Y-mu_Y)] = expect[X Y] - mu_X mu_Y $
-  Wenn größere Werte von einer Variable mit größeren Werten einer 
-  anderen Variable entsprechen, dann ist die Covariance positiv, 
-  andernfalls negativ. Und wenn beide unabhängig sind ist die Covariance 
-  0 (Umkehrung gilt nicht unbedingt). \
+  Wenn größere Werte von einer Variable mit größeren Werten einer anderen 
+  Variable entsprechen, dann ist die Covariance positiv, andernfalls negativ. 
+  Und wenn beide unabhängig sind ist die Covariance 0 (Umkehrung gilt nicht 
+  unbedingt). \
   Eigenschaften:
   + $Cov(X,X)=variance[X]$
   + $Cov(X,Y)=Cov(Y,X)$
@@ -338,8 +337,8 @@ Eigenschaften von Erwartungswert und Varianz:
 ]
 
 #definition("Correlation")[
-  Die *Correlation* ist die Covariance zweier Variablen genormt nach
-  deren Varianz der beiden Variablen.
+  Die *Correlation* ist die Covariance zweier Variablen genormt nach deren 
+  Varianz der beiden Variablen.
   $ Corr(X,Y) = Cov(X,Y)/(sigma_X sigma_Y) $
 
   Eigenschaften:
@@ -349,19 +348,21 @@ Eigenschaften von Erwartungswert und Varianz:
 ]
 
 #definition("Median")[
-  Wir sagen ein Wert $c$ ist der *Median* einer Zufallsvariable $X$,
-  wenn die "Masse" links von $c$ gleich der "Masse" rechts von $c$ ist.
-  Der Median teilt also die Verteilung in zwei gleichmäßige Massen. \
+  Wir sagen ein Wert $c$ ist der *Median* einer Zufallsvariable $X$, wenn die 
+  "Masse" links von $c$ gleich der "Masse" rechts von $c$ ist. Der Median teilt 
+  also die Verteilung in zwei gleichmäßige Massen. \
   Mathematisch drückt man das ganze wie folgt aus:
   $ c "median" <=> P(X <= c) >= 0.5 "und" P(X >= c) >= 0.5 $
   Bei symmetrischen Verteilungen ist der Erwartungswert auch der Median.
 ]
 
-*Quantile, Perzentile und Quartile*: Die Aufteilung der Verteilung in 
-entsprechend viele gleichmassige Teile.
-Also für Quartile in 4 Teile und Perzentile in 100 Teile etc.
+#definition("Quantile, Perzentile und Quartile")[
+  Diese Begriffe bezeichnen die Aufteilung der Verteilung in entsprechend viele 
+  gleichmassige Teile. Also für Quartile in 4 Teile und Perzentile in 100 Teile 
+  etc.
+]
 
 #definition("Modi (Modes)")[
-  *Modi* sind Werte in der Verteilung, die mit hohe Dichte bzw. Wsk.
-  haben. Anschaulich sind es einfach die Maxima der Verteilung.
+  *Modi* sind Werte in der Verteilung, die mit hohe Dichte bzw. Wsk. haben. 
+  Anschaulich sind es einfach die Maxima der Verteilung.
 ]
