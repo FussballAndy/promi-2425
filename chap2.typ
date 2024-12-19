@@ -22,7 +22,7 @@ Verarbeitung, Extrahierung und Verwertung von Informationen. Sie wurde stark
 von Claude Shannon vorangetrieben. Denn dieser hat vor allem Bits als Einheit
 gewählt, wodurch seine Arbeit gut auf heutige Rechnersysteme übertragbar ist.  
 
-Vorhin wurde bereits der Informationskanal (engl. Information Channel) erwähnt,
+Eben wurde bereits der Informationskanal (engl. Information Channel) erwähnt,
 hier eine Beschreibung des Aufbau:
 - Daten fließen von einem Sender zu einem Empfänger
 - Der Sender kodiert die Nachricht
@@ -87,7 +87,7 @@ Kommen wir also nun konkret zur Bestimmung von Information:
 
   #note[Das $p$ hier ist semi zusammenhängend mit der PMF, die in Kapitel 1 
   vorgestellt wurde. Man kann es wieder als die PMF sehen und damit eine 
-  Zufallsvariable $X$ als einezu erhaltende Nachricht ansehen, wobei man die 
+  Zufallsvariable $X$ als eine zu erhaltende Nachricht ansehen, wobei man die 
   Wsk. 
   herausfinden will, dass diese die Nachricht $x$ ist. Außerdem wird für den 
   Logarithmus -- speziell im Kontext von Shannon -- meist die Basis 2 
@@ -122,7 +122,7 @@ Kommen wir also nun konkret zur Bestimmung von Information:
   Zur Aufklärung: In UTF-8 besteht ein Text erstmal aus einer Liste an Byte 
   (8 Bits). Da man aber in einem Byte nur 256 Zeichen kodieren könnte werden 
   für 
-  _seltenere_ entsprechend mehr Byte zur Kodierung genutzt. So kann ein 
+  _seltenere_ Zeichen entsprechend mehr Byte zur Kodierung genutzt. So kann ein 
   einzelnes Zeichen in UTF-8 1-4 Byte groß sein. Und welche Zeichen sind nun nur
   mit einem Byte kodiert? Eben die, die bei uns im Alltag am häufigsten 
   vorkommen: a-z,A-Z,0-9,Punktationen etc. Hingegen ein Zeichen wie 'ä', 
@@ -135,15 +135,15 @@ Kommen wir also nun konkret zur Bestimmung von Information:
 ]
 
 Fairerweise ist dieser Exkurs ein wenig ausgeartet. Falls man allerdings noch 
-etwas mehr zum Verständnis von Information bzw. der Formel dahinter lesen will 
-kann ich den folgenden  Artikel (oder zumindest die ersten beiden Abschnitte) 
+etwas mehr zum Verständnis von Information bzw. der Formel dahinter lesen will, 
+kann ich den folgenden Artikel (oder zumindest die ersten beiden Abschnitte) 
 sehr empfehlen:
 https://randompearls.com/science-and-technology/mathematics/information-theory-rationale-behind-using-logarithm-entropy-and-other-explanations/
 
 #definition("Entropie (Entropy)")[
   *Entropie* ist die Messung der Ungewissheit, welche möglichen Werte eine 
   Zufallsvariable $X$ annehmen kann. Dabei ist sie auch ein Maß für den 
-  mittleren (erwarteten?) Informationsgehalt der Nachrichten eines Absenders.
+  erwarteten Informationsgehalt der Nachrichten eines Absenders.
 
   Für eine diskrete Zufallsvariable $X$ über einer Menge an Nachrichten 
   $cal(X)={x_1, x_2, ..., x_n}$ eines Absenders #source wie folgt beschreiben:
@@ -182,8 +182,8 @@ https://randompearls.com/science-and-technology/mathematics/information-theory-r
   scheint man teilweise $h$ als Symbol für die DE zu nutzen]
 ]
 
-Jetzt haben wir uns also der Definition des Absenders, mittels Information der
-Kodierung und nun durch Entropie dem Empfänger befasst. Nun fehlt noch das 
+Jetzt haben wir uns also der Definition des Absenders, der Kodierung 
+(Information) und nun durch Entropie dem Empfänger befasst. Nun fehlt noch das 
 Herzstück von Informationskanälen und das ist der Kanal selbst:
 
 #definition("Kanal (Channel)")[
@@ -262,7 +262,8 @@ $
   C = max_p(x) I(X;Y) = Eta(Y) - Eta(Y|X)
 $
 Der Grund warum wir hier $display(max_p(x))$ schreiben, ist dass wir das Maximum
-von $I(X;Y)$ über allen möglichen Werten $p(x)$ bekommen wollen.
+von $I(X;Y)$ über allen möglichen Werten $p(x)$ bzw. allen möglichen 
+Verteilungen bekommen wollen.
 ]
 
 = Kodierungsstrategien
@@ -279,7 +280,7 @@ von $I(X;Y)$ über allen möglichen Werten $p(x)$ bekommen wollen.
   kleineres $R$ -- verbessert die Fehlerkorrektur.
 
   #note[Die Informationsrate gibt an, welcher Anteil der kodierten Nachricht
-  tatsächlich der Inhalt der ursprünglichen Nachricht sind.]
+  tatsächlich der Inhalt der ursprünglichen Nachricht ist.]
 
   *Fähigkeit zur Fehlerkorrektur:* Fehler können durch den Abgleich mit dem
   originalen Block erkannt werden. #sub[Dafür muss man allerdings Einsicht
@@ -310,10 +311,10 @@ reduzieren.
 
 #definition("Konditionale Entropie (Conditional Entropy)")[
   Die *Konditionale Entropie* berechnet die Ungewissheit vom Wert einer 
-  Zufallsvariable $X$, sofern wir bereits den Wert einer Zufallsvariable $Y$
+  Zufallsvariable $Y$, sofern wir bereits den Wert einer Zufallsvariable $X$
   wissen.
 
-  $ Eta(Y|X) = Eta(Y) - I(X;Y) "bzw. " Eta(X|Y) = Eta(X) - I(X;Y) $
+  $ Eta(Y|X) = Eta(Y) - I(X;Y) $
 
   #dangerous[
     Sofern ich jetzt keine Konditionen übersehe sollte diese Formel in 
@@ -361,7 +362,7 @@ Kommen wir also zur mit am verbreitetsten Divergenz: Kullback-Leibler Divergenz.
 #definition("Kullback-Leibler (KL) Divergenz (KL Divergence)")[
   Die *KL Divergenz* $D_("KL")(p || q)$ misst für zwei Verteilungen $p$, $q$
   über einer Menge $cal(X)$ die Information, die wir verlieren, wenn wir $q$ 
-  zur Kodierung nutzen, obwohl wir diese aber eigtl. eine Kodierung bzgl. $p$ 
+  zur Kodierung nutzen, obwohl wir aber eigtl. eine Kodierung bzgl. $p$ 
   erwarten. \
   #dangerous[An sich wird in den Definitionen erstmal nur von Information
   gesprochen, ich glaube aber als Kodierung ist das verständlicher, sofern es
