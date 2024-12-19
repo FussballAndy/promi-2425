@@ -203,8 +203,7 @@ trotzdem noch die PDF vom Produkt/Quotient zweier Zufallsvariablen $X$, $Y$:
 
 = Maximum Entropy Distributions
 
-// TODO: Sehr random reingeworfen und zu wenig ausgeführt. Hab gerade aber auch
-// nicht mehr Zeit dafür.
+// TODO: Sehr random reingeworfen und zu wenig ausgeführt.
 Ab diesem Punkt ist es ggf. auch einmal ganz hilfreich zu erwähnen, dass die
 Begriffe Zufallsvariable und Verteilung oft sehr stark Hand in Hand gehen.
 Entsprechend reden wir auch im folgenden über die Entropie einer Verteilung,
@@ -324,17 +323,10 @@ genutzt. Genauer werde ich darauf jetzt allerdings nicht eingehen.
 
 = Mixture Distributions
 
-Nun kommen wir zu einem Thema, dass Jan auf seinen Folien nur sehr schwach
-erklärt hat. Außerdem will ich in 50 Minuten schlafen, also Speedrun 
-#emoji.running.
-
 Die Inspiration hierfür: Wir haben nun 5 verschiedene Normalverteilugen
 $p_k (x) = cal(N) (x | mu_k, sigma_k^2)$ für $k=1,2,...,5$. Nun wollen wir eine
 Verteilung $p(x)$ haben, die all diese Verteilungen zu einer einzigen Verteilung
 vereint.
-
-//#sub[JAN SEIT WANN SCHREIBEN WIR DIE NORMALVERTEILUNG ALS $cal(N) (x | mu, 
-//sigma^2)$, WAS MACHT DIESES "$x |$" HIER?????]
 
 Im allgemeinen geht das, indem man einen "gewichteten Mittelwert" aus den
 Verteilungen nimmt. Oder auf gut deutsch: aufsummieren und mit Gewichten 
@@ -349,12 +341,22 @@ $
 #note[An sich muss es nichtmal unbedingt eine Summe sein, sondern kann jegliche
 _konvexe_ Verknüpfung dieser Verteilungen sein.]
 
-// TODO: latent variables. Hier einfach nur abstraktion von Zähler k in Wsk.
-
-Ggf. falsch: \
-Hierzu betrachten wir noch _latent variables_. Dies sind Variablen, die nur
-hergeleitet werden können, aber nicht direkt gemessen werden können -- was auch
-immer das bedeutet.
+Hierzu betrachten wir noch _latent varaibles_. Dies sind Variablen, die nicht
+direkt gemessen werden können, sondern die man erst nach Evaluation mehrerer
+Messwerte erst konkret feststellen kann. Wikipedia nennt dazu ein recht schönes
+Beispiel:
+#quote(block: true, attribution: 
+link("https://de.wikipedia.org/wiki/Latentes_Variablenmodell",
+underline("Wikipedia")))[
+  Ein Beispiel für eine latente Variable ist die Intelligenz. Sie kann nicht
+  direkt gemssen werdne, aber aus einer Vielzahl von Testergebnissen ([den
+  beobachtbaren Datenpunkten]) können eine oder mehrere hinter den
+  Testergebnissen liegende latente Variablen (Intelligenz) extrahiert werden.
+]
+Im Beispiel von unserer mixture distribution wäre eben die Gewichtung eine
+solche Variable. Wenn wir nur einen Datenpunkt betrachten können wir nicht 
+direkt sagen, welche Gewichte die einzelnen Verteilungen haben, sondern erst
+wenn man viele Datenpunkte betrachtet.
 
 = Kernel Density Estimation
 
@@ -380,5 +382,3 @@ des Kernels kontrolliert, bzw. bildlich die Funktion glatter macht:
 $
   f(x) = 1 / (N h) sum_(k=1)^N cal(K) ((x - x_k) / h)  
 $
-
-Und damit gute Nacht.
