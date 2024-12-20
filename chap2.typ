@@ -96,6 +96,7 @@ Kommen wir also nun konkret zur Bestimmung von Information:
   werden.]
 ]
 
+// box, da sonst blödes page breaking. Ggf. bei neuem layout zu block
 #box(stroke: 1pt + black, inset: 5pt, width: 100%)[
   *Exkurs*: Warum der Logarithmus \
   Man fragt sich nun vielleicht, warum hier der Logarithmus genutzt wurde und 
