@@ -7,7 +7,7 @@
 
 = Verteilungen
 
-Gucken wir uns nun mal verschiedene Verteilungen an.
+Gucken wir uns nun mal weitere Verteilungen an.
 
 #definition("Bernoulli Verteilung (Bernoulli Distribution)")[
   Eine Zufallsvariable $X$ hat eine *Bernoulli Verteilung* $X ~ "Ber"(p)$, 
@@ -34,7 +34,8 @@ Gucken wir uns nun mal verschiedene Verteilungen an.
   Die *Binomialverteilung* baut auf der Bernoulli Verteilung auf. Dabei werden
   nun aber mehrere Zufallsvariablen $X_1, X_2, ..., X_n ~ "Ber"(p)$ betrachtet, 
   wobei man wissen will, wie viele dieser Zufallsvariablen einen gewissen Wert 
-  haben. Eine Zufallsvariable $Y$ hat also eine Binomialverteilung 
+  haben. \
+  Eine Zufallsvariable $Y$ hat also eine Binomialverteilung 
   $Y ~ "Bin"(n,p)$, wenn $Y = X_1 + X_2 + ... + X_n$, wobei $X_i$ wie oben
   definiert.
 
@@ -50,16 +51,17 @@ Gucken wir uns nun mal verschiedene Verteilungen an.
 ]
 
 #definition("Poisson-Verteilung (Poisson Distribution)")[
-  entsprechend weiter baut die *Poisson-Verteilung* auf der Binomialverteilung
-  auf, wobei wir aber hier nun eher unendlich viele Zufallsvariablen betrachten
-  wollen. Ziel dabei ist eine bessere Genauigkeit.
+  Entsprechend weiter baut die *Poisson-Verteilung* auf der Binomialverteilung
+  auf, wobei wir aber hier nun eher unendlich viele Zufallsvariablen bzw. eben
+  nahezu unendlich viele Versuche in einem gegebenen Intervall betrachten
+  wollen. Ziel dabei ist eine bessere Genauigkeit. \
   Eine Zufallsvariable $X$ hat also eine Poisson-Verteilung $X ~ "Poi"(lambda)$,
   wenn gilt:
   $
     P(X=k) = lambda^k/k! e^(-lambda)
   $
   Dabei ist $k$ entsprechend wieder die Anzahl an Variablen die "erfolgreich"
-  sein sollen.
+  sein sollen. $lambda$ gibt den Erwartungswert für das Intervall an.
 ]
 
 = Arbeiten mit Verteilungen
@@ -81,7 +83,7 @@ $
   F_Y (y) = P(Y <= y) = P(g(X) <= y) = P(X in {x | g(x) <= x})
 $
 #sub[$P(X in M)$ steht hierbei für die Wsk., dass der Wert, den $X$ annimmt in 
-der Menge $M$ ist -- ist hoffentlich ab dem Punkt schon trivial.]
+der Menge $M$ ist.]
 
 Entsprechend erhalten wir dann daraus die PDF:
 $
@@ -115,14 +117,14 @@ $
   f_Y (y) = f_X (g^(-1) (y)) abs( dif / (dif y) g^(-1) (y) )
 $
 
-Für den Erwartungswert einer solch Transformierten Variable gilt:
+Für den Erwartungswert einer solch transformierten Variable gilt:
 $
   expect[g(X)] = integral_(-infinity)^(infinity) g(x) f_X (x) dif x
 $
 
 Wie schon eben angesprochen kann man hierdurch nun eben sowas berechnen, wie
 $expect[X^2]$, was dann eben zu 
-$integral_(-infinity)^(infinity) x^2 f_X (x) dif x $
+$integral_(-infinity)^(infinity) x^2 f_X (x) dif x$ wird.
 
 == Convolution
 
@@ -156,7 +158,7 @@ $expect[X_i] = mu$ und gleicher Varianz $variance[X_i] = sigma^2$ aufsummiert
 einer Normalverteilung annähern.
 
 Die Zufallsvariable $S_n$ bezeichnet dabei die Summe von $n$ solcher 
-Zufallsvariablen. Also $display(S_n = sum_(i=0)^n X_i)$. Des weiteren
+Zufallsvariablen. Also $display(S_n = sum_(i=1)^n X_i)$. Des weiteren
 bezeichnet die Zufallsvariable $Z_n$ die normalisierte Version dieser
 Zufallsvariable:
 $
@@ -183,7 +185,7 @@ Zudem ist der Grenzwert von $Z_n$ für beliebige Zufallsvariablen $X_i$ gleich,
 solange eben der Erwartungswert und die Standardabweichung gleich sind und
 alle Variablen unabhängig und gleichmäßig verteilt sind.
 
-== Products and Quptients
+== Products and Quotients
 
 Jan sagt selbst, dass dies wahrscheinlich weniger relevant ist, darum werde ich
 das ganze hier auch nicht weiter ausführen. Der Vollständigkeit halber aber
@@ -208,8 +210,8 @@ Ab diesem Punkt ist es ggf. auch einmal ganz hilfreich zu erwähnen, dass die
 Begriffe Zufallsvariable und Verteilung oft sehr stark Hand in Hand gehen.
 Entsprechend reden wir auch im folgenden über die Entropie einer Verteilung,
 obwohl wir diese eigentlich erstmal nur für Zufallsvariablen definiert haben.
-(Wobei eben dort auch wieder eine Verteilung $p$ der eigentliche Parameter
-ist)
+(Wobei wir dort eigentlich auch eher die Verteilung $p$ für die konkrete
+Berechnung nutzen.)
 
 Nun betrachten wir den Fall, dass wir die genaue Verteilung nicht wissen. Das
 einzige was wir darüber wissen, ist dass diese gewisse Einschränkungen
@@ -225,7 +227,7 @@ Ansatz. Schließlich wissen wir nichts über die Verteilung und Entropie misst
 eben die Ungewissheit einer Verteilung, also kann es durchaus hilfreich sein
 eine Verteilung mit maximaler Entropie zu wählen.
 
-Zur Wiederholung: Die Formel von Entropie für eine stetuge Zufallsvariable $X$ 
+Zur Wiederholung: Die Formel von Entropie für eine steiuge Zufallsvariable $X$ 
 bzw. deren Verteilung $p$ lautet wie folgt:
 $
   Eta (p) = - integral p(x) log_2 p(x) dif x 
@@ -238,21 +240,21 @@ $
   "wobei" quad integral_a^b p(x) dif x = 1
 $
 Man beachte, dass selbst ohne weitere Einschränkungen trotzdem bereits die
-Einschränkung, dass das Integral der resultierenden Funktion 1 ergibt, vorhanden
-ist.
+Einschränkung, dass das Integral der übergebnen Funktion 1 ergibt -- diese also
+eine valide PDF ist, vorhanden ist.
 
 #note[$arg$ bezeichnet hierbei das entsprechende Argument des $max$. Genauer
 also für welches $p$ eben diese maximale Verteilung angenommen wird. $max$
 allein würde uns nur die höchstmögliche Entropie angeben.]
 
-Wollen wir nun über einem Intervall $[a,b]$ und ohne weitere Einschränkungen
+Nun wollen wir über einem Intervall $[a,b]$ und ohne weitere Einschränkungen
 dieses Prinzip anwenden. Jan nutzt hier auf seinen Folien nun eine interessante
 Herleitung, die aber wenig erklärt wurde. Diese zu verstehen würde überhaupt
 erstmal ein Verständniss von Lagrangian benötigen. Also fassen wirs kurz, wir
 erhalten, dass in solch einem Fall eine Uniforme Distribution mit Wsk. 
 $p(x) = 1 slash (b-a)$ am besten geeignet ist bzw. am meisten Entropie hat.
 
-#box(stroke: 1pt + black, inset: 5pt, width: 100%)[
+#block(stroke: 1pt + black, inset: 5pt, width: 100%)[
   #let Lagrangian = math.cal("L")
   *Exkurs*: Wie leitet man so etwas her? \
   Wie bereits erwähnt nutzen wir hier maßgeblich den Lagrangian Multiplier bzw
@@ -260,7 +262,7 @@ $p(x) = 1 slash (b-a)$ am besten geeignet ist bzw. am meisten Entropie hat.
   Diese hilft uns den Maximalwert einer Methode unter gewissen Einschränkungen
   zu bestimmen.
 
-  Als Vorbedingung für deie Lagrange Funktion brauchen wir dann:
+  Als Vorbedingung für die Lagrange Funktion brauchen wir dann:
   - Eine Funktion $f$, über der wir das Maximum/Minimum bestimmen wollen und
   - eine Einschränkung $g$, wobei diese für alle Eingaben, eine konstante $c$
     annehmen soll. Also $g(x)=c$
@@ -343,7 +345,7 @@ _konvexe_ Verknüpfung dieser Verteilungen sein.]
 
 Hierzu betrachten wir noch _latent varaibles_. Dies sind Variablen, die nicht
 direkt gemessen werden können, sondern die man erst nach Evaluation mehrerer
-Messwerte erst konkret feststellen kann. Wikipedia nennt dazu ein recht schönes
+Messwerte konkret feststellen kann. Wikipedia nennt dazu ein recht schönes
 Beispiel:
 #quote(block: true, attribution: 
 link("https://de.wikipedia.org/wiki/Latentes_Variablenmodell",
@@ -364,8 +366,8 @@ Zuletzt kommt noch ein Weg um eine PDF aus einer Menge an Datenpunkten
 $D = {x_1,x_2,...,x_N}$ herleiten zu können.
 
 Ein Ansatz wäre es nun erst einmal entsprechende PDF $p_k (x)$ mit einer
-Normalverteilung $cal(N) (x_k, sigma^2)$. Dann kann man aus diesen PDF eine
-Mixture Distribution bilden, wobei alle Gewichte $1/N$ sind:
+Normalverteilung $cal(N) (x_k | mu, sigma^2)$ aufzustellen. Dann kann man aus 
+diesen PDF eine Mixture Distribution bilden, wobei alle Gewichte $1/N$ sind:
 $
   f(x) = 1/N sum_(k=1)^N p_k (x) 
 $
