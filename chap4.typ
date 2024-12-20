@@ -9,7 +9,7 @@
 
 Erneut befinden wir uns an dem Punkt, wo wir die genaue Verteilung zu etwas nicht
 wissen. Bzw. wir wissen ggf. was für eine Art von Verteilung haben, wissen dann
-aber nicht mit welchen Parametern diese Verteilung aufgebaut ist. Dieses Thema
+aber nicht mit welchen Parametern diese Verteilung aufgebaut ist. Dieses Kapitel
 beschäftigt sich eben genau mit der Bestimmung solcher Parameter.
 
 Aber erst einmal was sind denn überhaupt diese Parameter? \
@@ -29,7 +29,7 @@ $theta = (mu, sigma^2)^T$. Nun einmal für alle uns bekannte Verteilungen:
 
 #note[Jan, genauso wie viele andere auch, verwenden oft auch eckige Klammern
 um den Vektor darzustellen. Um das ganze allerdings einheitlich mit Mathe I
-zu machen wurden hier Runde Klammern gewählt.]
+kompatibel zu machen wurden hier Runde Klammern gewählt.]
 
 Um diese Parameter zu schätzen gibt es nun zwei Arten von Estimators:
 
@@ -67,8 +67,8 @@ Dafür müssen die Daten allerdings *unabhängig* und *gleichmäßig verteilt*
 (i.i.d.) sein,heißt:
 - unabhängig: $P(X_1 <= alpha, X_2 <= beta)=P(X_1 <= alpha) P(X_2 <= beta) quad
   forall alpha, beta in bb(R)$
-- gleichmäßig verteilt: $P(X_1 <= alpha) = P(X_2 <= beta) quad forall alpha, 
-  beta in bb(R)$
+- gleichmäßig verteilt: $P(X_1 <= alpha) = P(X_2 <= alpha) quad 
+  forall alpha in bb(R)$
 
 Aus dieser Bedingung erhalten wir dann:
 $
@@ -77,14 +77,15 @@ $
   =^"i.i.d." p(x_1 | theta) p(x_2 | theta) ... p(x_n | theta) 
   = product_(k=1)^n p(x_k | theta)
 $
-Für das Ergebnis der MLE schreiben wir auch $hat(theta)_"ML"$. Das wichtige
-hierbei ist das dies erst einmal wieder als Zufallsvariable ansehbar ist. Uns
-interessiert dabei dann der Erwartungswert und die Varianz.
+Für das Ergebnis der MLE schreiben wir auch $hat(theta)_"ML"$. Sofern wir nun
+nicht konkret bereits alle Werte zur Berechnung haben ist dies erst einmal 
+wieder als Zufallsvariable ansehbar. Uns interessiert dabei dann der 
+Erwartungswert und die Varianz.
 
 *Log Likelihood*: \
 Da es meist einfacher zu berechnen ist, kann man auch den Logarithmus der
-Likelihood maximieren. Dies ist möglich, da der Logarithmus soweit ordentlich
-runterskaliert.
+Likelihood maximieren. Dies ist möglich, da der Logarithmus ordentlich
+runterskaliert und monoton ist.
 
 $
   log L(theta) = log p(cal(D) | theta) = log product_(k=1)^n p(x_k | theta) = 
@@ -98,7 +99,7 @@ floating point precision unserer Rechner nicht ankratzen.
 
 == Bayesian Estimation
 
-Was man nun beobachten kann, ist das in MLE die Parameter $theta$ als feste
+Was man nun beobachten kann, ist dass in MLE die Parameter $theta$ als feste
 Werte angesehen werden, weswegen es sich dabei auch um Point Estimators handelt.
 Nun betrachten wir aber mal einen anderen Fall, bei dem wir unsere Parameter
 $theta$ als eine Zufallsvariable betrachten. Dabei kann dann erneut ein fester
@@ -124,7 +125,7 @@ $
 Durch gewisse Umformungen erhalten wir dazu noch folgende Formel zur Bestimmung
 der Evidence $p(D)$:
 $
-  p(D) = integral p(D|theta)p(theta) dif theta 
+  p(D) = integral p(D | theta)p(theta) dif theta 
   = integral L(theta) p(theta) dif theta
 $
 
@@ -225,9 +226,9 @@ in Bezug auf KI -- auch als weights bezeichnen.]
 
 === Least Squares Linear Regression
 
-Zuerst gucken wir uns die Least Squares Linear Regression an. Wie man ggf.
-am Namen schon erkennen kann bekommen wir hier eine lineare Abschätzung.
-Also eben eine Gerade $y = m x + b$ bzw. Ausgleichsgerade.
+Zuerst wollen wir einmal eine Gerade $y = m x + b$ bzw. Ausgleichsgerade für
+unsere Daten bestimmen. Dafür nutzen wir die least squares linear regression.
+Diese sieht wie folgt aus:
 
 Wir haben nun folgende Daten beobachtet:
 - Eingaben $cal(X) = {x_1,...,x_n | x_i in bb(R)^d}$
@@ -283,7 +284,7 @@ Nun wollen wir all diese Gleichungen nach $w$ auflösen.
 + #[
   Nun zum Herzstück dieser Methode: Wir wollen nun unsere Parameter $w$ so 
   wählen, dass die Differenz zwischen unseren Eingabepunkten $hat(X)^T w$ und
-  den Ergebnissen $y$ zum Quadrat hin recht niedrig ausfällt.
+  den Ergebnissen $y$ zum Quadrat hin recht niedrig ausfällt (least squares).
   Also:
   $
     hat(w) = arg min_w norm(hat(X)^T w - y)_2^2 
@@ -294,16 +295,19 @@ Nun wollen wir all diese Gleichungen nach $w$ auflösen.
     gradient_w norm(hat(X)^T w - y)_2^2 = 0
   $
   // TODO: Genauer auf Formel eingehen
-  Aber allgemein erhält man:
+  Allgemein erhält man somit:
   $
     hat(X)^T hat(w) = y <=> hat(X) hat(X)^T hat(w) = hat(X) y <=>
     hat(w) = (hat(X) hat(X)^T)^(-1) hat(X) y
   $
 ]
 
-Aber hieraus erhält man eben nur lineare Abschätzungen.
-
 === Polynomial Regression
+
+An sich ist Polynomial Regression auch eine Art von Linear Regression. Grund
+dafür ist, dass sich das linear nicht unbedgint auf das Verhätlnis der Ein- und
+Ausgaben, sondern auf das Verhältnis der Funktion und der Parameter -- diese
+also linear einfließen -- bezieht.
 
 Ohne jetzt auf genaue Lösungsstrategien einzugehen wollen wir uns trotzdem mal
 den Ansatz angucken. Wir stellen nun folgende Gleichung auf:
@@ -313,8 +317,8 @@ $
 Dies ist eben einfach die Gleichung eines Polynom $M$-ten Grades. Dazu bleibt 
 wie gesagt die Herleitung von $w$ offen.
 
-Man beachte, dass für zu große $M$ dieser Ansatz zu overfitting, also einer
-zu sehr an den Datenpunkten orientierten Funktion, die nichtmehr direkt ein
+Man beachte, dass für zu große $M$ dieser Ansatz zu overfitting führt. Also einer
+zu sehr an den Datenpunkten orientierten Funktion, die nicht mehr direkt ein
 Mittel aus den Punkten zieht sondern nur noch die Punkte selbst einbezieht.
 
 === MLE Regression bzw. Probabilistic Regression
@@ -340,9 +344,9 @@ finden. Dazu wollen wir hier für beliebige $x$ einen entsprechenden Zielwert
 $f(x)=t$ bestimmen. Die Idee hier ist nun, mittels einer Gaußverteilung die Wsk.
 zu  bestimmen, dass der Wert $t$ angenomen wird.
 
-Diese Gaußverteilung hat den Mittelwert den Mittelwert $y(x,w)$ ($y$ aus 
-Polynomial Regression, Grad $M$ scheint erstmal nicht so relevant zu sein) und 
-die Standardabweichung eines gegebenen $sigma$ hat.
+Diese Gaußverteilung hat den Mittelwert $y(x,w)$ ($y$ aus Polynomial Regression,
+Grad $M$ scheint erstmal nicht so relevant zu sein) und die Standardabweichung 
+eines gegebenen $sigma$ hat.
 
 Setzen wir das ganze zusammen erhalten wir: 
 $
@@ -418,9 +422,9 @@ Nun haben wir auf der einen Seite die Funktion $t=f(x)=y(x,w_"ML")$ zur
 Bestimmung des Werts von Datenpunkten und damit verbunden die Wsk. 
 $p(t|x; w, sigma)$, dass $t$ der richtige Wert für $x$ ist.
 
-Nun ist es unser Ziel eine tatsächliche Schätzung über den Funktionswert
-$t$ für einen Datenpuntk $x$ abzugeben. Dafür können wir sogenannte
-*Loss Functions* nutzen:
+Unser Ziel ist es eine tatsächliche Schätzung über den Funktionswert $t$ für
+einen Datenpuntk $x$ abzugeben. Dafür können wir sogenannte *Loss Functions* 
+nutzen:
 
 Im allgemeinen ist eine loss function erstmal eine Funktion 
 $L: bb(R) times bb(R) -> bb(R)^+$, die zum einen unsere Schätzung $t$ und
@@ -459,8 +463,6 @@ $
   f(x) = integral t p(t | x; y(x, w_"ML"), sigma) dif t
   = integral t cal(N) (t; y(x, w_"ML"), sigma^2) dif t = y(x,w_"ML")
 $
-#sub[Hätte man sich ggf. auch schon denken können. Haben jetzt durch die loss
-function nichts dazugewonnen.]
 
 === Bayesian Linear Regression
 
@@ -524,11 +526,11 @@ Zuerst fassen wir den Term $sigma^2 slash sigma_0^2$ zu $lambda$ zusammen.
 Nun fragt sich bestimmt jeder vom Dorf bis zur Stadt: was macht dieses 
 $lambda I$. Wie man in @lambda_complexity sehen kann, hat least squares (die
 bisher genutzte Loss/Error Function, die wir minimiert haben, siehe auch unsere
-Parameter Schätzungen von MLE) das "Problem", dass es für Punkte einen recht 
-ähnlichen Wert annimmt. Dies ist eben dieses Tal im Graphen. Das ist eben ein 
-Problem, weil dann bereits leichte Abweichung z.B. durch Rundungsfehler etc. 
-bereits einen größeren Effekt auf die Wahl unserer Parameter, was eben schnell 
-zu inkonsistenz (overfitting) führen kann. Deshalb fügen wir eben die 
+Parameter Schätzungen von MLE) das "Problem", dass es für viele Punkte einen 
+recht ähnlichen Wert annimmt. Dies ist eben dieses Tal im Graphen. Das ist eben 
+ein Problem, weil dann bereits leichte Abweichung z.B. durch Rundungsfehler etc. 
+bereits einen größeren Effekt auf die Wahl unserer Parameter haben, was eben 
+schnell zu inkonsistenz (overfitting) führen kann. Deshalb fügen wir eben die 
 "Bestrafung" $lambda I$ hinzu, damit wir dieses lange Tal in ein großes Minimum 
 umwandeln, welches eben darauf abzielt unsere Parameter auf $0$ zu bewegen. 
 Dadurch haben eben kleinere Änderungen nicht mehr so einen großen Effekt.
@@ -623,7 +625,7 @@ $
 $sigma(a)$ bezeichnet dabei die Sigmoid Funktion. Diese quetscht eine beliebige
 relle Zahl in das Intervall $[0,1]$.
 
-Nun ist es unser Ziel bestimmen zu können ob eine Eingabe $x$ zu einer der
+Nun ist es unser Ziel bestimmen zu können, ob eine Eingabe $x$ zu einer der
 beiden Klassen gehört. Wenn man sich nun mehrere Datenpunkte in einem Graphen
 vorstellt (siehe Folie 86) wollen wir anschaulich nun diese Trennlinie in der
 Mitte bestimmen. Damit sagen wir dann, dass alles auf der einen Seite zur einen
@@ -636,8 +638,7 @@ $
 
 #note[Wieso genau wir das ganze über $a$ einsetzen können habe ich noch nicht
 verstanden. Man beachte zudem, dass auf den Folien wieder $w$ als Vektor
-angesehen wird. Da wir hier allerdings im Eindimensionalen sind macht das meines
-erachtens wenig Sinn.]
+angesehen wird.]
 
 Für bekannte Daten $X={x_1,...,x_n}$ und $Y={y_1,...,y_n}$, wobei für alle $y_i$
 gilt:
@@ -754,6 +755,8 @@ genau wird jedoch nur minimal in Kapitel 5 Folie 69f. behandelt.]
   Parametern wieder bei Schritt 2 starten. Dies solange machen bis keine starke
   Änderung mehr auftritt.
 
+Und damit erhalten wir dann am Ende auch gute Parameter. Wir laufen jedoch hier
+wieder in die Gefahr nur ein lokales Maximum zu finden.
 
 // Ggf. noch einbauen:
 
