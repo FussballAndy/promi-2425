@@ -83,6 +83,15 @@
   #emoji.warning *Ggf. falsch:* #body
 ]
 
+#let digression(title, breakable: true, body) = block(
+  stroke: 1pt + black, 
+  inset: 5pt, 
+  width: 100%,
+  breakable: breakable)[
+    *Exkurs*: #title \
+    #body
+  ]
+
 #let variance = math.bb("V")
 #let expect = math.bb("E")
 

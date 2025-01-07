@@ -97,8 +97,7 @@ Kommen wir also nun konkret zur Bestimmung von Information:
 ]
 
 // box, da sonst blödes page breaking. Ggf. bei neuem layout zu block
-#box(stroke: 1pt + black, inset: 5pt, width: 100%)[
-  *Exkurs*: Warum der Logarithmus \
+#digression([Warum der Logarithmus], breakable: false)[
   Man fragt sich nun vielleicht, warum hier der Logarithmus genutzt wurde und 
   nicht einfach nur $1 \/ p(x)$. \
   Das erste Problem wäre, dass die Information einer Nachricht die immer 

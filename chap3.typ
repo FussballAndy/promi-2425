@@ -254,9 +254,8 @@ erstmal ein Verständniss von Lagrangian benötigen. Also fassen wirs kurz, wir
 erhalten, dass in solch einem Fall eine Uniforme Distribution mit Wsk. 
 $p(x) = 1 slash (b-a)$ am besten geeignet ist bzw. am meisten Entropie hat.
 
-#block(stroke: 1pt + black, inset: 5pt, width: 100%)[
+#digression([Wie leitet man so etwas her?])[
   #let Lagrangian = math.cal("L")
-  *Exkurs*: Wie leitet man so etwas her? \
   Wie bereits erwähnt nutzen wir hier maßgeblich den Lagrangian Multiplier bzw
   die Lagrange Funktion.
   Diese hilft uns den Maximalwert einer Methode unter gewissen Einschränkungen
