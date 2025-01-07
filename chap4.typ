@@ -2,7 +2,7 @@
 
 #show: book-template.with(
   chapter: 4,
-  version: "1.0"
+  version: "1.1"
 )
 
 = Estimators
@@ -734,7 +734,8 @@ des Algorithmus.
 #note[Es scheint so, als ob wir auch die Anzahl der Cluster $K$ schätzen, wie
 genau wird jedoch nur minimal in Kapitel 5 Folie 69f. behandelt.]
 
-+ Parameter (in unserem Fall $mu_k$, $Sigma_k$ und $pi_k$) initialisieren
++ Parameter (in unserem Fall Erwartungswerte $mu_k$, Kovarianzmatrizen 
+  $Sigma_k$ und Gewichte $pi_k$) initialisieren
 + E-Step: Basierend auf diesen Parametern die responsibilities ausrechnen:
   $
     gamma_j (x_i) = (pi_j cal(N) (x_i; mu_j, Sigma_j))/
@@ -746,8 +747,8 @@ genau wird jedoch nur minimal in Kapitel 5 Folie 69f. behandelt.]
     hat(n)_j &= sum_(i=1)^n gamma_j (x_i) \
     hat(pi)_j &= hat(n)_j / n \
     hat(mu)_j &= 1/hat(n)_j sum_(i=1)^n gamma_j (x_i) x_i \
-    hat(Sigma)_j &= 1/hat(n)_j sum_(i=1)^n gamma_j (x_i) 
-      angle.l (x_i - hat(mu)_j) | (x_i - hat(mu)_j) angle.r
+    hat(Sigma)_j &= 1/hat(n)_j sum_(i=1)^n gamma_j (x_i) (x_i - hat(mu)_j) 
+      (x_i - hat(mu)_j)^T (*)
   $
   #note[$hat(n)_j$ bezeichnet dabei die Schätzung, wie viele Datenpunkte von
   der $j$-ten Verteilung erstellt wurden.]
@@ -757,6 +758,27 @@ genau wird jedoch nur minimal in Kapitel 5 Folie 69f. behandelt.]
 
 Und damit erhalten wir dann am Ende auch gute Parameter. Wir laufen jedoch hier
 wieder in die Gefahr nur ein lokales Maximum zu finden.
+
+#digression([_Outer Product_])[
+  Als Hilfe zur Berechnung von $(*)$ sei noch das _Outer Product_ gezeigt. Auch 
+  wenn man sich die Struktur davon durch ausrechnen sehr leicht selbst herleiten 
+  kann, sei diese hier trotzdem einmal gezeigt:
+  $
+    u v^T = vec(u_1, u_2, u_3, u_4) mat(v_1, v_2, v_3) = mat(
+      u_1 v_1, u_1 v_2, u_1 v_3;
+      u_2 v_1, u_2 v_2, u_2 v_3;
+      u_3 v_1, u_3 v_2, u_3 v_3;
+      u_4 v_1, u_4 v_2, u_4 v_3; 
+    )
+  $
+  Dies kann man dann eben auf beliebig große, reelle Vektoren übertragen.
+]
+
+#line(length: 100%)
+
+*Changelog*:
+- 1.0 #sym.arrow.r 1.1: Fix von Formel für $hat(Sigma)_j$ in M-Step von EM
+  Algorithmus und hinzufügen von _Outer Product_ Exkurs.
 
 // Ggf. noch einbauen:
 
