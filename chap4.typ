@@ -2,7 +2,7 @@
 
 #show: book-template.with(
   chapter: 4,
-  version: "1.1"
+  version: "1.1.1"
 )
 
 = Estimators
@@ -312,7 +312,7 @@ also linear einfließen -- bezieht.
 Ohne jetzt auf genaue Lösungsstrategien einzugehen wollen wir uns trotzdem mal
 den Ansatz angucken. Wir stellen nun folgende Gleichung auf:
 $
-  y(x,w) = sum_(i=1)^M w_i x^i
+  y(x,w) = sum_(i=0)^M w_i x^i
 $
 Dies ist eben einfach die Gleichung eines Polynom $M$-ten Grades. Dazu bleibt 
 wie gesagt die Herleitung von $w$ offen.
@@ -416,7 +416,7 @@ Damit ergibt sich dann also die Wsk.-Verteilung $p(t|x; w_"ML", sigma_"ML")$,
 dass unsere gesuchte Funktion an $x$ den Wert $t$ annimmt.
 
 #dangerous[Ab hier kommt etwas mehr Freitext bzw. freihändigere Interpretation
-von Jans Folien. Zudem wird die obige Rechnung nicht mehr wirklcih fortgeführt.]
+von Jans Folien. Zudem wird die obige Rechnung nicht mehr wirklich fortgeführt.]
 
 Nun haben wir auf der einen Seite die Funktion $t=f(x)=y(x,w_"ML")$ zur
 Bestimmung des Werts von Datenpunkten und damit verbunden die Wsk. 
@@ -779,6 +779,8 @@ wieder in die Gefahr nur ein lokales Maximum zu finden.
 *Changelog*:
 - 1.0 #sym.arrow.r 1.1: Fix von Formel für $hat(Sigma)_j$ in M-Step von EM
   Algorithmus und hinzufügen von _Outer Product_ Exkurs.
+- 1.1 #sym.arrow.r 1.1.1: Fix von Startindex bei Funktion $y$ und 
+  Rechtschreibfehler
 
 // Ggf. noch einbauen:
 
