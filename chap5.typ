@@ -35,7 +35,7 @@ Zuerst einmal folgende Definitionen:
 - *Null Hypothesis*, *Alterntive Hypothesis*: Zwei Hypothesen über den
   gleichen Parameter, wobei diese sich wiedersprechen. \
   Wir schreiben: $H_0: theta in Theta_0$ und $H_1: theta in Theta_0^C$.
-  Dabei ist $Theta_0$ eine Teilmenge der gesamten Parameter.
+  Dabei ist $Theta_0$ eine Teilmenge der gesamten Parameter $Theta$.
 - *Test*: In einem Test werden Daten ausgewertet und basierend darauf
   entschieden, welche der beiden Hypothesen wahr ist. Dazu nutzt man
   meist auch noch eine _rejection region_ $R$.
@@ -58,18 +58,54 @@ Basierend darauf sieht der Ablauf eines Tests wie folgt aus:
 Und nun betrachten wir einmal verschiedene Methoden zur Auswertung von
 Testergebnissen.
 
-== Likelihood Test
+== Likelihood Ratio Test
 
-Hier wollen wir eben den Likelihood nutzen, um zu evaluieren, wie gut unsere
-Daten sind.
+Zuerst erinnern wir uns zurück an Likelihood:
 $
   L(theta | x_1,x_2,...,x_N) = L(theta | cal(D)) = p(cal(D) | theta)
     = product_(i=1)^N p(x_i | theta)
 $
-#note[Wir nutzen hier den unüblichen Syntax $L(theta | cal(D))$. 
-Fragt nicht warum.]
+#note[Wir nutzen hier den unüblichen Syntax $L(theta | cal(D))$ für Likelihood. 
+Fragt nicht warum. Zudem bringt dies wieder eine i.i.d. Anforderung an die
+Testergebnisse]
 
+Dadurch stellen wir nun ein Likelihood Ratio auf, welches prüft, wie 
+wahrscheinlich es ist, dass wir gerade die Null Hypothesis testen.
+$
+  lambda (cal(D)) = (sup {L(theta | cal(D)) : theta in Theta_0})
+    / (sup {L(theta | cal(D)) : theta in Theta})
+$
+#note[Hier genutzte Notation für $sup$ ist nicht einheitlich mit der von den 
+Folien. Zudem nutzt Jan hier eigentlich $x$ für die Daten.]
 
+Ein Likelihood Ratio Test ist nun ein Test, bei dem primär Ergebnisse in
+${cal(D) : lambda (cal(D)) <= c}$ mit $0 <= c <= 1$ verworfen werden. \
+#sub[In den Folien steht hier was von rejection region. Allerdings macht es
+wenig Sinn, dass unsere rejection region aus einzelnen Datensätzen besteht.]
+
+*Normalverteilte Ergebnisse und simple Hypothesen*: \
+Falls unsere Daten aus einer Normalverteilung $cal(N)(theta,1)$ stammen und 
+unsere Hypothesen von der Form $H_0: theta = theta_0$, $H_1: theta != theta_0$ 
+sind, können wir das ganze auch in folgendes verkürzen:
+$
+  lambda (cal(D)) = L(theta_0 | cal(D)) / L(hat(theta) | cal(D))
+  = exp {(-n (overline(x) - theta_0)^2) / 2}
+$
+Dabei ist $hat(theta) = arg sup_(theta in Theta) L(theta | cal(D))$ per MLE 
+bestimmt. Und da wir somit $Theta_0 = {theta_0}$ ist können wir dieses direkt
+einsetzen. (Herleitung zu letztem Teil auf den Folien)
+
+Damit erhalten wir dann, dass alle Ergebnisse aus
+${cal(D) : |overline(x) - theta_0| >= sqrt(-2(log c) slash n)}$ abgelehnt
+werden sollten.
+
+#v(2em)
+
+Zudem kann man mittels LRT _"size $alpha$" LRT_ formen, indem man $c$ so wählt,
+dass $sup_(theta in Theta_0) P (lambda (cal(D) <= c)) = alpha$.
+
+// Fragen bisher: warum rejection region von ergebnissätzen, warum hier P eigtl.
+// abhängig von theta
 
 
 #emoji.construction TODO
