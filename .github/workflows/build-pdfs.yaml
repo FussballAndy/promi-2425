@@ -1,0 +1,32 @@
+name: build documents
+on:
+  push:
+    branches: main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: get images
+        run: |
+          ./download-images.sh
+
+      # is it even necessary to use an action for this?
+      - name: build pdfs
+        uses: lvignoli/typst-action@main
+        with:
+          source_file: |
+            chap1.typ
+            chap2.typ
+            chap3.typ
+            chap4.typ
+
+      - name: upload pdfs
+        uses: actions/upload-artifact@v4
+        # always upload, even if building fails
+        if: "success() || failure()"
+        with:
+          name: promi-pdfs
+          path: "*.pdf"
