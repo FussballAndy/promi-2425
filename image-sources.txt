@@ -1,0 +1,1 @@
+lambda_complexity.png https://i.sstatic.net/1d8XV.png https://stats.stackexchange.com/questions/118712/why-does-ridge-estimate-become-better-than-ols-by-adding-a-constant-to-the-diago
