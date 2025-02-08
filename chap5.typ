@@ -85,8 +85,8 @@ wenig Sinn, dass unsere rejection region aus einzelnen Datensätzen besteht.]
 
 *Normalverteilte Ergebnisse und simple Hypothesen*: \
 Falls unsere Daten aus einer Normalverteilung $cal(N)(theta,1)$ stammen und 
-unsere Hypothesen von der Form $H_0: theta = theta_0$, $H_1: theta != theta_0$ 
-sind, können wir das ganze auch in folgendes verkürzen:
+unsere Hypothesen von der Form #box($H_0: theta = theta_0$), 
+$H_1: theta != theta_0$ sind, können wir das ganze auch in folgendes verkürzen:
 $
   lambda (cal(D)) = L(theta_0 | cal(D)) / L(hat(theta) | cal(D))
   = exp {(-n (overline(x) - theta_0)^2) / 2}
@@ -102,10 +102,62 @@ werden sollten.
 #v(2em)
 
 Zudem kann man mittels LRT _"size $alpha$" LRT_ formen, indem man $c$ so wählt,
-dass $sup_(theta in Theta_0) P (lambda (cal(D) <= c)) = alpha$.
+dass $sup_(theta in Theta_0) P (lambda (cal(D)) <= c) = alpha$.
 
 // Fragen bisher: warum rejection region von ergebnissätzen, warum hier P eigtl.
 // abhängig von theta
+
+= Gaussian Z-Test
+
+Mittels dem Gaussian Z-Test können wir vor allem Hypothesen über Normalverteilte
+Daten testen. Dabei testen wir ob der Erwartungswert einen gewissen Wert
+annimmt. Die Standardabweichung hingegen muss fest gewählt bzw. bekannt sein.
+
+#note[Entsprechend nimmt in einem Z-Test die test statistic auch eine
+Normalverteilung an.]
+
+Zur Hilfe führen wir zuerst die Variable $z_alpha$ ein. Diese gibt an, dass eine
+Normalverteilte Zufallsvariable mit Wsk. $alpha$ größer als $z_alpha$ ist.
+$
+  Z ~ cal(N) (0,1) quad "und" quad P(Z > z_alpha) = alpha
+$
+
+Zuerst noch zwei Bedingungen:
+1. Unsere Daten müssen dann entsprechend aus einer Normalverteilung stammen, 
+  also $X_1,...,X_N ~ cal(N) (mu, sigma_0^2)$ (dies sorgt auch für i.i.d.). 
+  $sigma_0$ muss erneut konstant sein.
+2. Unsere null hypothesis muss eine der folgenden Formen haben:
+  $
+    (i) H_0: mu = mu_0, quad (i i) H_0: mu <= mu_0, quad (i i i) H_0: mu >= mu_0
+  $
+
+Für die test statistic stellen wir folgende Formel auf:
+$
+  Z = T(X_1,...,X_N) = (sqrt(N))/sigma_0 (accent(X, macron) - mu_0) quad "mit"
+    quad accent(X, macron) = 1/N sum_(n=1)^N X_n
+$
+
+Bei unserer rejection region können wir uns einen aus folgenden 3 Fällen
+aussuchen:
+#grid(columns: (1fr,)*3, align: center)[
+  Two-sided
+
+  $R:={z in RR : |z| > z_(alpha slash 2)}$
+][
+  Left-sided
+
+  $R:= {z in RR : z > z_alpha}$
+][
+  Right-sided
+
+  $R := {z in RR : z < z_alpha}$
+]
+
+#note[Für Visualisierungen der drei Fälle am besten auf die Folien schauen.]
+
+Diese Fälle geben dann an, welche Ausreiser wir ablehnen. Heißt ob wir 
+Hypothesen ablehnen, bei denen der Erwartungswert in eine der beiden Richtungen
+abdriftet, oder eben nur nach links/rechts.
 
 
 #emoji.construction TODO
