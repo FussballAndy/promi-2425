@@ -107,7 +107,7 @@ dass $sup_(theta in Theta_0) P (lambda (cal(D)) <= c) = alpha$.
 // Fragen bisher: warum rejection region von ergebnissätzen, warum hier P eigtl.
 // abhängig von theta
 
-= Gaussian Z-Test
+== Gaussian Z-Test
 
 Mittels dem Gaussian Z-Test können wir vor allem Hypothesen über Normalverteilte
 Daten testen. Dabei testen wir ob der Erwartungswert einen gewissen Wert
@@ -159,6 +159,97 @@ Diese Fälle geben dann an, welche Ausreiser wir ablehnen. Heißt ob wir
 Hypothesen ablehnen, bei denen der Erwartungswert in eine der beiden Richtungen
 abdriftet, oder eben nur nach links/rechts.
 
+Und damit können wir dann unseren Z-Test durchführen.
+
+Wenn wir allerdings die Standardabweichung unserer Daten nicht wissen, kommen
+wir mit dem Z-Test nicht weiter. Dafür gibt es dann aber andere Arten, wie z.B.
+den Student's T-Test (siehe Übung dafür).
+
+== A/B Testing
+
+Dazu sei auch noch einmal kurz A/B Testing angesprochen. Hier testen wir
+effektiv zwei Varianten: A und B, und vergleichen die Ergebnisse. Dies kann
+heißen, dass wir die Nutzer in zwei Gruppen unterteilen und jeweils die eine
+bzw. andere Sache testen. Man könnte dies aber auch so sehen, dass zuerst
+alle Nutzer in Gruppe A sind und dann nach einer Weile alle Nutzer in Gruppe B
+gewechselt werden. Wichtig ist hier jedoch, dass die Nutzer i.i.d. in die
+Gruppen eingeteilt werden. Mehr hierzu aber auch in der Übung.
+
+== Fehler in Hypothesis Testing
+
+Leider ist nicht alles fehlerfrei. Beim Testen unterscheiden wir dabei speziell
+folgende Fälle:
+
+#let vert(c) = rotate(-90deg, c, reflow: true)
+
+#align(center, block(width: 50%, breakable: false, table(
+  columns: (auto,auto,1fr,1fr),
+  stroke: (x,y) => if x > 1 or y > 1 { 1pt },
+  align: center + horizon,
+  [], [], table.cell("Reality", colspan: 2),
+  [], [], "Positive", "Negative",
+  table.cell(vert[Study findings], rowspan: 2), 
+  vert[Positive], [True positive], [False positive \ #sub[Type I Error]],
+  vert[Negative], [False negative \ #sub[Type II Error]], [True negative]
+)))
+
+Um Type I Error zu reduzieren können wir das _significance level_ $alpha$
+reduzieren. Dies erhöht allerdings die Wsk. auf Type II Error. \
+Für statistiche Behauptungen ist z.B. $alpha <= 0.05$ relevant. Mittlerweile
+wollen aber viele, dass dieser Wert weiter auf $alpha <= 0.005$ runtergesetzt
+wird, da trotzdem noch zu viele Falschaussagen entstehen.
+
+Um wiederum Type II Error zu reduzieren müssen wir die sample size erhöhen,
+also mehr testen.
+
+= Evaluation
+
+Nachdem wir nun mittels Experiment unser Modell aufgestellt haben, gilt es nun
+noch zu überprüfen, dass dieses nicht ggf. doch unpassend ist. Es also z.B.
+zu genau die gemessenen Datenpunkte beschreibt, dafür aber an allen anderen
+Punkten unbrauchbar ist.
+
+Dazu kann man bereits einmal folgendes festhalten: es reicht nicht einen
+niedrigen Training Error zu haben, sondern man sollte dazu auch noch einen
+niedrigen Testing Error haben. Dafür braucht man eben einen (kleineren)
+Datensatz, der ausschließlich zum testen genutzt wird, und der disjunkt mit
+dem Trainings Datensatz ist.
+
+Aber was ist nun das beste Modell? \
+Dies ist leider nicht gerade trivial. Ein Ansatz ist allerdings Occam's Razor:
+laut diesem sollen wir das simpelste Modell nehmen, welches unsere Daten gut 
+abdeckt. "Simpelste" heißt hier das Modell mit der niedrigsten Komplexität. Wie 
+genau man Komplexität beschreibt oder misst wird hier nicht erwähnt. Man kann 
+sich diese allerdings stark als die Hyperparameter der einzelnen Fitting 
+Methoden vorstellen. Also z.B. den Grad des Polynoms bei linear regression oder 
+der Anzahl an Clustern beim Clustering.
+
+Speziell fürs Clustering gibt es aber noch andere Methoden:
+- #[
+  Elbow Method:
+
+  Die gesamte within-cluster sum of square (WSS) in relation zur Anzahl an
+  Klustern plotten. Dabei wird es dann einen sog. "elbow point" geben. Dieser
+  ist quasi der Punkt ab dem die Kurve stark abflacht. Dieser Punkt gibt dann
+  die optimale Anzahl an.
+]
+- #[
+  Gap statistics:
+
+  Diese Methode baut wieder etwas mehr auf Vermutung auf. Hier stellt man eine
+  test statistic und Null Hypothese um den Erwartungswert für die \#Kluster auf
+  und vergleicht die Wsk. Verteilung dieser Null Statistic mit WSS. #sub[Aber
+  genaueres kann ich hierzu auch nicht sagen.]
+]
+
+Allerdings sollte man hier alles als kritisch betrachten. Denn z.B. im Falle
+von deep learning gibt es das Phänomen "double descent". Dieses besagt im
+groben, dass zwar der Test error, wenn sich die Anzahl der Parameter der Anzahl
+an Datenpunkten annähert, steigt. Wenn man allerdings noch mehr Parameter wählt
+sinkt der Test error auf einmal noch stärker und man erhält ein noch genaueres
+Modell.
+
+== Model Validation
 
 #emoji.construction TODO
 
