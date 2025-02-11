@@ -8,20 +8,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: typst-community/setup-typst@v4
 
       - name: get images
         run: |
           ./download-images.sh
 
-      # is it even necessary to use an action for this?
       - name: build pdfs
-        uses: lvignoli/typst-action@main
-        with:
-          source_file: |
-            chap1.typ
-            chap2.typ
-            chap3.typ
-            chap4.typ
+        run: |
+          typst c chap1.typ
+          typst c chap2.typ
+          typst c chap3.typ
+          typst c chap4.typ
 
       - name: upload pdfs
         uses: actions/upload-artifact@v4
