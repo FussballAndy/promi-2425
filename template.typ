@@ -26,7 +26,7 @@
   )
 
   set par(justify: true)
-  set text(font: "Arial", size: 10pt, lang: "de")
+  set text(font: "New Computer Modern", size: 10pt, lang: "de")
   show math.equation: set text(font: "New Computer Modern Math", size: 1.1em)
   set list(marker: [--])
 
