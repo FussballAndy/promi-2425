@@ -325,8 +325,8 @@ Mittel aus den Punkten zieht sondern nur noch die Punkte selbst einbezieht.
 
 #block(breakable: false, 
 note[Im folgenden verwenden wir nun die Schreibweise $p(x;theta)$, wobei
-das $;$ als Trennung zwischen "Eingabe" und Parametern der Wsk. Dabei kann es 
-abhängig von der Wsk. folgende zwei Sachen bedeuten: \
+das $;$ als Trennung zwischen "Eingabe" und Parametern der Wsk. steht. Dabei 
+kann es abhängig von der Wsk. folgende zwei Sachen bedeuten: \
 1. $p(A; B)$ sofern noch keine konditionale Abhängigkeit vorkam steht $;$ für
   diese konditionale Abhängigkeit. Also $p(A | B)$
 2. $p(A | B; C)$ sofern bereits eine vorkam trennt hier $;$ Parameter und
