@@ -2,7 +2,7 @@
 
 #show: book-template.with(
   chapter: 4,
-  version: "1.1.1"
+  version: "1.2"
 )
 
 = Estimators
@@ -171,7 +171,7 @@ Man beachte, dass wir den Nenner $p(D)$ einfach wegstreichen. Ich vermute mal,
 dass dies den Grund hat, dass $p(D)$ unabhängig von $theta$ ist und somit über
 $max$ ein konstanter, ignorierbarer Faktor ist.
 
-Nun wird man feststellen, dass diese Formel recht ähnlich zur MLE aussieht.
+Jetzt wird man feststellen, dass diese Formel recht ähnlich zur MLE aussieht.
 Genauer kann MLE eine Form von MAP betrachtet werden, wobei allerdings der
 Prior $p(theta)$ immer einen konstanten Wert annimmt. Also
 $
@@ -323,23 +323,28 @@ Mittel aus den Punkten zieht sondern nur noch die Punkte selbst einbezieht.
 
 === MLE Regression bzw. Probabilistic Regression
 
-#note[Im folgenden verwenden wir nun die Schreibweise $p(x;theta)$, wobei
-das $;$ als Trennung zwischen "Eingabe" in die Wsk. Funktion und den Parametern
-der Funktion gilt. An sich könnte man es, wie wir es auch davor gemacht haben,
-wieder mit einem $|$ schreiben. Dies kann aber eben auch sehr unübersichtlich
-werden. Bsp.: $p(x|y; a,b)$ steht für $p((x|y) | a,b)$.]
+#block(breakable: false, 
+note[Im folgenden verwenden wir nun die Schreibweise $p(x;theta)$, wobei
+das $;$ als Trennung zwischen "Eingabe" und Parametern der Wsk. Dabei kann es 
+abhängig von der Wsk. folgende zwei Sachen bedeuten: \
+1. $p(A; B)$ sofern noch keine konditionale Abhängigkeit vorkam steht $;$ für
+  diese konditionale Abhängigkeit. Also $p(A | B)$
+2. $p(A | B; C)$ sofern bereits eine vorkam trennt hier $;$ Parameter und
+  andere Abhängigkeiten. Also $p(A | B, C)$
+#sub[Aber wirklich strikt ist hier nichts.]
+])
 
 // Auf Folie 60 scheint Jan ein wenig zu haluzinieren.
 
 #note[Der folgende Abschnitt orientiert sich etwas stärker an der Erklärung
 von Bishop (Seite 28f.)]
 
-Nun befinden wir uns wieder am Punkt wo wir folgendes haben:
+Wir befinden uns also wieder am Punkt wo wir folgendes haben:
 - Eingabedaten $X = (x_1,...,x_n) in bb(R)^(d times n)$
 - Ergebnisse $Y = (y_1,...,y_n)^T in bb(R)^n$
 // Warum soll das ganze Matrix/Vektor sein?
 
-Nun ist es ja unser Ziel eine Grundlegende Struktur für die Funktion $f$ zu 
+Unser Ziel ist es ja eine Grundlegende Struktur für die Funktion $f$ zu 
 finden. Dazu wollen wir hier für beliebige $x$ einen entsprechenden Zielwert 
 $f(x)=t$ bestimmen. Die Idee hier ist nun, mittels einer Gaußverteilung die Wsk.
 zu  bestimmen, dass der Wert $t$ angenomen wird.
@@ -353,7 +358,7 @@ $
   p(t|x; w, sigma) = cal(N) (t; y(x,w), sigma^2)
 $
 
-Nun haben wir also noch die unbekannten Parameter $w$, $sigma$. Diese können
+Jetzt haben wir aber noch die unbekannten Parameter $w$, $sigma$. Diese können
 wir nun mit den uns bekannten Daten und MLE ausrechnen:
 
 $
@@ -361,7 +366,7 @@ $
   = product_(i=1)^n cal(N) (y_i; y(x_i, w), sigma^2)
 $
 
-Das können wir nun mittels Log Likelihood simplifizieren:
+Das Ergebnis können wir mittels Log Likelihood simplifizieren:
 $
   log p(Y | X; w, sigma) &= sum_(i=1)^n log cal(N) (y_i; y(x_n, w), sigma^2) \
   &= sum_(i=1)^n (log (1/sqrt(2 pi sigma^2)) - 1/(2 sigma^2) (y_i-y(x_i,w))^2) \
@@ -369,7 +374,7 @@ $
   - 1/(2 sigma^2) sum_(i=1)^n (y_i - y(x_i,w))^2
 $
 
-Nun kann man eben erneut den Gradient davon bilden und damit die Extremwerte
+Davon können wir dann eben erneut den Gradient bilden und damit die Extremwerte
 berechnen.
 
 Zur Hilfe nehmen wir noch die Funktion $phi_M (x)=(1,x,x^2,...,x^M)^T$. Damit
@@ -382,7 +387,7 @@ $
   sum_(i=1)^n y_i phi_M (x_i) &= sum_(i=1)^n y(x_i, w) phi_M (x_i) & \
 $
 
-Nun definieren wir uns
+Um wieder lineare Algebra anwenden zu können definieren wir uns:
 $
   Phi = mat(|, , |; phi_M (x_1), dots.c, phi_M (x_n); |, , |)
 $
@@ -427,13 +432,13 @@ einen Datenpuntk $x$ abzugeben. Dafür können wir sogenannte *Loss Functions*
 nutzen:
 
 Im allgemeinen ist eine loss function erstmal eine Funktion 
-$L: bb(R) times bb(R) -> bb(R)^+$, die zum einen unsere Schätzung $t$ und
-den tatsächlichen Funktionswert $f(x)$ bekommt. Also $L(t,f(x))$. Diese gibt
-an, wie falsch unsere Schätzung liegt bzw. was für einen Verlust wir im 
+$L: bb(R) times bb(R) -> bb(R)^+$, die unsere Schätzung $t$ und den 
+tatsächlichen Funktionswert $f(x)$ als Eingabe bekommt. Also $L(t,f(x))$. Diese 
+gibt an, wie falsch unsere Schätzung liegt bzw. was für einen Verlust wir im 
 Vergleich zum eigentlichen Wert haben.
 
-Nun wollen wir den erwarteten Verlust über alle Werte minimieren. Dafür
-stellen wir zuerst einmal wieder die Gleichung dafür auf:
+Diese loss function, bzw. den Erwartungswert davon, wollen wir über alle Werte 
+minimieren. Dafür stellen wir zuerst einmal wieder die Gleichung dafür auf:
 $
   bb(E) [L] = integral integral L(t,f(x))p(x,t) dif x dif t
 $ 
@@ -626,15 +631,18 @@ $sigma(a)$ bezeichnet dabei die Sigmoid Funktion. Diese quetscht eine beliebige
 relle Zahl in das Intervall $[0,1]$.
 
 Nun ist es unser Ziel bestimmen zu können, ob eine Eingabe $x$ zu einer der
-beiden Klassen gehört. Wenn man sich nun mehrere Datenpunkte in einem Graphen
-vorstellt (siehe Folie 86) wollen wir anschaulich nun diese Trennlinie in der
+beiden Klassen gehört. Wenn man sich mehrere Datenpunkte in einem Graphen
+vorstellt (siehe Folie 86) wollen wir anschaulich diese Trennlinie in der
 Mitte bestimmen. Damit sagen wir dann, dass alles auf der einen Seite zur einen
 und alles auf der anderen Seite zur anderen Klasse gehört.
 
-Wir stellen also $a=w x + epsilon_0$ und damit dann:
+Wir setzen also $a=w x + epsilon_0$ und damit dann:
 $
   p(C_1 | x) = sigma (w x + epsilon_0)
 $
+
+#dangerous[Man beachte, dass dies ein lineare Linie zieht. Theoretisch könnten wir
+hier wahrscheinlich auch andere Funktionen einsetzen.]
 
 #note[Wieso genau wir das ganze über $a$ einsetzen können habe ich noch nicht
 verstanden. Man beachte zudem, dass auf den Folien wieder $w$ als Vektor
@@ -781,6 +789,7 @@ wieder in die Gefahr nur ein lokales Maximum zu finden.
   Algorithmus und hinzufügen von _Outer Product_ Exkurs.
 - 1.1 #sym.arrow.r 1.1.1: Fix von Startindex bei Funktion $y$ und 
   Rechtschreibfehler
+- 1.1.1 #sym.arrow.r 1.2: Fix von Erklärung für $;$ in Wsk und bessere Sprache
 
 // Ggf. noch einbauen:
 
