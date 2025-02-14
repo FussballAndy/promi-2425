@@ -7,11 +7,10 @@
 
 = Experimental Design
 
-Zuerst behandeln wir Experminete bzw. deren Aufbau. Die Motivation 
-dahinter ist in Bezug auf Kapitel 4, dass wir eben Experimente brauchen,
-um unsere Daten und damit unsere Parameter zu bestimmen. Im folgenden
-werden wir uns also damit beschäftigen, wie ein guter Aufbau von
-Experimenten aussieht.
+Zuerst behandeln wir Experimente bzw. deren Aufbau. Die Motivation dahinter ist 
+in Bezug auf Kapitel 4, dass wir eben Experimente brauchen, um unsere Daten und 
+damit unsere Parameter zu bestimmen. Im folgenden werden wir uns also damit 
+beschäftigen, wie ein guter Aufbau von Experimenten aussieht.
 
 1. Erkennung und Formulierung des Problems
 2. Auswahl der relevanten Ergebniswerte
@@ -143,21 +142,32 @@ aussuchen:
   Two-sided
 
   $R:={z in RR : |z| > z_(alpha slash 2)}$
+
+  $p = 2 min {1-F(Z), F(Z)}$
 ][
   Left-sided
 
   $R:= {z in RR : z > z_alpha}$
+
+  $p = F(Z)$
 ][
   Right-sided
 
   $R := {z in RR : z < z_alpha}$
+
+  $p= 1-F(Z)$
 ]
 
-#note[Für Visualisierungen der drei Fälle am besten auf die Folien schauen.]
+#note[Für Visualisierungen der drei Fälle am besten auf die Folien schauen. F
+ist hierbei die CDF der Normalverteilung.]
 
 Diese Fälle geben dann an, welche Ausreiser wir ablehnen. Heißt ob wir 
 Hypothesen ablehnen, bei denen der Erwartungswert in eine der beiden Richtungen
-abdriftet, oder eben nur nach links/rechts.
+abdriftet, oder eben nur nach links/rechts. \
+$p$ ist hierbei der sogenannte p-value. Dieser wandelt unsere test statistic
+wieder in eine Wsk. um, sodass wir diese dann mit $alpha$ vergleichen können,
+um zu bestimmen, ob wir die null hypothesis annehmen/ablehnen. Gilt also
+$p < alpha$, bzw. $alpha/2$ im two sided, lehnen wir die null hypothesis ab.
 
 Und damit können wir dann unseren Z-Test durchführen.
 
@@ -250,6 +260,51 @@ sinkt der Test error auf einmal noch stärker und man erhält ein noch genaueres
 Modell.
 
 == Model Validation
+
+Nun betrachten wir die Model Validation, also das überprüfen, dass unser Modell
+sinnvoll ist. Dazu nehmen wir uns unser aktuelles Modell $f_theta$. Dabei
+beschreibt $theta$ die Parameter des Modell.
+
+Für eine ordentliche Validierung müssen wir unseren Datensatz in drei Teile
+unterteilen:
+
+#let datasetbox(color, body) = box(fill: color.lighten(60%), inset: 2mm, 
+  width: 100%, radius: 2pt, stroke: color, body)
+
+#align(center, block(width: 60%, grid(
+  columns: (1fr, ) * 4, column-gutter: 5pt,
+  grid.cell(colspan: 2, datasetbox(blue, "Training set")),
+  datasetbox(green, "Validation set"),
+  datasetbox(fuchsia, "Test set")
+)))
+
+Diese haben folgende nutzen:
+- Training set: Damit passen wir den Parameter $theta$ unseres Modells an
+- Validation set: Gucken, ob das gewählte Modell $f$ überhaupt sinnvoll ist und
+  ggf. Hyperparameter anpassen
+- Test set: Am Ende das Modell noch einmal mit ganz frischen Daten testen
+
+Dabei findet Validaten noch eher während der Trainingsphase statt während
+Testing wirklich erst ganz am Ende durchgeführt wird. Zudem müssen all diese
+Datensätze disjunkt sein. Nachdem wir allerdings mit dem aktuellen test set
+getestet haben, müssen wir, sofern wir noch weiter trainieren wollen, ein neues
+test set holen.
+
+Wir betrachten dazu nun den Cross Validation Ansatz: \
+Wir teilen unseren gesamten Datensatz $cal(D)$ in $K$ gleich große Teile auf.
+$cal(D)_1,...,cal(D)_(K-1), cal(D)_K$. Dabei sind $cal(D)_1$ bis $cal(D)_(K-1)$
+training sets und $cal(D)_K$ unser validation set.
+- Mit den training sets können wir unsere Parameter bestimmen
+- und mit dem validation set können wir unser Modell validieren:
+  $
+    L_k (f_theta) = sum_((x,y) in D_K) cal(L) (f_theta (x),y) 
+  $
+Dies wird nun mit jeder möglichen Partition gemacht, was sehr aufwändig ist.
+Dafür haben wir dann allerdings eine gute Bewertung unseres Modells.
+
+Wenn man seine Lebenszeit/Stromrechnung etwas mehr wertet, kann man auch K-fold
+Cross Validation nutzen.
+
 
 #emoji.construction TODO
 
