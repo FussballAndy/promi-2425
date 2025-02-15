@@ -212,6 +212,8 @@ wird, da trotzdem noch zu viele Falschaussagen entstehen.
 Um wiederum Type II Error zu reduzieren müssen wir die sample size erhöhen,
 also mehr testen.
 
+// TODO: Student's t test
+
 = Evaluation
 
 Nachdem wir nun mittels Experiment unser Modell aufgestellt haben, gilt es nun
@@ -262,8 +264,12 @@ Modell.
 == Model Validation
 
 Nun betrachten wir die Model Validation, also das überprüfen, dass unser Modell
-sinnvoll ist. Dazu nehmen wir uns unser aktuelles Modell $f_theta$. Dabei
-beschreibt $theta$ die Parameter des Modell.
+sinnvoll ist. Bzw. finden des sinnvollsten Modell. Dazu nehmen wir uns unser 
+aktuelles Modell $f_theta$. Dabei beschreibt $theta$ die Parameter des Modell.
+
+#note[Modell heißt hier nicht unbedingt nur die Parameter, sondern ggf. auch
+grundlegend die Funktion, also z.B. ob es ein Polynom ist etc. und dazu dann
+auch Hyperparameter wie den Grad des Polynoms.]
 
 Für eine ordentliche Validierung müssen wir unseren Datensatz in drei Teile
 unterteilen:
@@ -291,20 +297,71 @@ getestet haben, müssen wir, sofern wir noch weiter trainieren wollen, ein neues
 test set holen.
 
 Wir betrachten dazu nun den Cross Validation Ansatz: \
-Wir teilen unseren gesamten Datensatz $cal(D)$ in $K$ gleich große Teile auf.
-$cal(D)_1,...,cal(D)_(K-1), cal(D)_K$. Dabei sind $cal(D)_1$ bis $cal(D)_(K-1)$
-training sets und $cal(D)_K$ unser validation set.
+Teile in jeder Iteration den gesamten Datensatz $cal(D)$ in $K$ gleich große 
+Teile auf. $cal(D)_1,...,cal(D)_(K-1), cal(D)_K$. Dabei sind $cal(D)_1$ bis 
+$cal(D)_(K-1)$ training sets und $cal(D)_K$ unser validation set.
 - Mit den training sets können wir unsere Parameter bestimmen
 - und mit dem validation set können wir unser Modell validieren:
   $
     L_k (f_theta) = sum_((x,y) in D_K) cal(L) (f_theta (x),y) 
   $
 Dies wird nun mit jeder möglichen Partition gemacht, was sehr aufwändig ist.
-Dafür haben wir dann allerdings eine gute Bewertung unseres Modells.
+Dafür haben wir dann allerdings eine gute Bewertung unseres Modells bzw. ein
+gutes Modell.
 
 Wenn man seine Lebenszeit/Stromrechnung etwas mehr wertet, kann man auch K-fold
 Cross Validation nutzen.
 
+*K-fold Cross Validation*: \
+Hier teilen wir unsere Daten in $K$ gleich große Mengen, sog. "folds". In jeder
+Iteration nehmen wir dann einen anderen von diesen Folds als validation set
+und den Rest als training set.
+
+Damit bekommen wir dann folgendes für das optimale Modell:
+$
+  f^* = arg min_(f in cal(M)) 1/K sum_(k=1)^K L_k (f)
+$
+
+== Bias & Variance
+
+#let bias = math.op("bias")
+#let var = math.op("var")
+
+#sub[Kann sich hier noch wer daran erinnern, was Aleatoric und Epistemic 
+Uncertainty war? Nein? Gut ich auch nicht.]
+
+/ Aleatoric: Unsicherheit wegen allgemeiner Zufälligkeit eines Events
+/ Epistemic: Unsicherheit wegen fehlendem wissen
+
+Um dies noch einmal zu vertiefen gucken wir uns nun den Bias & Variance tradeoff
+an.
+
+Hier auch erst einmal wieder Begriffsklärung. Dazu nehmen wir unser geschätztes
+Modell $hat(f)_cal(D)$ über den Daten $cal(D)$ und das wahre Modell $f$.
+
+/ bias: die erwartete Abweichung von unserem wahren Modell gemäß den Daten
+  $
+    bias(hat(f)_cal(D)) = expect_cal(D)[hat(f)_cal(D) - f]
+  $
+/ variance: wie davor auch schon ist dies eben einfach die Varianz des 
+  geschätzten Modell, allerdings nur gemäß den Daten.
+  $
+    var(hat(f)_cal(D)) = expect_cal(D)[(hat(f)_cal(D) - 
+      expect_cal(D)[hat(f)_cal(D)])^2]
+  $
+
+#dangerous[Jan definiert das ganze eher über den estimator bzw. dem Parameter.
+Sollte aber denke ich mal keinen großen Unterschied machen.]
+
+Weicht unser erwartetes Modell von dem wahren ab 
+($expect_cal(D)[hat(f)_cal(D)] != f$), so nennen wir unser Modell _biased_.
+Ansonsten _unbiased_. 
+
+Ein estimator, der null bias und minimale Varianz hat, nennen wir _minimum
+variance unbiased estimator_ (MVUE). Ist solch ein estimator noch linear in
+seinen Parametern nennen wir diesen _best linear unbiased estimator_ (BLUE).
+
+Solch ein MVUE wäre nun erwünschenswert, ist aber leider nicht so einfach.
 
 #emoji.construction TODO
 
