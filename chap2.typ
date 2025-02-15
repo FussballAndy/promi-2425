@@ -3,7 +3,7 @@
 
 #show: book-template.with(
   chapter: 2,
-  version: "1.0",
+  version: "1.0.1",
 )
 
 #let source = math.accent("X", math.macron)
@@ -17,7 +17,7 @@ Wissen, welches ein Absender durch einen Informationskanal an einen Empfänger
 vermittelt. Dazu ist es noch wichtig zu erwähnen, das Information und Daten 
 nicht das gleiche sind.
 
-Die Informationstheore beschäftigt sich stark mit der Übertragung, 
+Die Informationstheorie beschäftigt sich stark mit der Übertragung, 
 Verarbeitung, Extrahierung und Verwertung von Informationen. Sie wurde stark 
 von Claude Shannon vorangetrieben. Denn dieser hat vor allem Bits als Einheit
 gewählt, wodurch seine Arbeit gut auf heutige Rechnersysteme übertragbar ist.  
@@ -63,7 +63,7 @@ da sie weniger zu erwarten war. Für die Erwartung spielt es hier demnach auch
 eine Rolle, wie divers die Nachricht sein kann. Im Falle von Nachricht 1 gibt
 es nur 2 Möglichkeiten: Fehler und kein Fehler. Hingegen in Nachricht 2 gibt es
 deutlich mehr Möglichkeiten: Error 0, 1, 2, .... Da also die Nachricht
-"Error Code 3" unerwartbarer war, enthät diese entsprechend mehr Information.
+"Error Code 3" unerwartbarer war, enthält diese entsprechend mehr Information.
 
 Kommen wir also nun konkret zur Bestimmung von Information:
 
@@ -229,7 +229,7 @@ Herzstück von Informationskanälen und das ist der Kanal selbst:
   Variablen an.
 
   Für zwei Zufallsvariablen $X$, $Y$ über den Mengen $cal(X)$, $cal(Y)$ ist die 
-  Joint Entropy wie folgt defineirt:
+  Joint Entropy wie folgt definiert:
   $ Eta(X,Y) = sum_(x in cal(X)) sum_(y in cal(Y)) p(x,y) log 1/p(x,y) $
 
   #note[Jan scheint in seinen Folien $X$ als die Eingangs und $Y$ als die 
@@ -399,3 +399,8 @@ Jensen ebenfalls eine Divergenz aufgestellt.
   Distanz steht habe ich auf die schnelle jetzt allerdings nicht 
   herausgefunden).
 ]
+
+#line(length: 100%)
+
+*Changelog*:
+- 1.0 #sym.arrow.r 1.0.1: Fix von Rechtschreibfehlern

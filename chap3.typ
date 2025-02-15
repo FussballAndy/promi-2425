@@ -2,7 +2,7 @@
 
 #show: book-template.with(
   chapter: 3,
-  version: "1.0",
+  version: "1.0.1",
 )
 
 = Verteilungen
@@ -73,7 +73,7 @@ Kapitel 1 brauchen um die Varianz ordentlich ausrechnen zu können:
 #sub[Fragt mich hier auch bitte nicht, warum Jan das ganze jetzt erst einführt.]
 
 Wenn wir eine stetige Zufallsvariable $X$ haben mit PDF $f_X$ und CDF $F_X$,
-dann können wir diese zu einer Zufallsvarible $Y$ via eines "Transformer" 
+dann können wir diese zu einer Zufallsvariable $Y$ via eines "Transformer" 
 $g: bb(R) -> bb(R)$ umwandeln. Sprich $Y=g(X)$.
 
 Nun ist der allgemeine Ansatz um $f_Y$ und $F_Y$ zu bestimmen, dass man zuerst
@@ -170,7 +170,7 @@ Der letzte Teil der Formel ist dabei die konkrete CDF einer Normalverteilung
 mit Erwartungswert $mu = 0$ und Standardabweichung $sigma^2 = 1$.
 
 
-Im allgeminen gilt auch für die PDF $f$ einer Normalverteilung 
+Im allgemeinen gilt auch für die PDF $f$ einer Normalverteilung 
 $cal(N)(mu,sigma^2)$:
 $
 f(x) = 1/(sigma sqrt(2pi)) exp (-1/2 ((x-mu)/sigma)^2)
@@ -221,26 +221,26 @@ Welche von diesen Verteilungen sollen wir also am besten wählen?
 
 Laut dem Prinzip der maximalen Entropie (engl. Principle of Maximum Entropy) 
 wählen wir dann am besten eine Verteilung mit einer möglichst hohen bzw. der
-höchsten Entropie. Dadurch soll verhindet werden, dass bereits andere 
+höchsten Entropie. Dadurch soll verhindert werden, dass bereits andere 
 Informationen in die Verteilung einfließen. Intuitiv ist das auch ein sehr guter
 Ansatz. Schließlich wissen wir nichts über die Verteilung und Entropie misst 
 eben die Ungewissheit einer Verteilung, also kann es durchaus hilfreich sein
 eine Verteilung mit maximaler Entropie zu wählen.
 
-Zur Wiederholung: Die Formel von Entropie für eine steiuge Zufallsvariable $X$ 
+Zur Wiederholung: Die Formel von Entropie für eine stetige Zufallsvariable $X$ 
 bzw. deren Verteilung $p$ lautet wie folgt:
 $
   Eta (p) = - integral p(x) log_2 p(x) dif x 
 $
 
-Nun wollen wir die Verteilung $p$ wissen, für die wir $Eta(p)$ maixmal bekommen.
+Nun wollen wir die Verteilung $p$ wissen, für die wir $Eta(p)$ maximal bekommen.
 Also
 $
   arg max_p Eta (p) = arg max_p - integral p(x) log_2 p(x) dif x quad 
   "wobei" quad integral_a^b p(x) dif x = 1
 $
 Man beachte, dass selbst ohne weitere Einschränkungen trotzdem bereits die
-Einschränkung, dass das Integral der übergebnen Funktion 1 ergibt -- diese also
+Einschränkung, dass das Integral der übergebenen Funktion 1 ergibt -- diese also
 eine valide PDF ist, vorhanden ist.
 
 #note[$arg$ bezeichnet hierbei das entsprechende Argument des $max$. Genauer
@@ -250,7 +250,7 @@ allein würde uns nur die höchstmögliche Entropie angeben.]
 Nun wollen wir über einem Intervall $[a,b]$ und ohne weitere Einschränkungen
 dieses Prinzip anwenden. Jan nutzt hier auf seinen Folien nun eine interessante
 Herleitung, die aber wenig erklärt wurde. Diese zu verstehen würde überhaupt
-erstmal ein Verständniss von Lagrangian benötigen. Also fassen wirs kurz, wir
+erstmal ein Verständnis von Lagrangian benötigen. Also fassen wirs kurz, wir
 erhalten, dass in solch einem Fall eine Uniforme Distribution mit Wsk. 
 $p(x) = 1 slash (b-a)$ am besten geeignet ist bzw. am meisten Entropie hat.
 
@@ -350,7 +350,7 @@ Beispiel:
 link("https://de.wikipedia.org/wiki/Latentes_Variablenmodell",
 underline("Wikipedia")))[
   Ein Beispiel für eine latente Variable ist die Intelligenz. Sie kann nicht
-  direkt gemssen werdne, aber aus einer Vielzahl von Testergebnissen ([den
+  direkt gemessen werden, aber aus einer Vielzahl von Testergebnissen ([den
   beobachtbaren Datenpunkten]) können eine oder mehrere hinter den
   Testergebnissen liegende latente Variablen (Intelligenz) extrahiert werden.
 ]
@@ -383,3 +383,8 @@ des Kernels kontrolliert, bzw. bildlich die Funktion glatter macht:
 $
   f(x) = 1 / (N h) sum_(k=1)^N cal(K) ((x - x_k) / h)  
 $
+
+#line(length: 100%)
+
+*Changelog*:
+- 1.0 #sym.arrow.r 1.0.1: Fix von Rechtschreibfehlern
