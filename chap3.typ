@@ -202,7 +202,7 @@ trotzdem noch die PDF vom Produkt/Quotient zweier Zufallsvariablen $X$, $Y$:
     f_U (u) = integral_(x in cal(X)) f_X (x) f_Y (u x) abs(x) dif x
   $
 ]
-maximal
+
 = Maximum Entropy Distributions
 
 // TODO: Sehr random reingeworfen und zu wenig ausgeführt.
