@@ -3,7 +3,7 @@
 
 #show: book-template.with(
   chapter: 2,
-  version: "1.0",
+  version: "1.0.1",
 )
 
 #let source = math.accent("X", math.macron)
@@ -399,3 +399,8 @@ Jensen ebenfalls eine Divergenz aufgestellt.
   Distanz steht habe ich auf die schnelle jetzt allerdings nicht 
   herausgefunden).
 ]
+
+#line(length: 100%)
+
+*Changelog*:
+- 1.0 #sym.arrow.r 1.0.1: Fix von Rechtschreibfehlern

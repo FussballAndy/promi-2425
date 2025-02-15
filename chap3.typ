@@ -2,7 +2,7 @@
 
 #show: book-template.with(
   chapter: 3,
-  version: "1.0",
+  version: "1.0.1",
 )
 
 = Verteilungen
@@ -383,3 +383,8 @@ des Kernels kontrolliert, bzw. bildlich die Funktion glatter macht:
 $
   f(x) = 1 / (N h) sum_(k=1)^N cal(K) ((x - x_k) / h)  
 $
+
+#line(length: 100%)
+
+*Changelog*:
+- 1.0 #sym.arrow.r 1.0.1: Fix von Rechtschreibfehlern
