@@ -326,6 +326,8 @@ $
 
 #let bias = math.op("bias")
 #let var = math.op("var")
+#let loss = math.op(math.cal("L"))
+#let f_est = $hat(f)_cal(D)$
 
 #sub[Kann sich hier noch wer daran erinnern, was Aleatoric und Epistemic 
 Uncertainty war? Nein? Gut ich auch nicht.]
@@ -337,40 +339,71 @@ Um dies noch einmal zu vertiefen gucken wir uns nun den Bias & Variance tradeoff
 an.
 
 Hier auch erst einmal wieder Begriffsklärung. Dazu nehmen wir unser geschätztes
-Modell $hat(f)_cal(D)$ über den Daten $cal(D)$ und das wahre Modell $f$.
+Modell $#f_est$ über den Daten $cal(D)$ und das wahre Modell $f$.
 
 / bias: die erwartete Abweichung von unserem wahren Modell gemäß den Daten
   $
-    bias(hat(f)_cal(D)) = expect_cal(D)[hat(f)_cal(D) - f]
+    bias(#f_est) = expect_cal(D)[#f_est - f]
   $
 / variance: wie davor auch schon ist dies eben einfach die Varianz des 
   geschätzten Modell, allerdings nur gemäß den Daten.
   $
-    var(hat(f)_cal(D)) = expect_cal(D)[(hat(f)_cal(D) - 
-      expect_cal(D)[hat(f)_cal(D)])^2]
+    var(#f_est) = expect_cal(D)[(#f_est - expect_cal(D)[#f_est])^2]
   $
 
 #dangerous[Jan definiert das ganze eher über den estimator bzw. dem Parameter.
 Sollte aber denke ich mal keinen großen Unterschied machen.]
 
+Man kann den $bias$ auch als Fehler im Ansatz sehen, sodass unser Modell einfach
+nicht besser sein kann. $var$ ist dazu der estimation error. Dieser wird
+immer vorhanden sein, wenn wir nur endliche Datensätze haben.
+
 Weicht unser erwartetes Modell von dem wahren ab 
-($expect_cal(D)[hat(f)_cal(D)] != f$), so nennen wir unser Modell _biased_.
+($expect_cal(D)[#f_est] != f$), so nennen wir unser Modell _biased_.
 Ansonsten _unbiased_. 
 
 Ein estimator, der null bias und minimale Varianz hat, nennen wir _minimum
 variance unbiased estimator_ (MVUE). Ist solch ein estimator noch linear in
 seinen Parametern nennen wir diesen _best linear unbiased estimator_ (BLUE).
 
-Solch ein MVUE wäre nun erwünschenswert, ist aber leider nicht so einfach.
+Solch ein MVUE wäre nun erwünschenswert, ist aber leider nicht so einfach. Wenn
+wir nämlich eine hohe Varianz haben, kann unser Modell tendenziell besser die
+Daten einbeziehen, und wir erhalten ein besseres Modell. Im Gegensatz dazu
+hat ein höheres Bias meist eine niedrigere Varianz, da wir ggf. nur weniger
+abweichende Daten einbeziehen.
 
-#emoji.construction TODO
+// TODO: ggf. nochmal in Sprechstunde zu erkunden
 
-S. 32 - 36 nicht relevant
+Das ganze kann man auch noch etwas in Formeln ausdrücken: \
+Und zwar wollen wir den loss über einen Datenpunkt $(y_q, x_q)$ bestimmen.
+Dafür betrachten wir den _mean squared loss_ (MSE):
+$
+  loss(y_q, x_q) = expect_(cal(D),epsilon)[(y_q - #f_est (x_q))^2]
+$
 
-S. 75: $hat(theta)_k (f)$ "Estimator"
+Dazu nehmen wir an, dass unsere gemessenen Datenpunkte ein gewisses rauschen
+beinhalten:
+$
+  y = f(x) + epsilon quad "mit" quad epsilon ~ cal(N) (0,sigma_epsilon^2)
+$
 
-S. 75: $f^((i))$ $(i)$ "Features"
+setzen wir dies ein erhalten wir erst einmal:
+$
+  loss(y_q, x_q) &= expect_(cal(D),epsilon)[(y_q - #f_est (x_q))^2] \
+  &= expect_(cal(D),epsilon)[(f(x_q) + epsilon - #f_est (x_q))^2] \
+  &= sigma_epsilon^2 + expect_cal(D) [(f(x_q) - #f_est (x_q))^2]
+$
+Um an den Anfang dieses Kapitel zurückzukommen:
+- $sigma_epsilon^2$ ist hier die aleotric uncertainty
+- $expect_cal(D) [(f(x_q) - #f_est (x_q))^2]$ hingegen die epistemic uncertainty
 
-Cross Validation: Erlaubt vor allem das Auswerten von anderen Daten
-außerhalb unserer Parameter
+Schlussendlich erhalten wir aber:
+$
+  loss(y_q, x_q) = sigma_epsilon^2 + 
+  underbrace(expect_cal(D) [f(x_q) - #f_est (x_q)]^2, 
+    bias^2(#f_est (x_q))) +
+  underbrace(expect_cal(D) [(#f_est (x_q) - expect_cal(D) [#f_est (x_q)])^2],
+    var(#f_est (x_q)))
+$
 
+Für eine Herleitung dieser Rechnung sei auf die Lösung von Übung 3 verwiesen.
