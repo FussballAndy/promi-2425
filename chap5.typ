@@ -171,9 +171,21 @@ $p < alpha$, bzw. $alpha/2$ im two sided, lehnen wir die null hypothesis ab.
 
 Und damit können wir dann unseren Z-Test durchführen.
 
-Wenn wir allerdings die Standardabweichung unserer Daten nicht wissen, kommen
-wir mit dem Z-Test nicht weiter. Dafür gibt es dann aber andere Arten, wie z.B.
-den Student's T-Test (siehe Übung dafür).
+Wenn wir allerdings die Standardabweichung unserer Daten nicht wissen, oder nur
+eine geringe Anzahl an samples (< 30) haben, kommen wir mit dem Z-Test nicht 
+weiter. Dafür gibt es dann aber andere Arten, wie z.B. den Student's t-Test.
+
+Weiterführend muss außerdem noch gesagt sein, dass Z-tests nicht nur stur 
+einen Parameter mit einem fest vorgelegten vergleichen, sondern wir auch aus
+zwei samples den mean vergleichen können. Dafür müssen allerdings beide
+Standardabweichungen der samples bekannt sein. Unsere test statistic sieht dann
+wie folgt aus:
+$
+  Z = ((accent(X, macron) - accent(Y, macron)) - (mu_X - mu_Y))/
+  (sqrt(sigma_X^2/N_X + sigma_Y^2/N_Y))
+$
+
+Der Rest ist allerdings analog zu oben.
 
 == A/B Testing
 
@@ -212,7 +224,41 @@ wird, da trotzdem noch zu viele Falschaussagen entstehen.
 Um wiederum Type II Error zu reduzieren müssen wir die sample size erhöhen,
 also mehr testen.
 
-// TODO: Student's t test
+== Student's t-test
+Nun noch eine weitere Testmethode, die auf dem Z-Test aufbaut. Diese wurde zwar
+nicht in der Vorlesung behandelt, allerdings in der Übung und ist somit laut Jan
+auch klausurrelevant.
+
+Die Besonderheit am t-test im vergleich zum Z-test ist, dass wir hier auch
+mit kleineren sample sizes arbeiten können. Für größere sample sizes konvergiert
+dieser test zum Z-test. Zudem muss hier die Standardabweichung nicht bekannt 
+sein. Hier sei auch gesagt, dass dieser test noch sehr viel mehr zu bieten hat, 
+als hier dargestellt.
+
+Wir betrachten nun nur den Fall, dass wir zwei samples $X$, $Y$ miteinander 
+vergleichen wollen. Dazu sollen unsere Daten wieder aus Normalverteilungen 
+stammen, und samples von $X$ und $Y$ müssen unabhängig voneinander sein.
+Außerdem müssen für den spezifischen test, den wir machen, die Varianzen
+ähnlich sein.
+
+Unsere test statistic hat dann folgende Form:
+$
+  t = (accent(X, macron) - accent(Y, macron))/(s_P sqrt(1/N_X + 1/N_Y))
+$
+wobei
+$
+  s_P = sqrt(((N_X - 1)s_X^2 + (N_Y - 1)s_Y^2)/(N_X + N_Y - 2))
+$
+und
+$
+  s_A = sqrt(1/N_A sum_(i=1)^(N_A) (x_i - accent(A, macron))^2)
+$
+
+Dazu kommt noch die sog. _degrees of freedom_ $"df" = N_X + N_Y - 2$.
+
+Damit kann man dann mit ähnlichen rejection regions bzw. p Werten wie beim
+Z-Test arbeiten, nur dass hier die t-Verteilung genommen wird und nicht die
+Normalverteilung. Diese verbleibt als Selbststudium.
 
 = Evaluation
 
@@ -371,8 +417,6 @@ wir nämlich eine hohe Varianz haben, kann unser Modell tendenziell besser die
 Daten einbeziehen, und wir erhalten ein besseres Modell. Im Gegensatz dazu
 hat ein höheres Bias meist eine niedrigere Varianz, da wir ggf. nur weniger
 abweichende Daten einbeziehen.
-
-// TODO: ggf. nochmal in Sprechstunde zu erkunden
 
 Das ganze kann man auch noch etwas in Formeln ausdrücken: \
 Und zwar wollen wir den loss über einen Datenpunkt $(y_q, x_q)$ bestimmen.
