@@ -2,7 +2,7 @@
 
 #show: book-template.with(
   chapter: 5,
-  version: "1.0",
+  version: "0.9",
 )
 
 = Experimental Design
@@ -29,7 +29,7 @@ beschäftigen, wie ein guter Aufbau von Experimenten aussieht.
 
 Zuerst einmal folgende Definitionen:
 
-- *Hypothese*: Eine Hypothese ist eine Behauptung über einen Paramter bzw.
+- *Hypothese*: Eine Hypothese ist eine Behauptung über einen Paramter bzw. eine
   Variable
 - *Null Hypothesis*, *Alterntive Hypothesis*: Zwei Hypothesen über den
   gleichen Parameter, wobei diese sich wiedersprechen. \
@@ -38,15 +38,15 @@ Zuerst einmal folgende Definitionen:
 - *Test*: In einem Test werden Daten ausgewertet und basierend darauf
   entschieden, welche der beiden Hypothesen wahr ist. Dazu nutzt man
   meist auch noch eine _rejection region_ $R$.
-- *Test statistic*: Eine test statistic $T: E^N -> bb(R)$, wobei $E$ der
-  Ergebnisraum des Tests ist, welche die Testergebnisse in eine
-  reelle Zahl zusammenfassen.
+- *Test statistic*: Eine test statistic $T: cal(X)^N -> bb(R)$, wobei $cal(X)$ 
+  der Ergebnisraum des Tests ist. Diese fasst die Testergebnisse in eine reelle 
+  Zahl zusammen.
 
 Basierend darauf sieht der Ablauf eines Tests wie folgt aus:
 
 1. Vermutung über Verteilung aufstellen $X tilde P_theta$
 2. Null Hypothese aufstellen $H_0$
-3. Test Statistik aufstellen $T: cal(X)^N -> bb(R)$
+3. Test statistic aufstellen $T: cal(X)^N -> bb(R)$
 4. Rejection region $R subset bb(R)$ auswählen, wobei die Wsk., dass ein 
   Wert rejected wird minimal unter der Null Hypothesis sein sollte.
   $
@@ -91,10 +91,10 @@ $
   = exp {(-n (overline(x) - theta_0)^2) / 2}
 $
 Dabei ist $hat(theta) = arg sup_(theta in Theta) L(theta | cal(D))$ per MLE 
-bestimmt. Und da wir somit $Theta_0 = {theta_0}$ ist können wir dieses direkt
+bestimmt. Und da wir somit $Theta_0 = {theta_0}$ haben, können wir dieses direkt
 einsetzen. (Herleitung zu letztem Teil auf den Folien)
 
-Damit erhalten wir dann, dass alle Ergebnisse aus
+Damit erhalten wir dann, dass alle Ergebnisse in
 ${cal(D) : |overline(x) - theta_0| >= sqrt(-2(log c) slash n)}$ abgelehnt
 werden sollten.
 
@@ -102,9 +102,6 @@ werden sollten.
 
 Zudem kann man mittels LRT _"size $alpha$" LRT_ formen, indem man $c$ so wählt,
 dass $sup_(theta in Theta_0) P (lambda (cal(D)) <= c) = alpha$.
-
-// Fragen bisher: warum rejection region von ergebnissätzen, warum hier P eigtl.
-// abhängig von theta
 
 == Gaussian Z-Test
 
@@ -176,8 +173,8 @@ eine geringe Anzahl an samples (< 30) haben, kommen wir mit dem Z-Test nicht
 weiter. Dafür gibt es dann aber andere Arten, wie z.B. den Student's t-Test.
 
 Weiterführend muss außerdem noch gesagt sein, dass Z-tests nicht nur stur 
-einen Parameter mit einem fest vorgelegten vergleichen, sondern wir auch aus
-zwei samples den mean vergleichen können. Dafür müssen allerdings beide
+einen Parameter mit einem fest vorgelegten vergleichen können, sondern wir auch 
+aus zwei samples den mean vergleichen können. Dafür müssen allerdings beide
 Standardabweichungen der samples bekannt sein. Unsere test statistic sieht dann
 wie folgt aus:
 $
@@ -195,7 +192,7 @@ heißen, dass wir die Nutzer in zwei Gruppen unterteilen und jeweils die eine
 bzw. andere Sache testen. Man könnte dies aber auch so sehen, dass zuerst
 alle Nutzer in Gruppe A sind und dann nach einer Weile alle Nutzer in Gruppe B
 gewechselt werden. Wichtig ist hier jedoch, dass die Nutzer i.i.d. in die
-Gruppen eingeteilt werden. Mehr hierzu aber auch in der Übung.
+Gruppen eingeteilt werden. Mehr hierzu in der Übung.
 
 == Fehler in Hypothesis Testing
 
@@ -215,7 +212,7 @@ folgende Fälle:
   vert[Negative], [False negative \ #sub[Type II Error]], [True negative]
 )))
 
-Um Type I Error zu reduzieren können wir das _significance level_ $alpha$
+Um Type I Error zu reduzieren, können wir das _significance level_ $alpha$
 reduzieren. Dies erhöht allerdings die Wsk. auf Type II Error. \
 Für statistiche Behauptungen ist z.B. $alpha <= 0.05$ relevant. Mittlerweile
 wollen aber viele, dass dieser Wert weiter auf $alpha <= 0.005$ runtergesetzt
@@ -229,7 +226,7 @@ Nun noch eine weitere Testmethode, die auf dem Z-Test aufbaut. Diese wurde zwar
 nicht in der Vorlesung behandelt, allerdings in der Übung und ist somit laut Jan
 auch klausurrelevant.
 
-Die Besonderheit am t-test im vergleich zum Z-test ist, dass wir hier auch
+Die Besonderheit am t-test im Vergleich zum Z-test ist, dass wir hier auch
 mit kleineren sample sizes arbeiten können. Für größere sample sizes konvergiert
 dieser test zum Z-test. Zudem muss hier die Standardabweichung nicht bekannt 
 sein. Hier sei auch gesagt, dass dieser test noch sehr viel mehr zu bieten hat, 
@@ -263,9 +260,13 @@ Normalverteilung. Diese verbleibt als Selbststudium.
 = Evaluation
 
 Nachdem wir nun mittels Experiment unser Modell aufgestellt haben, gilt es nun
-noch zu überprüfen, dass dieses nicht ggf. doch unpassend ist. Es also z.B.
-zu genau die gemessenen Datenpunkte beschreibt, dafür aber an allen anderen
+noch zu überprüfen, dass dieses nicht ggf. doch unpassend ist. Also ob es z.B.
+sehr genau die gemessenen Datenpunkte beschreibt, dafür aber an allen anderen
 Punkten unbrauchbar ist.
+
+Begriffsklärung: Modell heißt hier vor allem erst einmal die Art von
+Funktion, die wir wählen, also z.B. Polynom, Gerade, etc. und dazu auch die
+Hyperparameter der Funktion, also z.B. Grad des Polynoms.
 
 Dazu kann man bereits einmal folgendes festhalten: es reicht nicht einen
 niedrigen Training Error zu haben, sondern man sollte dazu auch noch einen
@@ -287,16 +288,16 @@ Speziell fürs Clustering gibt es aber noch andere Methoden:
   Elbow Method:
 
   Die gesamte within-cluster sum of square (WSS) in relation zur Anzahl an
-  Klustern plotten. Dabei wird es dann einen sog. "elbow point" geben. Dieser
-  ist quasi der Punkt ab dem die Kurve stark abflacht. Dieser Punkt gibt dann
+  clustern plotten. Dabei wird es dann einen sog. "elbow point" geben. Dieser
+  ist quasi der Punkt ab dem die Kurve stark abflacht und gibt dann
   die optimale Anzahl an.
 ]
 - #[
   Gap statistics:
 
   Diese Methode baut wieder etwas mehr auf Vermutung auf. Hier stellt man eine
-  test statistic und Null Hypothese um den Erwartungswert für die \#Kluster auf
-  und vergleicht die Wsk. Verteilung dieser Null Statistic mit WSS. #sub[Aber
+  test statistic und null hypothesis um den Erwartungswert für die \#Cluster auf
+  und vergleicht die Wsk. Verteilung dieser null statistic mit WSS. #sub[Aber
   genaueres kann ich hierzu auch nicht sagen.]
 ]
 
@@ -311,11 +312,7 @@ Modell.
 
 Nun betrachten wir die Model Validation, also das überprüfen, dass unser Modell
 sinnvoll ist. Bzw. finden des sinnvollsten Modell. Dazu nehmen wir uns unser 
-aktuelles Modell $f_theta$. Dabei beschreibt $theta$ die Parameter des Modell.
-
-#note[Modell heißt hier nicht unbedingt nur die Parameter, sondern ggf. auch
-grundlegend die Funktion, also z.B. ob es ein Polynom ist etc. und dazu dann
-auch Hyperparameter wie den Grad des Polynoms.]
+aktuelles Modell $f_theta$, wobei $theta$ die Parameter des Modell beschreibt.
 
 Für eine ordentliche Validierung müssen wir unseren Datensatz in drei Teile
 unterteilen:
@@ -336,27 +333,27 @@ Diese haben folgende nutzen:
   ggf. Hyperparameter anpassen
 - Test set: Am Ende das Modell noch einmal mit ganz frischen Daten testen
 
-Dabei findet Validaten noch eher während der Trainingsphase statt während
-Testing wirklich erst ganz am Ende durchgeführt wird. Zudem müssen all diese
-Datensätze disjunkt sein. Nachdem wir allerdings mit dem aktuellen test set
-getestet haben, müssen wir, sofern wir noch weiter trainieren wollen, ein neues
-test set holen.
+Dabei findet Validaten noch eher während der Trainingsphase statt, während
+testing wirklich erst ganz am Ende durchgeführt wird. Zudem müssen all diese
+Datensätze disjunkt sein. Nachdem wir mit dem aktuellen test set getestet haben, 
+müssen wir, sofern wir noch weiter trainieren wollen, ein neues test set holen.
 
-Wir betrachten dazu nun den Cross Validation Ansatz: \
+Zur Validation betrachten wir nun den *Cross Validation* Ansatz: \
 Teile in jeder Iteration den gesamten Datensatz $cal(D)$ in $K$ gleich große 
 Teile auf. $cal(D)_1,...,cal(D)_(K-1), cal(D)_K$. Dabei sind $cal(D)_1$ bis 
 $cal(D)_(K-1)$ training sets und $cal(D)_K$ unser validation set.
 - Mit den training sets können wir unsere Parameter bestimmen
 - und mit dem validation set können wir unser Modell validieren:
   $
-    L_k (f_theta) = sum_((x,y) in D_K) cal(L) (f_theta (x),y) 
+    L_k (f_theta) = sum_((x,y) in D_k) cal(L) (f_theta (x),y) 
   $
-Dies wird nun mit jeder möglichen Partition gemacht, was sehr aufwändig ist.
-Dafür haben wir dann allerdings eine gute Bewertung unseres Modells bzw. ein
+Dies wird nun mit jeder möglichen Partition gemacht. Am Ende nehmen wir dann
+das Modell, das am besten abgeschnitten hat. Dies ist allerdings sehr aufwendig,
+dafür haben wir dann allerdings eine gute Bewertung unseres Modells bzw. ein
 gutes Modell.
 
-Wenn man seine Lebenszeit/Stromrechnung etwas mehr wertet, kann man auch K-fold
-Cross Validation nutzen.
+Wenn man allerdings seine Lebenszeit/Stromrechnung etwas mehr wertet, kann man 
+auch K-fold Cross Validation nutzen.
 
 *K-fold Cross Validation*: \
 Hier teilen wir unsere Daten in $K$ gleich große Mengen, sog. "folds". In jeder
@@ -367,6 +364,9 @@ Damit bekommen wir dann folgendes für das optimale Modell:
 $
   f^* = arg min_(f in cal(M)) 1/K sum_(k=1)^K L_k (f)
 $
+
+Dies wird dann ggf. nicht so optimal sein, wie pure Cross Validation, dafür aber
+trotzdem noch gut genug.
 
 == Bias & Variance
 
@@ -381,8 +381,7 @@ Uncertainty war? Nein? Gut ich auch nicht.]
 / Aleatoric: Unsicherheit wegen allgemeiner Zufälligkeit eines Events
 / Epistemic: Unsicherheit wegen fehlendem wissen
 
-Um dies noch einmal zu vertiefen gucken wir uns nun den Bias & Variance tradeoff
-an.
+Damit im Hinterkopf gucken wir uns nun noch den Bias & Variance tradeoff an.
 
 Hier auch erst einmal wieder Begriffsklärung. Dazu nehmen wir unser geschätztes
 Modell $#f_est$ über den Daten $cal(D)$ und das wahre Modell $f$.
@@ -413,10 +412,11 @@ variance unbiased estimator_ (MVUE). Ist solch ein estimator noch linear in
 seinen Parametern nennen wir diesen _best linear unbiased estimator_ (BLUE).
 
 Solch ein MVUE wäre nun erwünschenswert, ist aber leider nicht so einfach. Wenn
-wir nämlich eine hohe Varianz haben, kann unser Modell tendenziell besser die
-Daten einbeziehen, und wir erhalten ein besseres Modell. Im Gegensatz dazu
-hat ein höheres Bias meist eine niedrigere Varianz, da wir ggf. nur weniger
-abweichende Daten einbeziehen.
+wir nämlich eine hohe Varianz haben, kann unser Modell tendenziell besser neue
+Daten einbeziehen, und wir erhalten ein Modell, dass alle Daten gut beschreibt. 
+Im Gegensatz dazu hat ein höheres Bias meist eine niedrigere Varianz, da wir 
+ggf. nur weniger abweichende Daten einbeziehen, und dadurch dann manche Punkte 
+weniger gut beschreiben.
 
 Das ganze kann man auch noch etwas in Formeln ausdrücken: \
 Und zwar wollen wir den loss über einen Datenpunkt $(y_q, x_q)$ bestimmen.
@@ -425,20 +425,20 @@ $
   loss(y_q, x_q) = expect_(cal(D),epsilon)[(y_q - #f_est (x_q))^2]
 $
 
-Dazu nehmen wir an, dass unsere gemessenen Datenpunkte ein gewisses rauschen
+Dazu nehmen wir an, dass unsere gemessenen Datenpunkte ein gewisses Rauschen
 beinhalten:
 $
   y = f(x) + epsilon quad "mit" quad epsilon ~ cal(N) (0,sigma_epsilon^2)
 $
 
-setzen wir dies ein erhalten wir erst einmal:
+Setzen wir dies ein erhalten wir erst einmal:
 $
   loss(y_q, x_q) &= expect_(cal(D),epsilon)[(y_q - #f_est (x_q))^2] \
   &= expect_(cal(D),epsilon)[(f(x_q) + epsilon - #f_est (x_q))^2] \
   &= sigma_epsilon^2 + expect_cal(D) [(f(x_q) - #f_est (x_q))^2]
 $
 Um an den Anfang dieses Kapitel zurückzukommen:
-- $sigma_epsilon^2$ ist hier die aleotric uncertainty
+- $sigma_epsilon^2$ ist hier die aleatoric uncertainty
 - $expect_cal(D) [(f(x_q) - #f_est (x_q))^2]$ hingegen die epistemic uncertainty
 
 Schlussendlich erhalten wir aber:
