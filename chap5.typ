@@ -425,8 +425,9 @@ ggf. nur weniger abweichende Daten einbeziehen, und dadurch dann manche Punkte
 weniger gut beschreiben.
 
 Man beachte zudem, dass wir nicht direkt Bias und Variance modifizieren können,
-sondern eher nur, wie sehr unser Estimator Datenpunkte einbezieht. Entsprechend
-wie wir das einstellen erhalten wir dann meist einen der beiden Fälle.
+sondern eher nur, wie sehr unser Estimator Datenpunkte einbezieht. Je nachdem,
+wie unser Estimator dies Daten also einbezieht erhalten wir einen der beiden 
+Fälle.
 
 Das ganze kann man auch noch etwas in Formeln ausdrücken: \
 Und zwar wollen wir den loss über einen Datenpunkt $(y_q, x_q)$ bestimmen.
