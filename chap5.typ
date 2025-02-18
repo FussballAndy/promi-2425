@@ -2,7 +2,7 @@
 
 #show: book-template.with(
   chapter: 5,
-  version: "0.9",
+  version: "1.0",
 )
 
 = Experimental Design
@@ -93,6 +93,12 @@ $
 Dabei ist $hat(theta) = arg sup_(theta in Theta) L(theta | cal(D))$ per MLE 
 bestimmt. Und da wir somit $Theta_0 = {theta_0}$ haben, können wir dieses direkt
 einsetzen. (Herleitung zu letztem Teil auf den Folien)
+
+#dangerous[Hierzu ist noch anzumerken: Bei MLE über Gauss ist der Sample Mean
+der Eingabedaten der optimale Mean. Entsprechend setzen wir das ganze hier auch 
+so ein. Das ganze wurde auch in der Sprechstunde abgeklärt, habe es aber 
+trotzdem mal als Warnung markiert, da ich mir unsicher bin, ob ich das ganze 
+richtig wiedergebe.]
 
 Damit erhalten wir dann, dass alle Ergebnisse in
 ${cal(D) : |overline(x) - theta_0| >= sqrt(-2(log c) slash n)}$ abgelehnt
@@ -417,6 +423,11 @@ Daten einbeziehen, und wir erhalten ein Modell, dass alle Daten gut beschreibt.
 Im Gegensatz dazu hat ein höheres Bias meist eine niedrigere Varianz, da wir 
 ggf. nur weniger abweichende Daten einbeziehen, und dadurch dann manche Punkte 
 weniger gut beschreiben.
+
+Man beachte zudem, dass wir nicht direkt Bias und Variance modifizieren können,
+sondern eher nur, wie sehr unser Estimator Datenpunkte einbezieht. Je nachdem,
+wie unser Estimator dies Daten also einbezieht erhalten wir einen der beiden 
+Fälle.
 
 Das ganze kann man auch noch etwas in Formeln ausdrücken: \
 Und zwar wollen wir den loss über einen Datenpunkt $(y_q, x_q)$ bestimmen.

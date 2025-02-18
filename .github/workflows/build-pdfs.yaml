@@ -20,6 +20,7 @@ jobs:
           typst c chap2.typ
           typst c chap3.typ
           typst c chap4.typ
+          typst c chap5.typ
 
       - name: upload pdfs
         uses: actions/upload-artifact@v4
