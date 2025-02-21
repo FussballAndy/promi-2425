@@ -1,5 +1,5 @@
 #import "template.typ": *
-#import "@preview/fletcher:0.5.2" as fletcher: diagram, node, edge
+#import "@preview/fletcher:0.5.5" as fletcher: diagram, node, edge
 
 #show: book-template.with(
   chapter: 2,
