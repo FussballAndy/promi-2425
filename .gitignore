@@ -2,4 +2,5 @@
 .vscode
 slides/*
 images/*
+fonts/*
 *.pdf
