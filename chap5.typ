@@ -2,7 +2,7 @@
 
 #show: book-template.with(
   chapter: 5,
-  version: "1.0",
+  version: "1.1",
 )
 
 = Experimental Design
@@ -144,21 +144,21 @@ aussuchen:
 #grid(columns: (1fr,)*3, align: center)[
   Two-sided
 
-  $R:={z in RR : |z| > z_(alpha slash 2)}$
+  $R := {z in RR : |z| > z_(alpha slash 2)}$
 
   $p = 2 min {1-F(Z), F(Z)}$
 ][
   Left-sided
 
-  $R:= {z in RR : z > z_alpha}$
+  $R := {z in RR : z < -z_alpha}$
 
   $p = F(Z)$
 ][
   Right-sided
 
-  $R := {z in RR : z < z_alpha}$
+  $R := {z in RR : z > z_alpha}$
 
-  $p= 1-F(Z)$
+  $p = 1-F(Z)$
 ]
 
 #note[Für Visualisierungen der drei Fälle am besten auf die Folien schauen. F
@@ -462,3 +462,8 @@ $
 $
 
 Für eine Herleitung dieser Rechnung sei auf die Lösung von Übung 3 verwiesen.
+
+#line(length: 100%)
+
+*Changelog*:
+- 1.0 #sym.arrow.r 1.1: Fix von Rejection Regions bei Left/Right sided Z Test
